@@ -20,7 +20,7 @@ import java.util.Comparator;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
-class FrontPage extends BorderPane{
+class FrontPageFrame extends BorderPane{
 
     /**
      * Declare Scene Elements Here
@@ -32,7 +32,7 @@ class FrontPage extends BorderPane{
      */
 
 
-    FrontPage()
+    FrontPageFrame()
     {
         /**
          * Initialize / Assign Elements Here
@@ -57,7 +57,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         //FrontPage layout
-        FrontPage frontPage = new FrontPage();
+        FrontPageFrame frontPage = new FrontPageFrame();
 
         // Set the title of the app
         primaryStage.setTitle("PantryPal");
