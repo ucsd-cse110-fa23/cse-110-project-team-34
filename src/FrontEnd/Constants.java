@@ -8,7 +8,7 @@ public class Constants {
     //Styles
     public static final String boldBackgroundColor = "-fx-background-color: #3EB489;";
     public static final String defaultBackgroundColor = "-fx-background-color: #C6F5E4;";
-    public static final String defaultButtonStyle = "-fx-font-style: italic; -fx-background-color: #c6f5e4;  -fx-font-weight: bold; -fx-font: 11 arial;";
+    public static final String defaultButtonStyle = "-fx-background-color: #C6F5E4;  -fx-font-weight: bold; -fx-font: 30 arial;";
     
     //Paths
     public static final String defaultIconPath = "file:src/FrontEnd/Images/PantryPalIcon.png";

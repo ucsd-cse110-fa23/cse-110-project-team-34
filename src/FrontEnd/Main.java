@@ -67,6 +67,7 @@ class FrontPageFrame extends BorderPane{
     private FrontPageHeader header;
     private FrontPageFooter footer;
     private ScrollPane recipeListScrollPane;
+    private RecipeList recipeList;
 
 
     /**
@@ -82,8 +83,9 @@ class FrontPageFrame extends BorderPane{
          */
         header = new FrontPageHeader();
         footer = new FrontPageFooter();
+        recipeList = new RecipeList();
 
-        recipeListScrollPane = new ScrollPane(); //TODO: Add recipe list object here! Should be of recipe list type and extends VBox
+        recipeListScrollPane = new ScrollPane(recipeList);
         recipeListScrollPane.setFitToWidth(true);
         recipeListScrollPane.setFitToHeight(true);
         
