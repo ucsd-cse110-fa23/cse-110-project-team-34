@@ -26,7 +26,7 @@ class FrontPageFooter extends HBox {
 
     FrontPageFooter() {
         this.setPrefSize(Constants.WINDOW_WIDTH, 100);
-        this.setStyle(Constants.defaultBackgroundColor);
+        this.setStyle(Constants.boldBackgroundColor);
         this.setSpacing(15);
 
         // set a default style for buttons - background color, font size, italics
@@ -50,7 +50,7 @@ class FrontPageHeader extends HBox {
 
     FrontPageHeader() {
         this.setPrefSize(Constants.WINDOW_WIDTH, 100); // Size of the header
-        this.setStyle(Constants.defaultBackgroundColor);
+        this.setStyle(Constants.boldBackgroundColor);
 
         Text titleText = new Text("PantryPal"); // Text of the Header
         titleText.setStyle("-fx-font-weight: bold; -fx-font-size: 80;");
