@@ -20,16 +20,59 @@ import java.util.Comparator;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
+class FrontPageFooter extends HBox {
+
+    private Button newRecipeButton;
+
+    FrontPageFooter() {
+        this.setPrefSize(Constants.WINDOW_WIDTH, 100);
+        this.setStyle(Constants.defaultBackgroundColor);
+        this.setSpacing(15);
+
+        // set a default style for buttons - background color, font size, italics
+        
+
+        newRecipeButton = new Button("New Recipe"); // text displayed on add button
+        newRecipeButton.setStyle(Constants.defaultButtonStyle); // styling the button
+
+        this.getChildren().addAll(newRecipeButton); // adding buttons to footer
+        this.setAlignment(Pos.CENTER); // aligning the buttons to center
+
+    }
+
+    public Button getNewRecipeButton() {
+        return newRecipeButton;
+    }
+
+}
+
+class FrontPageHeader extends HBox {
+
+    FrontPageHeader() {
+        this.setPrefSize(Constants.WINDOW_WIDTH, 100); // Size of the header
+        this.setStyle(Constants.defaultBackgroundColor);
+
+        Text titleText = new Text("PantryPal"); // Text of the Header
+        titleText.setStyle("-fx-font-weight: bold; -fx-font-size: 80;");
+        this.getChildren().add(titleText);
+        this.setAlignment(Pos.CENTER); // Align the text to the Center
+    }
+}
+
 class FrontPageFrame extends BorderPane{
 
     /**
      * Declare Scene Elements Here
      */
+    private FrontPageHeader header;
+    private FrontPageFooter footer;
+    private ScrollPane recipeListScrollPane;
 
 
     /**
      * Declare Scene Buttons Here
      */
+    Button newRecipeButton;
 
 
     FrontPageFrame()
@@ -37,6 +80,21 @@ class FrontPageFrame extends BorderPane{
         /**
          * Initialize / Assign Elements Here
          */
+        header = new FrontPageHeader();
+        footer = new FrontPageFooter();
+
+        recipeListScrollPane = new ScrollPane(); //TODO: Add recipe list object here! Should be of recipe list type and extends VBox
+        recipeListScrollPane.setFitToWidth(true);
+        recipeListScrollPane.setFitToHeight(true);
+        
+        newRecipeButton = footer.getNewRecipeButton();
+
+        /**
+         * Set element positions here
+         */
+        this.setTop(header);
+        this.setCenter(recipeListScrollPane);
+        this.setBottom(footer);
 
 
         //Add button listeners
@@ -47,6 +105,10 @@ class FrontPageFrame extends BorderPane{
     {
 
         // Add button functionality
+        newRecipeButton.setOnAction(e -> {
+
+            }
+        );
         
     }
 }
