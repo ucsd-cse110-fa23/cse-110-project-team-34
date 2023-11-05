@@ -3,22 +3,27 @@ package FrontEnd;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import javafx.geometry.Insets;
 import javafx.scene.text.*;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
+
+class FrontPageHeader extends HBox {
+
+    FrontPageHeader() {
+        this.setPrefSize(Constants.WINDOW_WIDTH, 100); // Size of the header
+        this.setStyle(Constants.boldBackgroundColor);
+
+        Text titleText = new Text("PantryPal"); // Text of the Header
+        titleText.setStyle("-fx-font-weight: bold; -fx-font-size: 80;");
+        this.getChildren().add(titleText);
+        this.setAlignment(Pos.CENTER); // Align the text to the Center
+    }
+}
 
 class FrontPageFooter extends HBox {
 
@@ -27,10 +32,7 @@ class FrontPageFooter extends HBox {
     FrontPageFooter() {
         this.setPrefSize(Constants.WINDOW_WIDTH, 100);
         this.setStyle(Constants.boldBackgroundColor);
-        this.setSpacing(15);
-
-        // set a default style for buttons - background color, font size, italics
-        
+        this.setSpacing(15);      
 
         newRecipeButton = new Button("New Recipe"); // text displayed on add button
         newRecipeButton.setStyle(Constants.defaultButtonStyle); // styling the button
@@ -46,19 +48,6 @@ class FrontPageFooter extends HBox {
 
 }
 
-class FrontPageHeader extends HBox {
-
-    FrontPageHeader() {
-        this.setPrefSize(Constants.WINDOW_WIDTH, 100); // Size of the header
-        this.setStyle(Constants.boldBackgroundColor);
-
-        Text titleText = new Text("PantryPal"); // Text of the Header
-        titleText.setStyle("-fx-font-weight: bold; -fx-font-size: 80;");
-        this.getChildren().add(titleText);
-        this.setAlignment(Pos.CENTER); // Align the text to the Center
-    }
-}
-
 class FrontPageFrame extends BorderPane{
 
     /**
@@ -66,7 +55,9 @@ class FrontPageFrame extends BorderPane{
      */
     private FrontPageHeader header;
     private FrontPageFooter footer;
+    private VBox recipeListComplete;
     private ScrollPane recipeListScrollPane;
+    private Label recipeListLabel;
     private RecipeList recipeList;
 
 
@@ -84,10 +75,18 @@ class FrontPageFrame extends BorderPane{
         header = new FrontPageHeader();
         footer = new FrontPageFooter();
         recipeList = new RecipeList();
+        recipeListComplete = new VBox();
+
+        recipeListLabel = new Label("Recipe List:");
+        recipeListLabel.setStyle(Constants.defaultTextStyle);
+        recipeListLabel.setPadding(new Insets(10));
 
         recipeListScrollPane = new ScrollPane(recipeList);
         recipeListScrollPane.setFitToWidth(true);
         recipeListScrollPane.setFitToHeight(true);
+
+        recipeListComplete.setStyle(Constants.defaultBackgroundColor);
+        recipeListComplete.getChildren().addAll(recipeListLabel, recipeListScrollPane);
         
         newRecipeButton = footer.getNewRecipeButton();
 
@@ -95,7 +94,7 @@ class FrontPageFrame extends BorderPane{
          * Set element positions here
          */
         this.setTop(header);
-        this.setCenter(recipeListScrollPane);
+        this.setCenter(recipeListComplete);
         this.setBottom(footer);
 
 
