@@ -6,7 +6,6 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "FrontEnd.Main",
-            "projectName": "CSE110_Project_Team34_1a1cfc08",
             "vmArgs": "--module-path './lib' --add-modules javafx.controls,javafx.fxml"
         }
     ]
