@@ -5,7 +5,7 @@
             "type": "java",
             "name": "Main",
             "request": "launch",
-            "mainClass": "FrontEnd.Main",
+            "mainClass": "main.java.FrontEnd.Main",
             "vmArgs": "--module-path './lib' --add-modules javafx.controls,javafx.fxml"
         }
     ]
