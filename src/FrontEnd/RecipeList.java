@@ -13,6 +13,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.*;
 import javafx.scene.control.Label;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
+import java.io.*;
+
 
 /**
  * Simple recipe display for recipe list
@@ -58,7 +63,10 @@ class RecipeSimple extends HBox{
     }
 }
 
-//TODO: Create RecipeList functionality
+/**
+ * Reads a .JSON file with the recipes saved from previous uses.
+ * Then populates the RecipeList with the existing recipes.
+ */
 public class RecipeList extends VBox{
     
     RecipeList() {
@@ -67,13 +75,45 @@ public class RecipeList extends VBox{
         this.setStyle(Constants.defaultBackgroundColor);
 
         /**
-         * THIS IS JUST AN EXAMPLE
-         * TODO: Remove this and add actual functionality
+         * Reads a .JSON file with the recipes saved from previous uses.
+         * Then populates the RecipeList with the existing recipes.
          */
-        for(int i = 0; i < 10; i++){
-            this.getChildren().add(new RecipeSimple(new Recipe("Chicken " + i, "3/4 chicken breast", "cook da chicken")));
+        try {
+        	JSONParser parser = new JSONParser();
+
+            JSONObject jsonObject;
+
+            FileReader reader = new FileReader("example.json");
+
+            if (reader.ready()) { //checks if file is empty
+            	jsonObject = (JSONObject) parser.parse(reader); //Read JSON file
+
+            	JSONArray recipeList = (JSONArray) jsonObject.get("recipeList");
+
+            	for (int i = 0; i < recipeList.size(); i++) {
+            		JSONObject recipe = (JSONObject) recipeList.get(i);
+            		
+            		String recipeName = (String) recipe.get("recipeName");
+                    String ingredients = (String) recipe.get("ingredients");
+                    String directions = (String) recipe.get("directions");
+                    
+                    
+                    this.getChildren().add(new RecipeSimple(new Recipe(recipeName, ingredients, directions)));
+                    // create new recipe
+            	}
+            }
+        	reader.close();
+        	//parser.close();
+        	
+        } catch (FileNotFoundException e) {
+        	System.out.println("exception in RecipeList: file not found");
+        } catch (IOException e) {
+        	System.out.println("exception in RecipeList: io exception");
+        } catch (ParseException e) {
+        	System.out.println("exception in RecipeList: parse exception");
+        } catch (Exception e) {
+        	System.out.println("exception in RecipeList");
         }
-        
     }
 
 }
