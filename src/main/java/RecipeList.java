@@ -1,5 +1,3 @@
-package Project.FrontEnd;
-
 import javafx.scene.layout.*;
 import javafx.application.Application;
 import javafx.scene.Scene;

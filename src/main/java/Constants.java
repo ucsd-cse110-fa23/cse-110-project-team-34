@@ -1,4 +1,3 @@
-package Project.FrontEnd;
 
 public class Constants {
     //Sizes
