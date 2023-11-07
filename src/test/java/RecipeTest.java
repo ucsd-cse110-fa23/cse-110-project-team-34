@@ -1,4 +1,5 @@
-
+package test.java;
+import main.java.FrontEnd.Recipe;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,3 +1,4 @@
+package main.java.FrontEnd;
 /**
  * This Recipe class is not for display, but rather just for data.
  * The display classes in RecipeList.java and _________ take in a Recipe Object

@@ -1,3 +1,4 @@
+package main.java.FrontEnd;
 
 public class Constants {
     //Sizes

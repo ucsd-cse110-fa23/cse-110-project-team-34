@@ -1,0 +1,16 @@
+{
+  "recipeList":[
+    {"recipeName": "PB+J Sandwich",
+      "ingredients": "bread, peanut butter, jam",
+      "directions": "1. take the bread"
+    },
+    {"recipeName": "Apple Pie",
+      "ingredients": "crust, apple filling, etc.",
+      "directions": "... 5. Put in oven"
+    },
+    {"recipeName": "Lasagna",
+      "ingredients": "pasta, meat, cheese",
+      "directions": "Step 1, Step 2, Step 3"
+    }
+  ]
+}

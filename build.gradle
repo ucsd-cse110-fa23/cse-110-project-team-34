@@ -25,6 +25,8 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
     // This provides the TestEngine to actually run the tests.
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 }
 
 test {
