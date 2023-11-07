@@ -1,4 +1,4 @@
-package FrontEnd;
+package Project.FrontEnd;
 
 /**
  * This Recipe class is not for display, but rather just for data.
