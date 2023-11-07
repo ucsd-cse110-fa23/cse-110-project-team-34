@@ -11,7 +11,7 @@ public class Recipe{
     private String ingredients;
     private String directions;
 
-    Recipe(String name, String ingred, String direc){
+    public Recipe(String name, String ingred, String direc){
         recipeName = name;
         ingredients = ingred;
         directions = direc;
