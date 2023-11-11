@@ -104,6 +104,7 @@ public class RecipeList extends VBox{
             	for (int i = 0; i < recipeList.size(); i++) {
             		JSONObject recipe = (JSONObject) recipeList.get(i);
             		
+            		// retrieves recipe information to populate list
             		String recipeName = (String) recipe.get("recipeName");
                     String ingredients = (String) recipe.get("ingredients");
                     String directions = (String) recipe.get("directions");

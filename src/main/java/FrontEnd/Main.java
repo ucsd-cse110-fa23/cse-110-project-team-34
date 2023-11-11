@@ -22,6 +22,7 @@ class FrontPageHeader extends HBox {
     }
 }
 
+
 class FrontPageFooter extends HBox {
 
     private Button newRecipeButton;
@@ -44,6 +45,7 @@ class FrontPageFooter extends HBox {
     }
 
 }
+
 
 class FrontPageFrame extends BorderPane{
 
@@ -110,6 +112,8 @@ class FrontPageFrame extends BorderPane{
         
     }
 }
+
+
 
 
 class ViewRecipePageHeader extends HBox {
@@ -237,17 +241,21 @@ class ViewRecipePageFrame extends BorderPane {
         	
         	// returns to recipe list page
         	FrontPageFrame frontPage = new FrontPageFrame();
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
+            this.stage.setTitle("PantryPal");
+            this.stage.getIcons().add(new Image(Constants.defaultIconPath));
+            this.stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            this.stage.setResizable(false);
+            this.stage.show();
             }
         );
 
         newEditButton.setOnAction(e -> {
-        	
         	//opens new window with textfields to edit recipe
+        	Stage newStage = new Stage();
+        	EditRecipePageFrame editRecipePage = new EditRecipePageFrame(this.recipe, newStage);
+        	newStage.setScene(new Scene(editRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+        	newStage.setResizable(false);
+        	newStage.show();
             }
         );
 
@@ -259,6 +267,124 @@ class ViewRecipePageFrame extends BorderPane {
         
     }
 }
+
+
+
+
+class EditRecipePageHeader extends HBox {
+	
+	EditRecipePageHeader(Recipe recipe) {
+		this.setPrefSize(Constants.WINDOW_WIDTH, 100); // Size of the header
+        this.setStyle(Constants.boldBackgroundColor);
+        
+        TextField titleText = new TextField(recipe.getRecipeName()); // Text of the Header
+        titleText.setStyle("-fx-font-weight: bold; -fx-font-size: 80;");
+        this.getChildren().add(titleText);
+        this.setAlignment(Pos.CENTER); // Align the text to the Center
+	}
+}
+
+
+class EditRecipe extends VBox {
+    private Label ingredientsLabel;
+    private Label directionsLabel;
+    private TextField ingredients;
+    private TextField directions;
+
+    EditRecipe(Recipe recipe) {
+        ingredientsLabel = new Label("Ingredients: ");
+        ingredients = new TextField(recipe.getIngredients());
+        directionsLabel = new Label("Directions: ");
+        directions = new TextField(recipe.getDirections());
+        this.getChildren().addAll(ingredientsLabel, ingredients, directionsLabel, directions);
+        this.setAlignment(Pos.CENTER);
+    }
+}
+
+
+class EditRecipePageFooter extends HBox {
+	private Button BackButton;
+	private Button SaveButton;
+	
+	EditRecipePageFooter() {
+		this.setPrefSize(Constants.WINDOW_WIDTH, 100);
+        this.setStyle(Constants.boldBackgroundColor);
+        this.setSpacing(15);
+        
+        BackButton = new Button("Back"); // text displayed on add button
+        BackButton.setStyle(Constants.defaultButtonStyle); // styling the button
+
+        SaveButton = new Button("Save"); // text displayed on add button
+        SaveButton.setStyle(Constants.defaultButtonStyle);
+
+        this.getChildren().addAll(BackButton, SaveButton); // adding buttons to footer
+        this.setAlignment(Pos.CENTER); // aligning the buttons to center
+	}
+	
+	public Button getBackButton() {
+        return BackButton;
+    }
+	
+	public Button getSaveButton() {
+        return SaveButton;
+    }
+}
+
+
+class EditRecipePageFrame extends BorderPane {
+	private EditRecipePageHeader header;
+    private EditRecipePageFooter footer;
+    private ScrollPane scrollPane;
+    private EditRecipe details;
+    private Recipe recipe;
+    private Stage stage;
+    
+    Button newBackButton;
+    Button newSaveButton;
+    
+    EditRecipePageFrame(Recipe recipe, Stage stage) {
+    	this.recipe = recipe;
+    	this.stage = stage;
+    	header = new EditRecipePageHeader(this.recipe);
+    	footer = new EditRecipePageFooter();
+    	details = new EditRecipe(this.recipe);
+    	
+    	scrollPane = new ScrollPane(details);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        
+        newBackButton = footer.getBackButton();
+        newSaveButton = footer.getSaveButton();
+        
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(header);
+        
+        this.setTop(vBox);
+        this.setCenter(details);
+        this.setBottom(footer);
+        
+        addListeners();
+    }
+    
+    public void addListeners() {
+
+        // Add button functionality
+        newBackButton.setOnAction(e -> {
+        	// returns to recipe list page
+        	stage.close();
+            }
+        );
+
+        newSaveButton.setOnAction(e -> {
+        	// saves changes and returns to detailed view
+        	
+        	stage.close();
+            }
+        );  
+    }
+}
+
+
 
 
 public class Main extends Application {
