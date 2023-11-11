@@ -66,7 +66,7 @@ class RecipeSimple extends HBox{
     public void addListeners() {
     	viewButton.setOnAction(e -> {
     	Stage primaryStage = new Stage();
-    	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe);
+    	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, primaryStage);
     	primaryStage.setScene(new Scene(ViewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
     	primaryStage.setResizable(false);
     	primaryStage.show();
@@ -204,6 +204,7 @@ class ViewRecipePageFrame extends BorderPane {
     private ScrollPane scrollPane;
     private ViewRecipe details;
     private Recipe recipe;
+    private Stage stage;
     
     /**
      * Declare Scene Buttons Here
@@ -212,12 +213,13 @@ class ViewRecipePageFrame extends BorderPane {
     Button newEditButton;
     Button newDeleteButton;
     
-    ViewRecipePageFrame(Recipe recipe) {
+    ViewRecipePageFrame(Recipe recipe, Stage stage) {
     	
     	/**
          * Initialize / Assign Elements Here
          */
     	this.recipe = recipe;
+    	this.stage = stage;
     	header = new ViewRecipePageHeader(this.recipe);
     	footer = new ViewRecipePageFooter();
     	details = new ViewRecipe(this.recipe);
@@ -249,7 +251,7 @@ class ViewRecipePageFrame extends BorderPane {
 
         // Add button functionality
         newBackButton.setOnAction(e -> {
-
+        	stage.close();
             }
         );
 
