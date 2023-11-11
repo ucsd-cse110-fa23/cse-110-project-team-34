@@ -65,11 +65,11 @@ class RecipeSimple extends HBox{
     
     public void addListeners() {
     	viewButton.setOnAction(e -> {
-    	Stage primaryStage = new Stage();
-    	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, primaryStage);
-    	primaryStage.setScene(new Scene(ViewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-    	primaryStage.setResizable(false);
-    	primaryStage.show();
+    	Stage stage = (Stage) viewButton.getScene().getWindow();
+    	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, stage);
+    	stage.setScene(new Scene(ViewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+    	stage.setResizable(false);
+    	stage.show();
     	});
     }
 }
@@ -125,145 +125,5 @@ public class RecipeList extends VBox{
         } catch (Exception e) {
         	System.out.println("exception in RecipeList");
         }
-    }
-
-}
-
-
-class ViewRecipePageHeader extends HBox {
-	
-	ViewRecipePageHeader(Recipe recipe) {
-		this.setPrefSize(Constants.WINDOW_WIDTH, 100); // Size of the header
-        this.setStyle(Constants.boldBackgroundColor);
-        
-        Text titleText = new Text(recipe.getRecipeName()); // Text of the Header
-        titleText.setStyle("-fx-font-weight: bold; -fx-font-size: 80;");
-        this.getChildren().add(titleText);
-        this.setAlignment(Pos.CENTER); // Align the text to the Center
-	}
-}
-
-class ViewRecipe extends VBox {
-    private Label ingredientsLabel;
-    private Label directionsLabel;
-
-    ViewRecipe(Recipe recipe) {
-        ingredientsLabel = new Label("Ingredients: " + recipe.getIngredients());
-        directionsLabel = new Label("Directions: " + recipe.getDirections());
-        this.getChildren().addAll(ingredientsLabel, directionsLabel);
-        this.setAlignment(Pos.CENTER);
-    }
-}
-
-
-class ViewRecipePageFooter extends HBox {
-	private Button BackButton;
-	private Button EditButton;
-	private Button DeleteButton;
-	
-	ViewRecipePageFooter() {
-		this.setPrefSize(Constants.WINDOW_WIDTH, 100);
-        this.setStyle(Constants.boldBackgroundColor);
-        this.setSpacing(15);
-        
-        BackButton = new Button("Back"); // text displayed on add button
-        BackButton.setStyle(Constants.defaultButtonStyle); // styling the button
-
-        EditButton = new Button("Edit"); // text displayed on add button
-        EditButton.setStyle(Constants.defaultButtonStyle);
-        
-        DeleteButton = new Button("Delete"); // text displayed on add button
-        DeleteButton.setStyle(Constants.defaultButtonStyle);
-
-        this.getChildren().addAll(BackButton, EditButton, DeleteButton); // adding buttons to footer
-        this.setAlignment(Pos.CENTER); // aligning the buttons to center
-	}
-	
-	public Button getBackButton() {
-        return BackButton;
-    }
-	
-	public Button getEditButton() {
-        return EditButton;
-    }
-	
-	public Button getDeleteButton() {
-        return DeleteButton;
-    }
-	
-}
-
-
-class ViewRecipePageFrame extends BorderPane {
-	
-	/**
-     * Declare Scene Elements Here
-     */
-    private ViewRecipePageHeader header;
-    private ViewRecipePageFooter footer;
-    private ScrollPane scrollPane;
-    private ViewRecipe details;
-    private Recipe recipe;
-    private Stage stage;
-    
-    /**
-     * Declare Scene Buttons Here
-     */
-    Button newBackButton;
-    Button newEditButton;
-    Button newDeleteButton;
-    
-    ViewRecipePageFrame(Recipe recipe, Stage stage) {
-    	
-    	/**
-         * Initialize / Assign Elements Here
-         */
-    	this.recipe = recipe;
-    	this.stage = stage;
-    	header = new ViewRecipePageHeader(this.recipe);
-    	footer = new ViewRecipePageFooter();
-    	details = new ViewRecipe(this.recipe);
-    	
-    	scrollPane = new ScrollPane(details);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
-        
-        newBackButton = footer.getBackButton();
-        newEditButton = footer.getEditButton();
-        newDeleteButton = footer.getDeleteButton();
-        
-        VBox vBox = new VBox();
-        vBox.getChildren().addAll(header);
-
-        /**
-         * Set element positions here
-         */
-        this.setTop(vBox);
-        this.setCenter(details);
-        this.setBottom(footer);
-
-
-        //Add button listeners
-        addListeners();
-    }
-    
-    public void addListeners() {
-
-        // Add button functionality
-        newBackButton.setOnAction(e -> {
-        	stage.close();
-            }
-        );
-
-        newEditButton.setOnAction(e -> {
-
-            }
-        );
-
-        newDeleteButton.setOnAction(e -> {
-
-            }
-        );
-        
     }
 }
