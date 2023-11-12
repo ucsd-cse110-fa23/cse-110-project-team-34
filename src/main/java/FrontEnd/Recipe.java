@@ -1,12 +1,10 @@
-package main.java.FrontEnd;
-
-import javafx.scene.layout.*;
+package FrontEnd;
 /**
  * This Recipe class is not for display, but rather just for data.
  * The display classes in RecipeList.java and _________ take in a Recipe Object
  * in their constructor.
  */
-public class Recipe extends VBox{ //Made recipe extend VBox so it can typecast a Node
+public class Recipe{ 
     
     private String recipeName;
     private String ingredients;

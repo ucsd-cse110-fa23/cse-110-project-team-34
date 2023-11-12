@@ -1,4 +1,4 @@
-package main.java.FrontEnd;
+package FrontEnd;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -11,7 +11,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javax.sound.sampled.*;
 import java.io.*;
-import java.util.ArrayList;
 
 class FrontPageHeader extends HBox {
 
