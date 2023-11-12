@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import javax.sound.sampled.*;
+import java.io.*;
 
 class FrontPageHeader extends HBox {
 
@@ -165,7 +167,7 @@ class FrontPageFrame extends BorderPane{
          */
         header = new FrontPageHeader();
         footer = new FrontPageFooter();
-        recipeList = new RecipeList();
+        recipeList = new RecipeList(); //default constructor reads .json file
         recipeListComplete = new VBox();
 
         recipeListLabel = new Label("Recipe List:");
@@ -196,10 +198,10 @@ class FrontPageFrame extends BorderPane{
     public void addListeners()
     {
 
-        // Add button functionality
+        // Add button functionality (just changes the Stage to the NewRecipePageFrame)
         newRecipeButton.setOnAction(e -> {
             Stage primaryStage = new Stage();
-            NewRecipePageFrame NewRecipePage = new NewRecipePageFrame();
+            NewRecipePageFrame NewRecipePage = new NewRecipePageFrame(recipeList); //need to pass in recipeList so recipes can be added to it
             primaryStage.setScene(new Scene(NewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
             primaryStage.setResizable(false);
             primaryStage.show();
@@ -221,6 +223,10 @@ class NewRecipePageFrame extends BorderPane{
     private RecipeGenerator generator;
     private Recipe recipe;
     private RecipeContent content;
+    private RecipeList list;
+    private AudioFormat audioFormat;
+    private TargetDataLine targetDataLine;
+    private boolean recording = false;
 
     /**
      * Declare Scene Buttons Here
@@ -230,7 +236,7 @@ class NewRecipePageFrame extends BorderPane{
     Button newGenerateButton;
 
 
-    NewRecipePageFrame()
+    NewRecipePageFrame(RecipeList recipeList)
     {
         /**
          * Initialize / Assign Elements Here
@@ -241,6 +247,7 @@ class NewRecipePageFrame extends BorderPane{
         footer = new NewRecipePageFooter();
         generator = new RecipeGenerator();
         content = new RecipeContent(recipe);
+        list = recipeList;
         
 
         scrollPane = new ScrollPane(content);
@@ -272,19 +279,105 @@ class NewRecipePageFrame extends BorderPane{
         // Add button functionality
         newBackButton.setOnAction(e -> {
 
-            }
-        );
+            
+        });
 
         newSaveButton.setOnAction(e -> {
-
-            }
-        );
+            //add recipe to recipeList
+            list.getChildren().add(new RecipeSimple(recipe));
+            //save to .json
+            
+        });
 
         newGenerateButton.setOnAction(e -> {
+            String name;
+            String ingredients;
+            String directions;
 
+            // 1) record voice
+            if(!recording){
+                audioFormat = getAudioFormat();
+                startRecording();
+                recording = true;
+            }else{
+                stopRecording();
             }
-        );
+            // 2) plug into chatGPT
+            // 3) get output and set to name, ingredients, directions
+            // recipe.setRecipeName(name);
+            // recipe.setIngredients(ingredients);
+            // recipe.setDirections(directions);
+
+
+         
+        });
         
+    }
+
+    private AudioFormat getAudioFormat() {
+        // the number of samples of audio per second.
+        // 44100 represents the typical sample rate for CD-quality audio.
+        float sampleRate = 44100;
+
+        // the number of bits in each sample of a sound that has been digitized.
+        int sampleSizeInBits = 16;
+
+        // the number of audio channels in this format (1 for mono, 2 for stereo).
+        int channels = 2;
+
+        // whether the data is signed or unsigned.
+        boolean signed = true;
+
+        // whether the audio data is stored in big-endian or little-endian order.
+        boolean bigEndian = false;
+
+        return new AudioFormat(
+            sampleRate,
+            sampleSizeInBits,
+            channels,
+            signed,
+            bigEndian);
+    }
+
+    private void startRecording() {
+        Thread t = new Thread(
+            new Runnable() {
+                @Override
+                public void run(){
+                    try {
+                        // the format of the TargetDataLine
+                        DataLine.Info dataLineInfo = new DataLine.Info(
+                                TargetDataLine.class,
+                                audioFormat);
+                        // the TargetDataLine used to capture audio data from the microphone
+                        targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
+                        targetDataLine.open(audioFormat);
+                        targetDataLine.start();
+                        // recordingLabel.setVisible(true);
+
+                        // the AudioInputStream that will be used to write the audio data to a file
+                        AudioInputStream audioInputStream = new AudioInputStream(
+                                targetDataLine);
+
+                        // the file that will contain the audio data
+                        File audioFile = new File("recording.wav");
+                        AudioSystem.write(
+                                audioInputStream,
+                                AudioFileFormat.Type.WAVE,
+                                audioFile);
+                        // recordingLabel.setVisible(false);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                }
+            });
+        t.start();
+    }
+
+    private void stopRecording() {
+        targetDataLine.stop();
+        targetDataLine.close();
     }
 }
 
