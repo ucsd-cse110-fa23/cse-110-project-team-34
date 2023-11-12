@@ -1,10 +1,10 @@
-package main.java.FrontEnd;
+package FrontEnd;
 /**
  * This Recipe class is not for display, but rather just for data.
  * The display classes in RecipeList.java and _________ take in a Recipe Object
  * in their constructor.
  */
-public class Recipe{
+public class Recipe{ 
     
     private String recipeName;
     private String ingredients;

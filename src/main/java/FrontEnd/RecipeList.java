@@ -1,4 +1,4 @@
-package main.java.FrontEnd;
+package FrontEnd;
 import javafx.scene.layout.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -8,7 +8,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.*;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.text.*;
 import javafx.scene.control.Label;
 
@@ -89,16 +88,14 @@ public class RecipeList extends VBox{
 
             	JSONArray recipeList = (JSONArray) jsonObject.get("recipeList");
 
-            	for (int i = 0; i < recipeList.size(); i++) {
+            	for (int i = 0; i < recipeList.size(); i++) { 
             		JSONObject recipe = (JSONObject) recipeList.get(i);
-            		
+
             		String recipeName = (String) recipe.get("recipeName");
                     String ingredients = (String) recipe.get("ingredients");
                     String directions = (String) recipe.get("directions");
                     
-                    
                     this.getChildren().add(new RecipeSimple(new Recipe(recipeName, ingredients, directions)));
-                    // create new recipe
             	}
             }
         	reader.close();
@@ -114,5 +111,10 @@ public class RecipeList extends VBox{
         	System.out.println("exception in RecipeList");
         }
     }
-
+    RecipeList(RecipeList list){
+        for(int i = list.getChildren().size() - 1; i >= 0; i--){//Makes this the reverse of list
+            Recipe temp = ((RecipeSimple)list.getChildren().get(i)).getRecipe();
+            getChildren().add(new RecipeSimple(temp));
+        }
+    }
 }
