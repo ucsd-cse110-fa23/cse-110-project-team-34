@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javax.sound.sampled.*;
 import java.io.*;
+import java.util.ArrayList;
 
 class FrontPageHeader extends HBox {
 
@@ -152,6 +153,7 @@ class FrontPageFrame extends BorderPane{
     private ScrollPane recipeListScrollPane;
     private Label recipeListLabel;
     private RecipeList recipeList;
+    private RecipeList reversedList;
 
 
     /**
@@ -173,8 +175,9 @@ class FrontPageFrame extends BorderPane{
         recipeListLabel = new Label("Recipe List:");
         recipeListLabel.setStyle(Constants.defaultTextStyle);
         recipeListLabel.setPadding(new Insets(10));
+        reversedList = new RecipeList(recipeList); //Uses new RecipeList constructor to reverse the order
 
-        recipeListScrollPane = new ScrollPane(recipeList);
+        recipeListScrollPane = new ScrollPane(reversedList);
         recipeListScrollPane.setFitToWidth(true);
         recipeListScrollPane.setFitToHeight(true);
 
@@ -197,17 +200,16 @@ class FrontPageFrame extends BorderPane{
 
     public void addListeners()
     {
-
         // Add button functionality (just changes the Stage to the NewRecipePageFrame)
         newRecipeButton.setOnAction(e -> {
             Stage primaryStage = new Stage();
-            NewRecipePageFrame NewRecipePage = new NewRecipePageFrame(recipeList); //need to pass in recipeList so recipes can be added to it
+            //need to pass in recipeList so recipes can be added to it
+            //need to pass in reversedList so recipes can be added to it
+            NewRecipePageFrame NewRecipePage = new NewRecipePageFrame(recipeList, reversedList); 
             primaryStage.setScene(new Scene(NewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
             primaryStage.setResizable(false);
             primaryStage.show();
         });
-    
-        
     }
 }
 
@@ -224,6 +226,7 @@ class NewRecipePageFrame extends BorderPane{
     private Recipe recipe;
     private RecipeContent content;
     private RecipeList list;
+    private RecipeList reverse;
     private AudioFormat audioFormat;
     private TargetDataLine targetDataLine;
     private boolean recording = false;
@@ -236,7 +239,7 @@ class NewRecipePageFrame extends BorderPane{
     Button newGenerateButton;
 
 
-    NewRecipePageFrame(RecipeList recipeList)
+    NewRecipePageFrame(RecipeList recipeList, RecipeList reverseList)
     {
         /**
          * Initialize / Assign Elements Here
@@ -248,7 +251,7 @@ class NewRecipePageFrame extends BorderPane{
         generator = new RecipeGenerator();
         content = new RecipeContent(recipe);
         list = recipeList;
-        
+        reverse = reverseList;
 
         scrollPane = new ScrollPane(content);
         scrollPane.setFitToWidth(true);
@@ -285,8 +288,9 @@ class NewRecipePageFrame extends BorderPane{
         newSaveButton.setOnAction(e -> {
             //add recipe to recipeList
             list.getChildren().add(new RecipeSimple(recipe));
+            reverse.getChildren().add(0, new RecipeSimple(recipe));
             //save to .json
-            
+            //sort tasks, tasks are added at end, just show by reverse order (for loop starting at the end)
         });
 
         newGenerateButton.setOnAction(e -> {
@@ -305,6 +309,8 @@ class NewRecipePageFrame extends BorderPane{
             }
             // 2) plug into chatGPT
             // 3) get output and set to name, ingredients, directions
+
+
             // recipe.setRecipeName(name);
             // recipe.setIngredients(ingredients);
             // recipe.setDirections(directions);
