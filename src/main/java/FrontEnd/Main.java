@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import java.io.*;
 
 class FrontPageHeader extends HBox {
 
@@ -194,6 +195,7 @@ class ViewRecipePageFrame extends BorderPane {
     private ScrollPane scrollPane;
     private ViewRecipe details;
     private Recipe recipe;
+    private RecipeList recipeList;
     private Stage stage;
     
     /**
@@ -203,13 +205,14 @@ class ViewRecipePageFrame extends BorderPane {
     Button newEditButton;
     Button newDeleteButton;
     
-    ViewRecipePageFrame(Recipe recipe, Stage stage) {
+    ViewRecipePageFrame(Recipe recipe, RecipeList recipeList, Stage stage) {
     	
     	/**
          * Initialize / Assign Elements Here
          */
     	this.recipe = recipe;
     	this.stage = stage;
+    	this.recipeList = recipeList;
     	header = new ViewRecipePageHeader(this.recipe);
     	footer = new ViewRecipePageFooter();
     	details = new ViewRecipe(this.recipe);
@@ -255,7 +258,7 @@ class ViewRecipePageFrame extends BorderPane {
         newEditButton.setOnAction(e -> {
         	//opens new window with textfields to edit recipe
         	Stage newStage = new Stage();
-        	EditRecipePageFrame editRecipePage = new EditRecipePageFrame(this.recipe, newStage, this.stage);
+        	EditRecipePageFrame editRecipePage = new EditRecipePageFrame(this.recipe, this.recipeList, newStage, this.stage);
         	newStage.setScene(new Scene(editRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
         	newStage.setResizable(false);
         	newStage.show();
@@ -354,6 +357,7 @@ class EditRecipePageFrame extends BorderPane {
     private ScrollPane scrollPane;
     private EditRecipe details;
     private Recipe recipe;
+    private RecipeList recipeList;
     private Stage stage;
     private Stage newStage;
     private String newRecipeName;
@@ -363,8 +367,9 @@ class EditRecipePageFrame extends BorderPane {
     Button newBackButton;
     Button newSaveButton;
     
-    EditRecipePageFrame(Recipe recipe, Stage newStage, Stage stage) {
+    EditRecipePageFrame(Recipe recipe, RecipeList recipeList, Stage newStage, Stage stage) {
     	this.recipe = recipe;
+    	this.recipeList = recipeList;
     	this.stage = stage;
     	this.newStage = newStage;
     	header = new EditRecipePageHeader(this.recipe);
@@ -408,12 +413,12 @@ class EditRecipePageFrame extends BorderPane {
         	recipe.setDirections(newDirections);
         	
         	//open recipe details page with updated info
-        	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, stage);
+        	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, this.recipeList, stage);
         	stage.setScene(new Scene(ViewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
         	stage.setResizable(false);
         	stage.show();
         	
-        	//update file: "example.json" with new recipe list
+        	// TODO: update RecipeList/file: "example.json" with new recipe list
         	
         	newStage.close();//close edit page
             }

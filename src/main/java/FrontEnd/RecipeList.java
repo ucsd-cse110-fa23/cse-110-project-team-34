@@ -66,7 +66,7 @@ class RecipeSimple extends HBox{
     public void addListeners() {
     	viewButton.setOnAction(e -> {
     	Stage stage = (Stage) viewButton.getScene().getWindow();
-    	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, stage);
+    	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, (RecipeList) this.getParent(), stage);
     	stage.setScene(new Scene(ViewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
     	stage.setResizable(false);
     	stage.show();
@@ -115,7 +115,6 @@ public class RecipeList extends VBox{
             	}
             }
         	reader.close();
-        	//parser.close();
         	
         } catch (FileNotFoundException e) {
         	System.out.println("exception in RecipeList: file not found");
