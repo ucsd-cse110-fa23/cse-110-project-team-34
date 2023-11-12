@@ -301,15 +301,13 @@ class NewRecipePageFrame extends BorderPane{
                 recording = true;
             }else{
                 stopRecording();
+                recording = false;
             }
             // 2) plug into chatGPT
             // 3) get output and set to name, ingredients, directions
             // recipe.setRecipeName(name);
             // recipe.setIngredients(ingredients);
             // recipe.setDirections(directions);
-
-
-         
         });
         
     }
