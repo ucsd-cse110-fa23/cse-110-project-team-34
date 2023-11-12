@@ -1,4 +1,7 @@
 package main.java.FrontEnd;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -252,7 +255,7 @@ class ViewRecipePageFrame extends BorderPane {
         newEditButton.setOnAction(e -> {
         	//opens new window with textfields to edit recipe
         	Stage newStage = new Stage();
-        	EditRecipePageFrame editRecipePage = new EditRecipePageFrame(this.recipe, newStage);
+        	EditRecipePageFrame editRecipePage = new EditRecipePageFrame(this.recipe, newStage, this.stage);
         	newStage.setScene(new Scene(editRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
         	newStage.setResizable(false);
         	newStage.show();
@@ -273,15 +276,21 @@ class ViewRecipePageFrame extends BorderPane {
 
 class EditRecipePageHeader extends HBox {
 	
+	private TextField recipeName;
+	
 	EditRecipePageHeader(Recipe recipe) {
 		this.setPrefSize(Constants.WINDOW_WIDTH, 100); // Size of the header
         this.setStyle(Constants.boldBackgroundColor);
         
-        TextField titleText = new TextField(recipe.getRecipeName()); // Text of the Header
-        titleText.setStyle("-fx-font-weight: bold; -fx-font-size: 80;");
-        this.getChildren().add(titleText);
+        recipeName = new TextField(recipe.getRecipeName()); // Text of the Header
+        recipeName.setStyle("-fx-font-weight: bold; -fx-font-size: 80;");
+        this.getChildren().add(recipeName);
         this.setAlignment(Pos.CENTER); // Align the text to the Center
 	}
+	
+	public String getRecipeName() {
+    	return recipeName.getText();
+    }
 }
 
 
@@ -298,6 +307,14 @@ class EditRecipe extends VBox {
         directions = new TextField(recipe.getDirections());
         this.getChildren().addAll(ingredientsLabel, ingredients, directionsLabel, directions);
         this.setAlignment(Pos.CENTER);
+    }
+    
+    public String getIngredients() {
+    	return ingredients.getText();
+    }
+    
+    public String getDirections() {
+    	return directions.getText();
     }
 }
 
@@ -338,13 +355,18 @@ class EditRecipePageFrame extends BorderPane {
     private EditRecipe details;
     private Recipe recipe;
     private Stage stage;
+    private Stage newStage;
+    private String newRecipeName;
+    private String newIngredients;
+    private String newDirections;
     
     Button newBackButton;
     Button newSaveButton;
     
-    EditRecipePageFrame(Recipe recipe, Stage stage) {
+    EditRecipePageFrame(Recipe recipe, Stage newStage, Stage stage) {
     	this.recipe = recipe;
     	this.stage = stage;
+    	this.newStage = newStage;
     	header = new EditRecipePageHeader(this.recipe);
     	footer = new EditRecipePageFooter();
     	details = new EditRecipe(this.recipe);
@@ -371,14 +393,29 @@ class EditRecipePageFrame extends BorderPane {
         // Add button functionality
         newBackButton.setOnAction(e -> {
         	// returns to recipe list page
-        	stage.close();
+        	newStage.close();
             }
         );
 
         newSaveButton.setOnAction(e -> {
         	// saves changes and returns to detailed view
+        	newRecipeName = header.getRecipeName();
+            newIngredients = details.getIngredients();
+            newDirections = details.getDirections();
+            
+        	recipe.setRecipeName(newRecipeName);
+        	recipe.setIngredients(newIngredients);
+        	recipe.setDirections(newDirections);
         	
-        	stage.close();
+        	//open recipe details page with updated info
+        	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, stage);
+        	stage.setScene(new Scene(ViewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+        	stage.setResizable(false);
+        	stage.show();
+        	
+        	//update file: "example.json" with new recipe list
+        	
+        	newStage.close();//close edit page
             }
         );  
     }
