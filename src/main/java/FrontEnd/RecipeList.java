@@ -93,7 +93,7 @@ public class RecipeList extends VBox{
 
             JSONObject jsonObject;
 
-            FileReader reader = new FileReader("example.json");
+            FileReader reader = new FileReader("storage.json");
 
             if (reader.ready()) { //checks if file is empty
             	jsonObject = (JSONObject) parser.parse(reader); //Read JSON file
@@ -114,7 +114,8 @@ public class RecipeList extends VBox{
         	//parser.close();
         	
         } catch (FileNotFoundException e) {
-        	System.out.println("exception in RecipeList: file not found");
+            JSONSaver.saveRecipeList(this);
+        	//System.out.println("exception in RecipeList: file not found");
         } catch (IOException e) {
         	System.out.println("exception in RecipeList: io exception");
         } catch (ParseException e) {
@@ -125,8 +126,10 @@ public class RecipeList extends VBox{
     }
     RecipeList(RecipeList list){
         for(int i = list.getChildren().size() - 1; i >= 0; i--){//Makes this the reverse of list
-            Recipe temp = ((RecipeSimple)list.getChildren().get(i)).getRecipe();
-            getChildren().add(new RecipeSimple(temp));
+            if(list.getChildren().get(i) instanceof RecipeSimple){
+                Recipe temp = ((RecipeSimple)list.getChildren().get(i)).getRecipe();
+                getChildren().add(new RecipeSimple(temp));
+            }
         }
     }
 }
