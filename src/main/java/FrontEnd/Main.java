@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javax.sound.sampled.*;
 import java.io.*;
+import java.net.URISyntaxException;
 
 class FrontPageHeader extends HBox {
 
@@ -205,13 +206,19 @@ class FrontPageFrame extends BorderPane{
     {
         // Add button functionality (just changes the Stage to the NewRecipePageFrame)
         newRecipeButton.setOnAction(e -> {
-            Stage primaryStage = new Stage();
-            //need to pass in recipeList so recipes can be added to it
-            //need to pass in reversedList so recipes can be added to it
-            NewRecipePageFrame NewRecipePage = new NewRecipePageFrame(recipeList, reversedList); 
-            primaryStage.setScene(new Scene(NewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            primaryStage.setResizable(false);
-            primaryStage.show();
+            // Stage primaryStage = new Stage();
+            // //need to pass in recipeList so recipes can be added to it
+            // //need to pass in reversedList so recipes can be added to it
+            // NewRecipePageFrame NewRecipePage = new NewRecipePageFrame(recipeList, reversedList); 
+            // primaryStage.setScene(new Scene(NewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            // primaryStage.setResizable(false);
+            // primaryStage.show();
+            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
+            NewRecipePageFrame NewRecipePage = new NewRecipePageFrame(stage, recipeList, reversedList);
+            stage.setScene(new Scene(NewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            stage.setResizable(false);
+            stage.show();
+
         });
     }
 }
@@ -233,6 +240,7 @@ class NewRecipePageFrame extends BorderPane{
     private AudioFormat audioFormat;
     private TargetDataLine targetDataLine;
     private boolean recording = false;
+    private Stage stage;
 
     /**
      * Declare Scene Buttons Here
@@ -243,12 +251,13 @@ class NewRecipePageFrame extends BorderPane{
     Button recordButton;
 
 
-    NewRecipePageFrame(RecipeList recipeList, RecipeList reverseList)
+    NewRecipePageFrame(Stage stage, RecipeList recipeList, RecipeList reverseList)
     {
         /**
          * Initialize / Assign Elements Here
          */
 
+        this.stage = stage;
         recipe = new Recipe("Sample Recipe", "Sample Ingredients", "Sample Directions");
         header = new NewRecipePageHeader();
         footer = new NewRecipePageFooter();
@@ -286,7 +295,12 @@ class NewRecipePageFrame extends BorderPane{
 
         // Add button functionality
         newBackButton.setOnAction(e -> {
-
+            FrontPageFrame frontPage = new FrontPageFrame();
+            stage.setTitle("PantryPal");
+            stage.getIcons().add(new Image(Constants.defaultIconPath));
+            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            stage.setResizable(false);
+            stage.show();
             
         });
 
@@ -299,7 +313,48 @@ class NewRecipePageFrame extends BorderPane{
         });
 
         newGenerateButton.setOnAction(e -> {
+            String name;
+            String ingredients;
+            String directions;
 
+            Whisper whisper = new Whisper();
+            ChatGPT askChat = new ChatGPT();
+
+            String audioText = "something";
+
+            try {
+                audioText = whisper.readAudio("CSE110Voice.wav");
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (URISyntaxException e1) {
+                    // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            /**
+             * Breakfast Recipe in the format: Recipe Name,  Recipe Ingredients, Recipe Directions in one string, without fluff in the answer. The recipe name, ingredients and directions should be in two paragraphs. I have oranges, bananas, oatmeal
+             */
+
+            String prompt = "Follow my instructions as precisely as possible. Given that "
+            + audioText + ",create a recipe for" + "Breakfast" + "Format the recipe into 3 sentences, with the first sentence being name, second sentence being ingredients, third sentence being directions. Each sentence a ‘#’ symbol. Do not add any fluff to the answer.";
+
+                // could change back to String[].
+            try {
+                String[] s1 = askChat.runChatGPT(prompt);
+                name = s1[1];
+                ingredients = s1[2];
+                directions = s1[3];
+                recipe = new Recipe(name, ingredients, directions);
+                content = new RecipeContent(recipe);
+                scrollPane = new ScrollPane(content);
+                scrollPane.setFitToWidth(true);
+                scrollPane.setFitToHeight(true);
+                this.setCenter(content);
+
+            } catch (IOException | InterruptedException | URISyntaxException e1) {
+                    // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
         });
 
         recordButton.setOnAction(e -> {
@@ -374,7 +429,7 @@ class NewRecipePageFrame extends BorderPane{
                                 targetDataLine);
 
                         // the file that will contain the audio data
-                        File audioFile = new File("recording.wav");
+                        File audioFile = new File("CSE110Voice.wav");
                         AudioSystem.write(
                                 audioInputStream,
                                 AudioFileFormat.Type.WAVE,
