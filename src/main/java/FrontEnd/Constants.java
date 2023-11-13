@@ -15,6 +15,7 @@ public class Constants {
     public static final String defaultTextStyle = "-fx-font-weight: bold; -fx-font-size: 20;";
     public static final String recordButtonStyleOff = "-fx-background-color: #C6F5E4;  -fx-font-weight: bold; -fx-font: 30 arial;";
     public static final String recordButtonStyleOn = "-fx-background-color: #FF0000;  -fx-font-weight: bold; -fx-font: 30 arial;";
+    public static final String defaultRecipeTitle = "-fx-font-weight: bold; -fx-font-size: 30;";
     
     //Paths
     public static final String defaultIconPath = "file:src/main/java/FrontEnd/Images/PantryPalIcon.png";
