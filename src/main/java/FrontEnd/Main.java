@@ -74,22 +74,26 @@ class FrontPageFooter extends HBox {
 }
 
 class RecipeGenerator extends HBox {
-    private Label voiceLabel;
+    private Button recordButton;
     private Button generator;
 
     RecipeGenerator() {
-        voiceLabel = new Label("Voice Command");
-        voiceLabel.setStyle(Constants.defaultTextStyle);
+        recordButton = new Button("Record Ingredients");
+        recordButton.setStyle(Constants.recordButtonStyleOff);
 
         generator = new Button("Generate");
         generator.setStyle(Constants.defaultButtonStyle);
 
-        this.getChildren().addAll(voiceLabel,generator);
+        this.getChildren().addAll(recordButton,generator);
         this.setAlignment(Pos.CENTER);
         this.setSpacing(60);
     }
     public Button getGenerator() {
         return generator;
+    }
+
+    public Button getRecordButton(){
+        return recordButton;
     }
 }
 
@@ -236,6 +240,7 @@ class NewRecipePageFrame extends BorderPane{
     Button newSaveButton;
     Button newBackButton;
     Button newGenerateButton;
+    Button recordButton;
 
 
     NewRecipePageFrame(RecipeList recipeList, RecipeList reverseList)
@@ -259,6 +264,7 @@ class NewRecipePageFrame extends BorderPane{
         newBackButton = footer.getBackButton();
         newSaveButton = footer.getSaveButton();
         newGenerateButton = generator.getGenerator();
+        recordButton = generator.getRecordButton();
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(header, generator);
@@ -293,16 +299,21 @@ class NewRecipePageFrame extends BorderPane{
         });
 
         newGenerateButton.setOnAction(e -> {
-            String name;
-            String ingredients;
-            String directions;
+
+        });
+
+        recordButton.setOnAction(e -> {
 
             // 1) record voice
             if(!recording){
+                recordButton.setStyle(Constants.recordButtonStyleOn);
+                recordButton.setText("Recording...");
                 audioFormat = getAudioFormat();
                 startRecording();
                 recording = true;
             }else{
+                recordButton.setStyle(Constants.recordButtonStyleOff);
+                recordButton.setText("Record Ingredients");
                 stopRecording();
                 recording = false;
             }
