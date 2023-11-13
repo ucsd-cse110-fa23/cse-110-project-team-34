@@ -31,4 +31,22 @@ public class RecipeTest {
         assertEquals("1. Roast Chicken", recipe.getDirections());
     }
 
+    @Test
+    void testSetRecipeName(){
+        recipe.setRecipeName("Cow");
+        assertEquals("Cow", recipe.getRecipeName());
+    }
+
+    @Test
+    void testSetIngredients(){
+        recipe.setIngredients("1 Cow");
+        assertEquals("1 Cow", recipe.getIngredients());
+    }
+
+    @Test
+    void testSetDirections(){
+        recipe.setDirections("1. Boil the Cow");
+        assertEquals("1. Boil the Cow", recipe.getDirections());
+    }
+
 }
