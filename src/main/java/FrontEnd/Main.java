@@ -429,7 +429,7 @@ class NewRecipePageFrame extends BorderPane{
                                 targetDataLine);
 
                         // the file that will contain the audio data
-                        File audioFile = new File("recording.wav");
+                        File audioFile = new File("CSE110Voice.wav");
                         AudioSystem.write(
                                 audioInputStream,
                                 AudioFileFormat.Type.WAVE,
