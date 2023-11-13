@@ -49,6 +49,18 @@ class NewRecipePageHeader extends HBox {
         this.getChildren().addAll(Breakfast, Lunch, Dinner);
         this.setAlignment(Pos.CENTER); // Align the text to the Center
     }
+
+    public Button getBButton(){
+        return Breakfast;
+    }
+
+    public Button getLButton(){
+        return Lunch;
+    }
+
+    public Button getDButton(){
+        return Dinner;
+    }
 }
 
 class FrontPageFooter extends HBox {
@@ -239,7 +251,16 @@ class NewRecipePageFrame extends BorderPane{
     private RecipeList reverse;
     private AudioFormat audioFormat;
     private TargetDataLine targetDataLine;
+
+    private Button breakfastButton;
+    private Button lunchButton;
+    private Button dinnerButton;
+    
+    /**
+     * Page properties
+     */
     private boolean recording = false;
+    private int mealType = 0; //1 == breakfast, 2 == lunch, 3 == dinner, else undef/null
     private Stage stage;
 
     /**
@@ -270,6 +291,10 @@ class NewRecipePageFrame extends BorderPane{
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
         
+        breakfastButton = header.getBButton();
+        lunchButton = header.getLButton();
+        dinnerButton = header.getDButton();
+
         newBackButton = footer.getBackButton();
         newSaveButton = footer.getSaveButton();
         newGenerateButton = generator.getGenerator();
@@ -316,6 +341,12 @@ class NewRecipePageFrame extends BorderPane{
             String name;
             String ingredients;
             String directions;
+            String mealTypeString = "Breakfast";
+            try{
+                mealTypeString = getMealTypeString();
+            }catch(Exception badMealType){
+                badMealType.printStackTrace();
+            }
 
             Whisper whisper = new Whisper();
             ChatGPT askChat = new ChatGPT();
@@ -336,7 +367,7 @@ class NewRecipePageFrame extends BorderPane{
              */
 
             String prompt = "Follow my instructions as precisely as possible. Given that "
-            + audioText + ",create a recipe for" + "Breakfast" + "Format the recipe into 3 sentences, with the first sentence being name, second sentence being ingredients, third sentence being directions. Each sentence a ‘#’ symbol. Do not add any fluff to the answer.";
+            + audioText + ",create a recipe for" + mealTypeString + "Format the recipe into 3 sentences, with the first sentence being name, second sentence being ingredients, third sentence being directions. Each sentence a ‘#’ symbol. Do not add any fluff to the answer.";
 
                 // could change back to String[].
             try {
@@ -379,6 +410,27 @@ class NewRecipePageFrame extends BorderPane{
             // recipe.setRecipeName(name);
             // recipe.setIngredients(ingredients);
             // recipe.setDirections(directions);
+        });
+
+        breakfastButton.setOnAction(e -> {
+            breakfastButton.setStyle(Constants.defaultButtonPressedStyle);
+            lunchButton.setStyle(Constants.defaultButtonStyle);
+            dinnerButton.setStyle(Constants.defaultButtonStyle);
+            mealType = 1;
+        });
+
+        lunchButton.setOnAction(e -> {
+            lunchButton.setStyle(Constants.defaultButtonPressedStyle);
+            breakfastButton.setStyle(Constants.defaultButtonStyle);
+            dinnerButton.setStyle(Constants.defaultButtonStyle);
+            mealType = 2;
+        });
+
+        dinnerButton.setOnAction(e -> {
+            dinnerButton.setStyle(Constants.defaultButtonPressedStyle);
+            breakfastButton.setStyle(Constants.defaultButtonStyle);
+            lunchButton.setStyle(Constants.defaultButtonStyle);
+            mealType = 3;
         });
         
     }
@@ -447,6 +499,22 @@ class NewRecipePageFrame extends BorderPane{
     private void stopRecording() {
         targetDataLine.stop();
         targetDataLine.close();
+    }
+
+    public int getMealType(){
+        return mealType;
+    }
+
+    public String getMealTypeString() throws Exception{
+        if(mealType == 1){
+            return "Breakfast";
+        }else if(mealType == 2){
+            return "Lunch";
+        }else if(mealType == 3){
+            return "Dinner";
+        }else{
+            throw new Exception("Invalid meal type, pleas select meal type");
+        }
     }
 }
 
