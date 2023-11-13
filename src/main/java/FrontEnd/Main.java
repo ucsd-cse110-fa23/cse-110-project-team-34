@@ -48,6 +48,18 @@ class NewRecipePageHeader extends HBox {
         this.getChildren().addAll(Breakfast, Lunch, Dinner);
         this.setAlignment(Pos.CENTER); // Align the text to the Center
     }
+
+    public Button getBButton(){
+        return Breakfast;
+    }
+
+    public Button getLButton(){
+        return Lunch;
+    }
+
+    public Button getDButton(){
+        return Dinner;
+    }
 }
 
 class FrontPageFooter extends HBox {
@@ -232,7 +244,16 @@ class NewRecipePageFrame extends BorderPane{
     private RecipeList reverse;
     private AudioFormat audioFormat;
     private TargetDataLine targetDataLine;
+
+    private Button breakfastButton;
+    private Button lunchButton;
+    private Button dinnerButton;
+    
+    /**
+     * Page properties
+     */
     private boolean recording = false;
+    private int mealType = 0; //1 == breakfast, 2 == lunch, 3 == dinner, else undef/null
 
     /**
      * Declare Scene Buttons Here
@@ -261,6 +282,10 @@ class NewRecipePageFrame extends BorderPane{
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
         
+        breakfastButton = header.getBButton();
+        lunchButton = header.getLButton();
+        dinnerButton = header.getDButton();
+
         newBackButton = footer.getBackButton();
         newSaveButton = footer.getSaveButton();
         newGenerateButton = generator.getGenerator();
@@ -324,6 +349,27 @@ class NewRecipePageFrame extends BorderPane{
             // recipe.setRecipeName(name);
             // recipe.setIngredients(ingredients);
             // recipe.setDirections(directions);
+        });
+
+        breakfastButton.setOnAction(e -> {
+            breakfastButton.setStyle(Constants.defaultButtonPressedStyle);
+            lunchButton.setStyle(Constants.defaultButtonStyle);
+            dinnerButton.setStyle(Constants.defaultButtonStyle);
+            mealType = 1;
+        });
+
+        lunchButton.setOnAction(e -> {
+            lunchButton.setStyle(Constants.defaultButtonPressedStyle);
+            breakfastButton.setStyle(Constants.defaultButtonStyle);
+            dinnerButton.setStyle(Constants.defaultButtonStyle);
+            mealType = 2;
+        });
+
+        dinnerButton.setOnAction(e -> {
+            dinnerButton.setStyle(Constants.defaultButtonPressedStyle);
+            breakfastButton.setStyle(Constants.defaultButtonStyle);
+            lunchButton.setStyle(Constants.defaultButtonStyle);
+            mealType = 3;
         });
         
     }
@@ -392,6 +438,10 @@ class NewRecipePageFrame extends BorderPane{
     private void stopRecording() {
         targetDataLine.stop();
         targetDataLine.close();
+    }
+
+    public int getMealType(){
+        return mealType;
     }
 }
 
