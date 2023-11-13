@@ -50,6 +50,8 @@ class RecipeSimple extends HBox{
 
         this.getChildren().addAll(recipeName, growableRegion, viewButton);
         this.setAlignment(Pos.CENTER);
+        
+        addListeners();
     }
 
     public Button getViewButton(){
@@ -58,6 +60,16 @@ class RecipeSimple extends HBox{
 
     public Recipe getRecipe(){
         return recipe;
+    }
+    
+    public void addListeners() {
+    	viewButton.setOnAction(e -> {
+    	Stage stage = (Stage) viewButton.getScene().getWindow();
+    	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, stage);
+    	stage.setScene(new Scene(ViewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+    	stage.setResizable(false);
+    	stage.show();
+    	});
     }
 }
 
