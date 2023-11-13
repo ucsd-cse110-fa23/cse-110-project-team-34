@@ -100,14 +100,35 @@ class RecipeGenerator extends HBox {
 
 class RecipeContent extends VBox {
     private Label recipeNameLabel;
+    private Region r1;
     private Label ingredientsLabel;
+    private Region r2;
     private Label directionsLabel;
 
     RecipeContent(Recipe recipe) {
+        int width = 500;
         recipeNameLabel = new Label("Recipe Name: " + recipe.getRecipeName());
+        recipeNameLabel.setMaxWidth(width);
+        recipeNameLabel.setWrapText(true);
+        recipeNameLabel.setStyle(Constants.defaultTextStyle);
+
+        r1 = new Region();
+        r1.setPrefSize(width, 50);
+
         ingredientsLabel = new Label("Ingredients: " + recipe.getIngredients());
+        ingredientsLabel.setMaxWidth(width);
+        ingredientsLabel.setWrapText(true);
+        ingredientsLabel.setStyle(Constants.defaultTextStyle);
+
+        r2 =  new Region();
+        r2.setPrefSize(width, 50);
+
         directionsLabel = new Label("Directions: " + recipe.getDirections());
-        this.getChildren().addAll(recipeNameLabel, ingredientsLabel, directionsLabel);
+        directionsLabel.setMaxWidth(width);
+        directionsLabel.setWrapText(true);
+        directionsLabel.setStyle(Constants.defaultTextStyle);
+
+        this.getChildren().addAll(recipeNameLabel, r1, ingredientsLabel, r2, directionsLabel);
         this.setAlignment(Pos.CENTER);
     }
 }
