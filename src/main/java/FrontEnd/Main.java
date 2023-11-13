@@ -341,6 +341,12 @@ class NewRecipePageFrame extends BorderPane{
             String name;
             String ingredients;
             String directions;
+            String mealTypeString = "Breakfast";
+            try{
+                mealTypeString = getMealTypeString();
+            }catch(Exception badMealType){
+                badMealType.printStackTrace();
+            }
 
             Whisper whisper = new Whisper();
             ChatGPT askChat = new ChatGPT();
@@ -361,7 +367,7 @@ class NewRecipePageFrame extends BorderPane{
              */
 
             String prompt = "Follow my instructions as precisely as possible. Given that "
-            + audioText + ",create a recipe for" + "Breakfast" + "Format the recipe into 3 sentences, with the first sentence being name, second sentence being ingredients, third sentence being directions. Each sentence a ‘#’ symbol. Do not add any fluff to the answer.";
+            + audioText + ",create a recipe for" + mealTypeString + "Format the recipe into 3 sentences, with the first sentence being name, second sentence being ingredients, third sentence being directions. Each sentence a ‘#’ symbol. Do not add any fluff to the answer.";
 
                 // could change back to String[].
             try {
@@ -497,6 +503,18 @@ class NewRecipePageFrame extends BorderPane{
 
     public int getMealType(){
         return mealType;
+    }
+
+    public String getMealTypeString() throws Exception{
+        if(mealType == 1){
+            return "Breakfast";
+        }else if(mealType == 2){
+            return "Lunch";
+        }else if(mealType == 3){
+            return "Dinner";
+        }else{
+            throw new Exception("Invalid meal type, pleas select meal type");
+        }
     }
 }
 
