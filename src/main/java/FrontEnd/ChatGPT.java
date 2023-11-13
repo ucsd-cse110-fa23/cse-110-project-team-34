@@ -67,8 +67,6 @@ public class ChatGPT {
 
         JSONArray choices = responseJson.getJSONArray("choices");
         String generatedText = choices.getJSONObject(0).getString("text");
-        System.out.println("generated text: " + generatedText);
-        //String output = generatedText;
         String[] output = parseOutput(generatedText);
         return output;
     }

@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javax.sound.sampled.*;
 import java.io.*;
+import java.net.URISyntaxException;
 
 class FrontPageHeader extends HBox {
 
@@ -299,7 +300,48 @@ class NewRecipePageFrame extends BorderPane{
         });
 
         newGenerateButton.setOnAction(e -> {
+            String name;
+            String ingredients;
+            String directions;
 
+            Whisper whisper = new Whisper();
+            ChatGPT askChat = new ChatGPT();
+
+            String audioText = "something";
+
+            try {
+                audioText = whisper.readAudio("CSE110Voice.wav");
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (URISyntaxException e1) {
+                    // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            /**
+             * Breakfast Recipe in the format: Recipe Name,  Recipe Ingredients, Recipe Directions in one string, without fluff in the answer. The recipe name, ingredients and directions should be in two paragraphs. I have oranges, bananas, oatmeal
+             */
+
+            String prompt = "Follow my instructions as precisely as possible. Given that "
+            + audioText + ",create a recipe for" + "Breakfast" + "Format the recipe into 3 sentences, with the first sentence being name, second sentence being ingredients, third sentence being directions. Each sentence a ‘#’ symbol. Do not add any fluff to the answer.";
+
+                // could change back to String[].
+            try {
+                String[] s1 = askChat.runChatGPT(prompt);
+                name = s1[1];
+                ingredients = s1[2];
+                directions = s1[3];
+                recipe = new Recipe(name, ingredients, directions);
+                content = new RecipeContent(recipe);
+                scrollPane = new ScrollPane(content);
+                scrollPane.setFitToWidth(true);
+                scrollPane.setFitToHeight(true);
+                this.setCenter(content);
+
+            } catch (IOException | InterruptedException | URISyntaxException e1) {
+                    // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
         });
 
         recordButton.setOnAction(e -> {
