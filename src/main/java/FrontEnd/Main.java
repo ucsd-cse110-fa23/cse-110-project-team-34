@@ -12,6 +12,39 @@ import javafx.scene.text.*;
 import javax.sound.sampled.*;
 import java.io.*;
 import java.net.URISyntaxException;
+import org.json.simple.*;
+
+class JSONSaver{
+    public static void saveRecipeList(RecipeList list){
+        JSONObject recipeList = new JSONObject();
+        JSONArray recipeListArr = new JSONArray();
+        for(int i = 0; i < list.getChildren().size(); i++){
+            if(list.getChildren().get(i) instanceof RecipeSimple){
+                JSONObject recipeJSON = new JSONObject();
+                RecipeSimple rs = (RecipeSimple) list.getChildren().get(i);
+                Recipe recipe = rs.getRecipe();
+                recipeJSON.put("recipeName", recipe.getRecipeName());
+                recipeJSON.put("ingredients", recipe.getIngredients());
+                recipeJSON.put("directions", recipe.getDirections());
+                recipeListArr.add(recipeJSON);
+            }
+        }
+
+        recipeList.put("recipeList", recipeListArr);
+
+        try {
+
+			FileWriter file = new FileWriter("storage.json");
+			file.write(recipeList.toJSONString());
+			file.flush();
+			file.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+    }
+}
 
 class FrontPageHeader extends HBox {
 
@@ -334,6 +367,7 @@ class NewRecipePageFrame extends BorderPane{
             list.getChildren().add(new RecipeSimple(recipe));
             reverse.getChildren().add(0, new RecipeSimple(recipe));
             //save to .json
+            JSONSaver.saveRecipeList(list);
             //sort tasks, tasks are added at end, just show by reverse order (for loop starting at the end)
         });
 

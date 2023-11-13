@@ -81,7 +81,7 @@ public class RecipeList extends VBox{
 
             JSONObject jsonObject;
 
-            FileReader reader = new FileReader("example.json");
+            FileReader reader = new FileReader("storage.json");
 
             if (reader.ready()) { //checks if file is empty
             	jsonObject = (JSONObject) parser.parse(reader); //Read JSON file
