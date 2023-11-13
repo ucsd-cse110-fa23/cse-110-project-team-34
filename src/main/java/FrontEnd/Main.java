@@ -577,11 +577,16 @@ class NewRecipePageFrame extends BorderPane{
 class ViewRecipePageHeader extends HBox {
 	
 	ViewRecipePageHeader(Recipe recipe) {
-		this.setPrefSize(Constants.WINDOW_WIDTH, 100); // Size of the header
+        this.setPadding(new Insets(20));
+
+		this.setPrefSize(Constants.WINDOW_WIDTH, 150); // Size of the header
         this.setStyle(Constants.boldBackgroundColor);
         
-        Text titleText = new Text(recipe.getRecipeName()); // Text of the Header
-        titleText.setStyle("-fx-font-weight: bold; -fx-font-size: 80;");
+        Label titleText = new Label(recipe.getRecipeName()); // Text of the Header
+        titleText.setStyle(Constants.defaultRecipeTitle);
+        titleText.setWrapText(true);
+
+        
         this.getChildren().add(titleText);
         this.setAlignment(Pos.CENTER); // Align the text to the Center
 	}
@@ -590,12 +595,23 @@ class ViewRecipePageHeader extends HBox {
 
 class ViewRecipe extends VBox {
     private Label ingredientsLabel;
+    private Region r;
     private Label directionsLabel;
 
     ViewRecipe(Recipe recipe) {
+        this.setPadding(new Insets(50));
+
         ingredientsLabel = new Label("Ingredients: " + recipe.getIngredients());
+        ingredientsLabel.setWrapText(true);
+        ingredientsLabel.setStyle(Constants.defaultTextStyle);
+
+        r = new Region();
+        r.setPrefSize(Constants.WINDOW_WIDTH, 50);
+
         directionsLabel = new Label("Directions: " + recipe.getDirections());
-        this.getChildren().addAll(ingredientsLabel, directionsLabel);
+        directionsLabel.setWrapText(true);
+        directionsLabel.setStyle(Constants.defaultTextStyle);
+        this.getChildren().addAll(ingredientsLabel, r, directionsLabel);
         this.setAlignment(Pos.CENTER);
     }
 }
