@@ -17,4 +17,6 @@ public class Constants {
     
     //Paths
     public static final String defaultIconPath = "file:src/main/java/FrontEnd/Images/PantryPalIcon.png";
+    public static final String addIconPath = "file:src/main/java/FrontEnd/Images/AddIcon.png";
+
 }

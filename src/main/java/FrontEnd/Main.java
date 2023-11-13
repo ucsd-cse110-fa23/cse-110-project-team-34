@@ -205,13 +205,15 @@ class FrontPageFrame extends BorderPane{
     {
         // Add button functionality (just changes the Stage to the NewRecipePageFrame)
         newRecipeButton.setOnAction(e -> {
-            Stage primaryStage = new Stage();
+            Stage newRecipeWindow = new Stage();
+            newRecipeWindow.setTitle("Add New Recipe");
+            newRecipeWindow.getIcons().add(new Image(Constants.addIconPath));
             //need to pass in recipeList so recipes can be added to it
             //need to pass in reversedList so recipes can be added to it
             NewRecipePageFrame NewRecipePage = new NewRecipePageFrame(recipeList, reversedList); 
-            primaryStage.setScene(new Scene(NewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            primaryStage.setResizable(false);
-            primaryStage.show();
+            newRecipeWindow.setScene(new Scene(NewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            newRecipeWindow.setResizable(false);
+            newRecipeWindow.show();
         });
     }
 }
@@ -286,7 +288,11 @@ class NewRecipePageFrame extends BorderPane{
 
         // Add button functionality
         newBackButton.setOnAction(e -> {
-
+            if(recording){
+                stopRecording();
+            }
+            Stage newRecipeWindow = (Stage) newBackButton.getScene().getWindow();
+            newRecipeWindow.close();
             
         });
 
