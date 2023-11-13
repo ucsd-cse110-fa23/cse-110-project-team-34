@@ -1,4 +1,4 @@
-package main.java.FrontEnd;
+package FrontEnd;
 
 public class Constants {
     //Sizes
@@ -10,9 +10,12 @@ public class Constants {
     public static final String defaultBackgroundColor = "-fx-background-color: #C6F5E4;";
     public static final String defaultRecipeColor = "-fx-background-color: #9FE3CA;";
     public static final String defaultButtonStyle = "-fx-background-color: #C6F5E4;  -fx-font-weight: bold; -fx-font: 30 arial;";
+    public static final String defaultButtonPressedStyle = "-fx-background-color: #9FE3CA;  -fx-font-weight: bold; -fx-font: 30 arial;";
     public static final String viewButtonStyle = "-fx-background-color: #C6F5E4;  -fx-font-weight: bold; -fx-font: 20 arial;";
     public static final String defaultTextStyle = "-fx-font-weight: bold; -fx-font-size: 20;";
+    public static final String recordButtonStyleOff = "-fx-background-color: #C6F5E4;  -fx-font-weight: bold; -fx-font: 30 arial;";
+    public static final String recordButtonStyleOn = "-fx-background-color: #FF0000;  -fx-font-weight: bold; -fx-font: 30 arial;";
     
     //Paths
-    public static final String defaultIconPath = "file:src/FrontEnd/Images/PantryPalIcon.png";
+    public static final String defaultIconPath = "file:src/main/java/FrontEnd/Images/PantryPalIcon.png";
 }
