@@ -70,4 +70,38 @@ public class JSONSaver{
         }
     }
 
+    public static void removeByName(String name){
+        
+        try{
+
+            JSONParser parser = new JSONParser();
+            FileReader fileReader = new FileReader("storage.json");
+
+            JSONObject recipeListObj = (JSONObject)parser.parse(fileReader);
+
+            JSONArray recipeListArr = (JSONArray)recipeListObj.get("recipeList");
+
+            int i = 0;
+            for(;i < recipeListArr.size(); i++){
+                JSONObject recipe = (JSONObject)recipeListArr.get(i);
+                
+                if(((String)recipe.get("recipeName")).equals(name)){
+                    break;
+                }
+            }
+
+            recipeListArr.remove(i);
+
+            FileWriter file = new FileWriter("storage.json");
+			file.write(recipeListObj.toJSONString());
+			file.flush();
+			file.close();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }catch(org.json.simple.parser.ParseException e){
+            e.printStackTrace();
+        }
+    }
+
 }
