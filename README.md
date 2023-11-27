@@ -5,9 +5,9 @@ Welcome to PantryPal, the AI powered solution to efficient meal planning.
 ## How do I use PantryPal?
 
 ### Requirements
--Java JDK version 17
--JavaFX
--Gradle
+- Java JDK version 17
+- JavaFX
+- Gradle
 
 ### Recommendations
 Using VSCode is recommended for ease of use and compatibility
