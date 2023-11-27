@@ -1,14 +1,11 @@
 package FrontEnd;
 
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.*;
 import javax.sound.sampled.*;
 import java.io.*;
 import java.net.URISyntaxException;

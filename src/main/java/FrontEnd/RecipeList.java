@@ -1,14 +1,11 @@
 package FrontEnd;
+
 import javafx.scene.layout.*;
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.image.*;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.text.*;
 import javafx.scene.control.Label;
 
 import org.json.simple.JSONArray;
