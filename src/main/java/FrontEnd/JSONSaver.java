@@ -1,7 +1,10 @@
 package FrontEnd;
 
 import org.json.simple.*;
+import org.json.simple.parser.JSONParser;
+
 import java.io.*;
+import java.text.ParseException;
 
 public class JSONSaver{
     public static void saveRecipeList(RecipeList list){
@@ -33,4 +36,38 @@ public class JSONSaver{
 		}
 
     }
+
+    public static void updateJSON(String oldName, Recipe newRecipe){
+        
+        try{
+
+            JSONParser parser = new JSONParser();
+            FileReader fileReader = new FileReader("storage.json");
+
+            JSONObject recipeListObj = (JSONObject)parser.parse(fileReader);
+
+            JSONArray recipeListArr = (JSONArray)recipeListObj.get("recipeList");
+
+            for(int i = 0; i < recipeListArr.size(); i++){
+                JSONObject recipe = (JSONObject)recipeListArr.get(i);
+                
+                if(((String)recipe.get("recipeName")).equals(oldName)){
+                    recipe.put("recipeName", newRecipe.getRecipeName());
+                    recipe.put("ingredients", newRecipe.getIngredients());
+                    recipe.put("directions", newRecipe.getDirections());
+                }
+            }
+
+            FileWriter file = new FileWriter("storage.json");
+			file.write(recipeListObj.toJSONString());
+			file.flush();
+			file.close();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }catch(org.json.simple.parser.ParseException e){
+            e.printStackTrace();
+        }
+    }
+
 }
