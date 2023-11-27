@@ -179,7 +179,18 @@ public class ViewRecipePageFrame extends BorderPane {
 
         newDeleteButton.setOnAction(e -> {
         	
-        	//deletes recipe and returns to recipe list page
+                //deletes recipe
+                JSONSaver.removeByName(recipe.getRecipeName());
+                
+                // returns to recipe list page
+                // I just did what was there for back button. This is quite jank tbh
+                RecipeListPageFrame frontPage = new RecipeListPageFrame();
+                stage.setTitle("PantryPal");
+                stage.getIcons().add(new Image(Constants.defaultIconPath));
+                stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+                stage.setResizable(false);
+                stage.show();
+
             }
         );
         
