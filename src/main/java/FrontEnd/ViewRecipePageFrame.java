@@ -9,6 +9,8 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 
 class ViewRecipePageHeader extends HBox {
+
+    private Label titleText;
 	
 	ViewRecipePageHeader(Recipe recipe) {
         this.setPadding(new Insets(20));
@@ -16,7 +18,7 @@ class ViewRecipePageHeader extends HBox {
 		this.setPrefSize(Constants.WINDOW_WIDTH, 150); // Size of the header
         this.setStyle(Constants.boldBackgroundColor);
         
-        Label titleText = new Label(recipe.getRecipeName()); // Text of the Header
+        titleText = new Label(recipe.getRecipeName()); // Text of the Header
         titleText.setStyle(Constants.defaultRecipeTitle);
         titleText.setWrapText(true);
 
@@ -24,6 +26,10 @@ class ViewRecipePageHeader extends HBox {
         this.getChildren().add(titleText);
         this.setAlignment(Pos.CENTER); // Align the text to the Center
 	}
+
+    public void refresh(Recipe rec){
+        this.titleText.setText(rec.getRecipeName());
+    }
 }
 
 class ViewRecipe extends VBox {
@@ -46,6 +52,11 @@ class ViewRecipe extends VBox {
         directionsLabel.setStyle(Constants.defaultTextStyle);
         this.getChildren().addAll(ingredientsLabel, r, directionsLabel);
         this.setAlignment(Pos.CENTER);
+    }
+
+    public void refresh(Recipe rec){
+        this.ingredientsLabel.setText("Ingredients: " + rec.getIngredients());
+        this.directionsLabel.setText("Directions: " + rec.getDirections());
     }
 }
 
@@ -157,14 +168,36 @@ public class ViewRecipePageFrame extends BorderPane {
         newEditButton.setOnAction(e -> {
         	
         	//opens new window with textfields to edit recipe
+            Stage newStage = new Stage();
+        	EditRecipePageFrame editRecipePage = new EditRecipePageFrame(this.recipe, newStage, this);
+        	newStage.setScene(new Scene(editRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+        	newStage.setResizable(false);
+        	newStage.showAndWait();
+
             }
         );
 
         newDeleteButton.setOnAction(e -> {
         	
-        	//deletes recipe and returns to recipe list page
+                //deletes recipe
+                JSONSaver.removeByName(recipe.getRecipeName());
+                
+                // returns to recipe list page
+                // I just did what was there for back button. This is quite jank tbh
+                RecipeListPageFrame frontPage = new RecipeListPageFrame();
+                stage.setTitle("PantryPal");
+                stage.getIcons().add(new Image(Constants.defaultIconPath));
+                stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+                stage.setResizable(false);
+                stage.show();
+
             }
         );
         
+    }
+
+    public void refresh(){
+        this.header.refresh(this.recipe);
+        this.details.refresh(this.recipe);
     }
 }

@@ -249,7 +249,9 @@ public class NewRecipePageFrame extends BorderPane{
             try{
                 mealTypeString = getMealTypeString();
             }catch(Exception badMealType){
-                badMealType.printStackTrace();
+                ErrorSys.quickErrorPopup("No Meal Type Selected!\nPlease select a meal type.");
+                return;
+                //badMealType.printStackTrace();
             }
 
             Whisper whisper = new Whisper();
