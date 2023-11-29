@@ -1,5 +1,7 @@
 package FrontEnd;
 
+import BackEnd.*; //This is only because we do not have a HTTP Server yet. Fix and remove asap
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,6 +14,8 @@ import javafx.scene.text.*;
 import javax.sound.sampled.*;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.util.jar.Attributes.Name;
+
 import org.json.simple.*;
 
 class LoginPageHeader extends HBox {
@@ -204,9 +208,9 @@ public class LoginPageFrame extends BorderPane{
             Stage newStage = new Stage();
             newStage.setTitle("Create Account");
 
-            TextField Username = new TextField("Enter Username");
-            TextField Password = new TextField("Enter Password");
-            TextField ComfirmPassword = new TextField("Re-enter Password");
+            TextField Username = new TextField("");//"Enter Username");
+            TextField Password = new TextField("");//"Enter Password");
+            TextField ComfirmPassword = new TextField("");//"Re-enter Password");
 
             Button CreateAccount = new Button("Create Account");
             CreateAccount.setOnAction(e -> { //add CreateButton functionality
@@ -214,15 +218,18 @@ public class LoginPageFrame extends BorderPane{
                 String PasswordText = Password.getText();
                 String Re_Entered_PasswordText = ComfirmPassword.getText();
 
-                if(!PasswordText.equals(Re_Entered_PasswordText)){
-                    ErrorSys.quickErrorPopup("Password and Retyped Password Do Not Match");
+                if(UserDatabase.usernameExists(NameText)){
+                    ErrorSys.quickErrorPopup("Username Already Exists");
+                }else{
+                    if(!PasswordText.equals(Re_Entered_PasswordText)){
+                        ErrorSys.quickErrorPopup("Password and Retyped Password Do Not Match");
+                    }else{
+                        String userId = UserDatabase.createUser(NameText, PasswordText);
+                        RecipeListDatabase.createEmptyRecipeList(userId);
+                    }
                 }
 
-                else{
-                    //
-                    //TODO: Create account for the user
-                    //
-                }
+                
             });
 
             //Create layout for new page
