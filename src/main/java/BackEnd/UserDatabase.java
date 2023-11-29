@@ -193,9 +193,10 @@ public class UserDatabase {
 
 
     /**
-     * Gets the username associated with a given user id
-     * @param id the user id
-     * @return the username associated with the given user id
+     * Gets id given username password
+     * @param username username
+     * @param password password
+     * @return user id, or null if wrong credentials
      */
     public static String getIdByUsernamePassword(String username, String password){
 
@@ -208,6 +209,8 @@ public class UserDatabase {
             Document user = usersCollection.find(userNameFilter).first();
             if(user.get("password").equals(password)){
                 return user.get("_id").toString();
+            }else{
+                return null;
             }
 
         }catch(Exception e){

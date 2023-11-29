@@ -16,6 +16,8 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.util.jar.Attributes.Name;
 
+import javafx.scene.control.Alert.AlertType;
+
 import org.json.simple.*;
 
 class LoginPageHeader extends HBox {
@@ -155,6 +157,9 @@ public class LoginPageFrame extends BorderPane{
     private String username;
     private String password;
     private VBox headercomplete;
+
+    private String userId;
+
     Stage stage;
 
     /**
@@ -226,6 +231,11 @@ public class LoginPageFrame extends BorderPane{
                     }else{
                         String userId = UserDatabase.createUser(NameText, PasswordText);
                         RecipeListDatabase.createEmptyRecipeList(userId);
+
+                        newStage.close();
+                        Alert alert = new Alert(AlertType.INFORMATION, "Account Successfully Created!", ButtonType.OK);
+                        alert.showAndWait();
+
                     }
                 }
 
@@ -252,16 +262,41 @@ public class LoginPageFrame extends BorderPane{
         );
 
         LoginButton.setOnAction(e -> {
-            //
-            //TODO: if the entered password and username are correct, go to RecipeList page. Otherwise, generate error message.
-            //
-            stage = (Stage) LoginButton.getScene().getWindow();
-        	RecipeListPageFrame frontPage = new RecipeListPageFrame();
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
+            
+            username = info.getName();
+            password = info.getPassword();
+
+            if(UserDatabase.usernameExists(username)){
+                userId = UserDatabase.getIdByUsernamePassword(username, password);
+                if(userId != null){ //Username password combo valid
+                    
+                    //Download storage.json recipelist from database
+                    
+                    try{
+                        JSONObject recipeList = RecipeListDatabase.getRecipelistByIdAsJSON(userId);
+                        FileWriter fw = new FileWriter(new File("storage.json"));
+                        fw.write(recipeList.toJSONString());
+                    }catch(Exception writeerror){
+                        writeerror.printStackTrace();
+                    }
+                    
+                    //Set program UserID
+                    UserID.setUserID(userId);
+
+                    //Go to recipe list page
+                    stage = (Stage) LoginButton.getScene().getWindow();
+                    RecipeListPageFrame frontPage = new RecipeListPageFrame();
+                    stage.setTitle("PantryPal");
+                    stage.getIcons().add(new Image(Constants.defaultIconPath));
+                    stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+                    stage.setResizable(false);
+                    stage.show();
+                }else{
+                    ErrorSys.quickErrorPopup("Incorrect Login Information");
+                }
+            }
+
+            
         });
     }
 }
