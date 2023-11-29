@@ -57,7 +57,6 @@ public class RecipeListPageFrame extends BorderPane{
     private RecipeList recipeList;
     private RecipeList reversedList;
 
-
     /**
      * Declare Scene Buttons Here
      */
