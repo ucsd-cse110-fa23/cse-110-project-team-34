@@ -8,7 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -59,6 +63,37 @@ public class RecipeListDatabaseTest {
 
     }
 
+    @Test
+    void testDeleteRecipelistById() {
+        RecipeListDatabase.createEmptyRecipeList(userId);
+        RecipeListDatabase.deleteRecipelistById(userId);
+        assertFalse(RecipeListDatabase.recipeListExists(userId));
+
+    }
+
+    @Test
+    void testSetRecipelistByIdGivenJSON() {
+        RecipeListDatabase.createEmptyRecipeList(userId);
+        try{
+
+            JSONParser parser = new JSONParser();
+            FileReader fileReader = new FileReader("example.json");
+
+            JSONObject recipeListObj = (JSONObject)parser.parse(fileReader);
+
+            RecipeListDatabase.setRecipeListByIdGivenJSON(userId, recipeListObj);
+
+            JSONObject listjson = RecipeListDatabase.getRecipelistByIdAsJSON(userId);
+
+            assertEquals(recipeListObj.toJSONString(),listjson.toJSONString());
+
+        }catch(Exception e){
+            e.printStackTrace();
+            assertTrue(false);
+        }
+        
+
+    }
 
     @AfterEach
     void cleanup(){

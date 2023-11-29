@@ -26,6 +26,7 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.Updates.*;
 import static com.mongodb.client.model.Sorts.descending;
 import static java.util.Arrays.asList;
 
@@ -158,11 +159,15 @@ public class RecipeListDatabase {
             MongoCollection<Document> recipeListsCollection = pantryPalDatabse.getCollection("RecipeLists");
 
             Bson idFilter = eq("_id", UserDatabase.getObjectIdObjectFromString(id));
-            Document recipeListObj = recipeListsCollection.find(idFilter).first();
 
-            recipeListJson.get("recipeList");
+            JSONArray recipeListJSONArray = (JSONArray)recipeListJson.get("recipeList");
+            ArrayList<DBObject> recipeListArrayList = new ArrayList<DBObject>(recipeListJSONArray);
 
+            Bson recipeListUpdate = set("recipeList", recipeListArrayList);
 
+            recipeListsCollection.updateOne(idFilter, recipeListUpdate);
+
+            return true;
 
         }catch(Exception e){
             e.printStackTrace();
