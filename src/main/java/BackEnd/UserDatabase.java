@@ -151,7 +151,7 @@ public class UserDatabase {
             MongoDatabase pantryPalDatabse = mongoClient.getDatabase("PantryPal");
             MongoCollection<Document> usersCollection = pantryPalDatabse.getCollection("Users");
 
-            Bson idFilter = eq("_id", id);
+            Bson idFilter = eq("_id", getObjectIdObjectFromString(id));
             Document user = usersCollection.find(idFilter).first();
             if(user != null){
                 return user.get("username").toString();
@@ -178,7 +178,7 @@ public class UserDatabase {
             MongoDatabase pantryPalDatabse = mongoClient.getDatabase("PantryPal");
             MongoCollection<Document> usersCollection = pantryPalDatabse.getCollection("Users");
 
-            Bson idFilter = eq("_id", id);
+            Bson idFilter = eq("_id", getObjectIdObjectFromString(id));
             Document user = usersCollection.find(idFilter).first();
             if(user != null){
                 return user.get("password").toString();
@@ -215,6 +215,10 @@ public class UserDatabase {
         }
 
         return null;
+    }
+
+    public static ObjectId getObjectIdObjectFromString(String id){
+        return new ObjectId(id);
     }
 
 
