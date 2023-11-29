@@ -294,9 +294,11 @@ public class LoginPageFrame extends BorderPane{
                 }else{
                     ErrorSys.quickErrorPopup("Incorrect Login Information");
                 }
+            }else{
+                ErrorSys.quickErrorPopup("Incorrect Login Information");
             }
 
-            ErrorSys.quickErrorPopup("Incorrect Login Information");
+            
 
             
         });
