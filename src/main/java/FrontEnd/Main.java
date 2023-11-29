@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         //FrontPage layout
-        RecipeListPageFrame frontPage = new RecipeListPageFrame();
+        LoginPageFrame frontPage = new LoginPageFrame();
         
         // Set the title of the app
         primaryStage.setTitle("PantryPal");
