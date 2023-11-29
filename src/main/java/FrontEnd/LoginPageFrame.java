@@ -215,10 +215,7 @@ public class LoginPageFrame extends BorderPane{
                 String Re_Entered_PasswordText = ComfirmPassword.getText();
 
                 if(!PasswordText.equals(Re_Entered_PasswordText)){
-                    //
-                    //TODO: Add Error message here
-                    //
-                    System.out.println("error!!");
+                    ErrorSys.quickErrorPopup("Password and Retyped Password Do Not Match");
                 }
 
                 else{
