@@ -13,7 +13,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 import java.io.*;
 
-
 /**
  * Simple recipe display for recipe list
  */
@@ -58,6 +57,14 @@ class RecipeSimple extends HBox{
     public Recipe getRecipe(){
         return recipe;
     }
+
+    public String getRecipeName() {
+        return recipeName.toString();
+    }
+
+    public void setRecipeName(String recipeName) {
+        this.recipeName.setText(recipeName);
+    }
     
     public void addListeners() {
     	viewButton.setOnAction(e -> {
@@ -76,7 +83,7 @@ class RecipeSimple extends HBox{
  */
 public class RecipeList extends VBox{
     
-    RecipeList() {
+    RecipeList(String fileName) {
         this.setSpacing(4); // sets spacing between recipes
         this.setPrefSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         this.setStyle(Constants.defaultBackgroundColor);
@@ -90,7 +97,7 @@ public class RecipeList extends VBox{
 
             JSONObject jsonObject;
 
-            FileReader reader = new FileReader("storage.json");
+            FileReader reader = new FileReader(fileName);
 
             if (reader.ready()) { //checks if file is empty
             	jsonObject = (JSONObject) parser.parse(reader); //Read JSON file
@@ -103,15 +110,15 @@ public class RecipeList extends VBox{
             		String recipeName = (String) recipe.get("recipeName");
                     String ingredients = (String) recipe.get("ingredients");
                     String directions = (String) recipe.get("directions");
+                    String dateCreated = (String) recipe.get("date");
                     
-                    this.getChildren().add(new RecipeSimple(new Recipe(recipeName, ingredients, directions)));
+                    this.getChildren().add(new RecipeSimple(new Recipe(recipeName, ingredients, directions, dateCreated)));
             	}
             }
         	reader.close();
-        	//parser.close();
         	
         } catch (FileNotFoundException e) {
-            JSONSaver.saveRecipeList(this);
+            JSONSaver.saveRecipeList(this, fileName);
         	//System.out.println("exception in RecipeList: file not found");
         } catch (IOException e) {
         	System.out.println("exception in RecipeList: io exception");

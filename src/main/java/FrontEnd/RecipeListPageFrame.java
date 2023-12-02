@@ -5,8 +5,10 @@ import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import java.time.LocalDateTime;
 
 class RecipeListPageHeader extends HBox {
 
@@ -56,34 +58,65 @@ public class RecipeListPageFrame extends BorderPane{
     private Label recipeListLabel;
     private RecipeList recipeList;
     private RecipeList reversedList;
+    private HBox buttonMenu;
+    private AnchorPane left;
+    private AnchorPane right;
 
     /**
      * Declare Scene Buttons Here
      */
     Button newRecipeButton;
 
+    // Declare Elements for Dropdown
+    MenuButton sortButton;
+    MenuItem alphaOpt;
+    MenuItem reverseOpt;
+    MenuItem newOpt;
+    MenuItem oldOpt;
 
-    RecipeListPageFrame()
+    RecipeListPageFrame(String sortMenu, String fileName)
     {
         /**
          * Initialize / Assign Elements Here
          */
         header = new RecipeListPageHeader();
         footer = new RecipeListPageFooter();
-        recipeList = new RecipeList(); //default constructor reads .json file
+        recipeList = new RecipeList(fileName); //default constructor reads .json file
         recipeListComplete = new VBox();
+        buttonMenu = new HBox();
+        right = new AnchorPane();
+        left = new AnchorPane();
+
+        // Initialize DropDown
+        sortButton = new MenuButton(sortMenu);
+        alphaOpt = new MenuItem("A-Z");
+        reverseOpt = new MenuItem("Z-A");
+        newOpt = new MenuItem("Newest");
+        oldOpt = new MenuItem("Oldest");
+        sortButton.getItems().addAll(alphaOpt, reverseOpt, newOpt, oldOpt);
+        sortButton.setStyle(Constants.defaultButtonStyle);
+        sortButton.setPrefHeight(1);
 
         recipeListLabel = new Label("Recipe List:");
         recipeListLabel.setStyle(Constants.defaultTextStyle);
         recipeListLabel.setPadding(new Insets(10));
         reversedList = new RecipeList(recipeList); //Uses new RecipeList constructor to reverse the order
 
+        // Align Menu Bar Elements
+        left.getChildren().add(recipeListLabel);
+        HBox.setHgrow(left, Priority.ALWAYS);
+        right.getChildren().add(sortButton);
+
         recipeListScrollPane = new ScrollPane(reversedList);
         recipeListScrollPane.setFitToWidth(true);
         recipeListScrollPane.setFitToHeight(true);
 
+        // Populate Menu
+        buttonMenu.setPrefSize(Constants.WINDOW_WIDTH, 10);
+        buttonMenu.getChildren().addAll(left,right);
+
         recipeListComplete.setStyle(Constants.defaultBackgroundColor);
-        recipeListComplete.getChildren().addAll(recipeListLabel, recipeListScrollPane);
+        recipeListComplete.getChildren().addAll(buttonMenu, recipeListScrollPane);
         
         newRecipeButton = footer.getNewRecipeButton();
 
@@ -94,9 +127,12 @@ public class RecipeListPageFrame extends BorderPane{
         this.setCenter(recipeListComplete);
         this.setBottom(footer);
 
-
         //Add button listeners
         addListeners();
+    }
+
+    public MenuButton getSortButton() {
+        return sortButton;
     }
 
     public void addListeners()
@@ -116,6 +152,190 @@ public class RecipeListPageFrame extends BorderPane{
             stage.setResizable(false);
             stage.show();
 
+        });
+
+        alphaOpt.setOnAction(e -> {
+
+            // Sort RecipeList Alphabetically
+            for (int i = 0; i < recipeList.getChildren().size(); i++) {
+
+                for (int j = i + 1; j < recipeList.getChildren().size(); j++) {
+
+                    RecipeSimple first = (RecipeSimple) recipeList.getChildren().get(i);
+                    Recipe f = first.getRecipe();
+
+                    RecipeSimple second = (RecipeSimple) recipeList.getChildren().get(j);
+                    Recipe s = second.getRecipe();
+
+                    if (f.getRecipeName().compareToIgnoreCase(s.getRecipeName()) < 0) {
+
+                        String tempName = f.getRecipeName();
+                        String tempIng = f.getIngredients();
+                        String tempDir = f.getDirections();
+                        String tempDat = f.getDateCreated();
+
+                        f.setRecipeName(s.getRecipeName());
+                        f.setIngredients(s.getIngredients());
+                        f.setDirections(s.getDirections());
+                        f.setDateCreated(s.getDateCreated());
+                        first.setRecipeName(s.getRecipeName());
+
+                        s.setRecipeName(tempName);
+                        s.setIngredients(tempIng);
+                        s.setDirections(tempDir);
+                        s.setDateCreated(tempDat);
+                        second.setRecipeName(tempName);
+                    }
+                }
+            }
+
+            // Reload Sorted Recipe List from alternate json file
+            JSONSaver.saveRecipeList(recipeList, "app.json");
+            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
+            RecipeListPageFrame frontPage = new RecipeListPageFrame(alphaOpt.getText(), "app.json");
+            stage.setTitle("PantryPal");
+            stage.getIcons().add(new Image(Constants.defaultIconPath));
+            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            stage.setResizable(false);
+            stage.show();
+        });
+
+        reverseOpt.setOnAction(e -> {
+
+            // Sort Recipe List Reverse Alphabetically
+            for (int i = 0; i < recipeList.getChildren().size(); i++) {
+
+                for (int j = i + 1; j < recipeList.getChildren().size(); j++) {
+
+                    RecipeSimple first = (RecipeSimple) recipeList.getChildren().get(i);
+                    Recipe f = first.getRecipe();
+
+                    RecipeSimple second = (RecipeSimple) recipeList.getChildren().get(j);
+                    Recipe s = second.getRecipe();
+
+                    if (f.getRecipeName().compareToIgnoreCase(s.getRecipeName()) > 0) {
+
+                        String tempName = f.getRecipeName();
+                        String tempIng = f.getIngredients();
+                        String tempDir = f.getDirections();
+                        String tempDat = f.getDateCreated();
+
+                        f.setRecipeName(s.getRecipeName());
+                        f.setIngredients(s.getIngredients());
+                        f.setDirections(s.getDirections());
+                        f.setDateCreated(s.getDateCreated());
+                        first.setRecipeName(s.getRecipeName());
+
+                        s.setRecipeName(tempName);
+                        s.setIngredients(tempIng);
+                        s.setDirections(tempDir);
+                        s.setDateCreated(tempDat);
+                        second.setRecipeName(tempName);
+                    }
+                }
+            }
+
+            // Reload Sorted Recipe List from alternate json file
+            JSONSaver.saveRecipeList(recipeList, "app.json");
+            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
+            RecipeListPageFrame frontPage = new RecipeListPageFrame(reverseOpt.getText(), "app.json");
+            stage.setTitle("PantryPal");
+            stage.getIcons().add(new Image(Constants.defaultIconPath));
+            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            stage.setResizable(false);
+            stage.show();
+        });
+
+        newOpt.setOnAction(e -> {
+
+            // Sort Recipe List from Newest to Oldest
+            for (int i = 0; i < recipeList.getChildren().size(); i++) {
+
+                for (int j = i + 1; j < recipeList.getChildren().size(); j++) {
+
+                    RecipeSimple first = (RecipeSimple) recipeList.getChildren().get(i);
+                    Recipe f = first.getRecipe();
+
+                    RecipeSimple second = (RecipeSimple) recipeList.getChildren().get(j);
+                    Recipe s = second.getRecipe();
+
+                    if (LocalDateTime.parse(f.getDateCreated()).compareTo(LocalDateTime.parse(s.getDateCreated())) > 0) {
+
+                        String tempName = f.getRecipeName();
+                        String tempIng = f.getIngredients();
+                        String tempDir = f.getDirections();
+                        String tempDat = f.getDateCreated();
+
+                        f.setRecipeName(s.getRecipeName());
+                        f.setIngredients(s.getIngredients());
+                        f.setDirections(s.getDirections());
+                        f.setDateCreated(s.getDateCreated());
+                        first.setRecipeName(s.getRecipeName());
+
+                        s.setRecipeName(tempName);
+                        s.setIngredients(tempIng);
+                        s.setDirections(tempDir);
+                        s.setDateCreated(tempDat);
+                        second.setRecipeName(tempName);
+                    }
+                }
+            }
+
+            // Reload Sorted Recipe List from alternate json file
+            JSONSaver.saveRecipeList(recipeList, "app.json");
+            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
+            RecipeListPageFrame frontPage = new RecipeListPageFrame(newOpt.getText(), "app.json");
+            stage.setTitle("PantryPal");
+            stage.getIcons().add(new Image(Constants.defaultIconPath));
+            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            stage.setResizable(false);
+            stage.show();
+        });
+
+        oldOpt.setOnAction(e -> {
+
+            // Sort Recipe List from Newest to Oldest
+            for (int i = 0; i < recipeList.getChildren().size(); i++) {
+
+                for (int j = i + 1; j < recipeList.getChildren().size(); j++) {
+
+                    RecipeSimple first = (RecipeSimple) recipeList.getChildren().get(i);
+                    Recipe f = first.getRecipe();
+
+                    RecipeSimple second = (RecipeSimple) recipeList.getChildren().get(j);
+                    Recipe s = second.getRecipe();
+
+                    if (LocalDateTime.parse(f.getDateCreated()).compareTo(LocalDateTime.parse(s.getDateCreated())) < 0) {
+
+                        String tempName = f.getRecipeName();
+                        String tempIng = f.getIngredients();
+                        String tempDir = f.getDirections();
+                        String tempDat = f.getDateCreated();
+
+                        f.setRecipeName(s.getRecipeName());
+                        f.setIngredients(s.getIngredients());
+                        f.setDirections(s.getDirections());
+                        f.setDateCreated(s.getDateCreated());
+                        first.setRecipeName(s.getRecipeName());
+
+                        s.setRecipeName(tempName);
+                        s.setIngredients(tempIng);
+                        s.setDirections(tempDir);
+                        s.setDateCreated(tempDat);
+                        second.setRecipeName(tempName);
+                    }
+                }
+            }
+
+            // Reload Sorted Recipe List from alternate json file
+            JSONSaver.saveRecipeList(recipeList, "app.json");
+            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
+            RecipeListPageFrame frontPage = new RecipeListPageFrame(oldOpt.getText(), "app.json");
+            stage.setTitle("PantryPal");
+            stage.getIcons().add(new Image(Constants.defaultIconPath));
+            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            stage.setResizable(false);
+            stage.show();
         });
     }
 }

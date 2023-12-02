@@ -7,7 +7,7 @@ import java.io.*;
 import java.text.ParseException;
 
 public class JSONSaver{
-    public static void saveRecipeList(RecipeList list){
+    public static void saveRecipeList(RecipeList list, String fileName){
         JSONObject recipeList = new JSONObject();
         JSONArray recipeListArr = new JSONArray();
         for(int i = 0; i < list.getChildren().size(); i++){
@@ -18,6 +18,7 @@ public class JSONSaver{
                 recipeJSON.put("recipeName", recipe.getRecipeName());
                 recipeJSON.put("ingredients", recipe.getIngredients());
                 recipeJSON.put("directions", recipe.getDirections());
+                recipeJSON.put("date", recipe.getDateCreated());
                 recipeListArr.add(recipeJSON);
             }
         }
@@ -26,7 +27,7 @@ public class JSONSaver{
 
         try {
 
-			FileWriter file = new FileWriter("storage.json");
+			FileWriter file = new FileWriter(fileName);
 			file.write(recipeList.toJSONString());
 			file.flush();
 			file.close();
@@ -55,6 +56,7 @@ public class JSONSaver{
                     recipe.put("recipeName", newRecipe.getRecipeName());
                     recipe.put("ingredients", newRecipe.getIngredients());
                     recipe.put("directions", newRecipe.getDirections());
+                    recipe.put("date", newRecipe.getDateCreated());
                 }
             }
 
