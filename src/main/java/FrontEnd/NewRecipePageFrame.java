@@ -238,6 +238,7 @@ public class NewRecipePageFrame extends BorderPane{
             recipe.setDateCreated(LocalDateTime.now().toString());
             list.getChildren().add(new RecipeSimple(recipe));
             reverse.getChildren().add(0, new RecipeSimple(recipe));
+            list.sortNewest();
             //save to .json
             JSONSaver.saveRecipeList(list, "storage.json");
             //sort tasks, tasks are added at end, just show by reverse order (for loop starting at the end)

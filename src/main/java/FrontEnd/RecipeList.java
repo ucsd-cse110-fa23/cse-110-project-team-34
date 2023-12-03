@@ -12,6 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 import java.io.*;
+import java.time.LocalDateTime;
 
 /**
  * Simple recipe display for recipe list
@@ -83,7 +84,7 @@ class RecipeSimple extends HBox{
  */
 public class RecipeList extends VBox{
     
-    RecipeList(String fileName) {
+    public RecipeList(String fileName) {
         this.setSpacing(4); // sets spacing between recipes
         this.setPrefSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         this.setStyle(Constants.defaultBackgroundColor);
@@ -118,6 +119,7 @@ public class RecipeList extends VBox{
         	reader.close();
         	
         } catch (FileNotFoundException e) {
+            this.sortNewest();
             JSONSaver.saveRecipeList(this, fileName);
         	//System.out.println("exception in RecipeList: file not found");
         } catch (IOException e) {
@@ -135,5 +137,149 @@ public class RecipeList extends VBox{
                 getChildren().add(new RecipeSimple(temp));
             }
         }
+    }
+
+    // Sorts RecipeList Alphabetically
+    public RecipeList sortAlphabetically() {
+        for (int i = 0; i < this.getChildren().size(); i++) {
+
+            for (int j = i + 1; j < this.getChildren().size(); j++) {
+
+                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
+                Recipe f = first.getRecipe();
+
+                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
+                Recipe s = second.getRecipe();
+
+                if (f.getRecipeName().compareToIgnoreCase(s.getRecipeName()) < 0) {
+
+                    String tempName = f.getRecipeName();
+                    String tempIng = f.getIngredients();
+                    String tempDir = f.getDirections();
+                    String tempDat = f.getDateCreated();
+
+                    f.setRecipeName(s.getRecipeName());
+                    f.setIngredients(s.getIngredients());
+                    f.setDirections(s.getDirections());
+                    f.setDateCreated(s.getDateCreated());
+                    first.setRecipeName(s.getRecipeName());
+
+                    s.setRecipeName(tempName);
+                    s.setIngredients(tempIng);
+                    s.setDirections(tempDir);
+                    s.setDateCreated(tempDat);
+                    second.setRecipeName(tempName);
+                }
+            }
+        }
+        return this;
+    }
+    
+    // Sort Recipe List Reverse Alphabetically
+    public RecipeList sortReverseAlphabetically() {
+        for (int i = 0; i < this.getChildren().size(); i++) {
+
+            for (int j = i + 1; j < this.getChildren().size(); j++) {
+
+                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
+                Recipe f = first.getRecipe();
+
+                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
+                Recipe s = second.getRecipe();
+
+                if (f.getRecipeName().compareToIgnoreCase(s.getRecipeName()) > 0) {
+
+                    String tempName = f.getRecipeName();
+                    String tempIng = f.getIngredients();
+                    String tempDir = f.getDirections();
+                    String tempDat = f.getDateCreated();
+
+                    f.setRecipeName(s.getRecipeName());
+                    f.setIngredients(s.getIngredients());
+                    f.setDirections(s.getDirections());
+                    f.setDateCreated(s.getDateCreated());
+                    first.setRecipeName(s.getRecipeName());
+
+                    s.setRecipeName(tempName);
+                    s.setIngredients(tempIng);
+                    s.setDirections(tempDir);
+                    s.setDateCreated(tempDat);
+                    second.setRecipeName(tempName);
+                }
+            }
+        }
+        return this;
+    }
+
+    // Sort Recipe List from Newest to Oldest
+    public RecipeList sortNewest() {
+        for (int i = 0; i < this.getChildren().size(); i++) {
+
+            for (int j = i + 1; j < this.getChildren().size(); j++) {
+
+                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
+                Recipe f = first.getRecipe();
+
+                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
+                Recipe s = second.getRecipe();
+
+                if (LocalDateTime.parse(f.getDateCreated()).compareTo(LocalDateTime.parse(s.getDateCreated())) > 0) {
+
+                    String tempName = f.getRecipeName();
+                    String tempIng = f.getIngredients();
+                    String tempDir = f.getDirections();
+                    String tempDat = f.getDateCreated();
+
+                    f.setRecipeName(s.getRecipeName());
+                    f.setIngredients(s.getIngredients());
+                    f.setDirections(s.getDirections());
+                    f.setDateCreated(s.getDateCreated());
+                    first.setRecipeName(s.getRecipeName());
+
+                    s.setRecipeName(tempName);
+                    s.setIngredients(tempIng);
+                    s.setDirections(tempDir);
+                    s.setDateCreated(tempDat);
+                    second.setRecipeName(tempName);
+                }
+            }
+        }
+        return this;
+    }
+
+    // Sort Recipe List from Oldest to Newest
+    public RecipeList sortOldest() {
+        for (int i = 0; i < this.getChildren().size(); i++) {
+
+            for (int j = i + 1; j < this.getChildren().size(); j++) {
+
+                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
+                Recipe f = first.getRecipe();
+
+                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
+                Recipe s = second.getRecipe();
+
+                if (LocalDateTime.parse(f.getDateCreated()).compareTo(LocalDateTime.parse(s.getDateCreated())) < 0) {
+
+                    String tempName = f.getRecipeName();
+                    String tempIng = f.getIngredients();
+                    String tempDir = f.getDirections();
+                    String tempDat = f.getDateCreated();
+
+                    f.setRecipeName(s.getRecipeName());
+                    f.setIngredients(s.getIngredients());
+                    f.setDirections(s.getDirections());
+                    f.setDateCreated(s.getDateCreated());
+                    first.setRecipeName(s.getRecipeName());
+
+                    s.setRecipeName(tempName);
+                    s.setIngredients(tempIng);
+                    s.setDirections(tempDir);
+                    s.setDateCreated(tempDat);
+                    second.setRecipeName(tempName);
+                }
+            }
+        }
+        return this;
     }
 }

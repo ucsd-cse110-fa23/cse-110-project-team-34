@@ -8,7 +8,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
-import java.time.LocalDateTime;
 
 class RecipeListPageHeader extends HBox {
 
@@ -156,38 +155,7 @@ public class RecipeListPageFrame extends BorderPane{
 
         alphaOpt.setOnAction(e -> {
 
-            // Sort RecipeList Alphabetically
-            for (int i = 0; i < recipeList.getChildren().size(); i++) {
-
-                for (int j = i + 1; j < recipeList.getChildren().size(); j++) {
-
-                    RecipeSimple first = (RecipeSimple) recipeList.getChildren().get(i);
-                    Recipe f = first.getRecipe();
-
-                    RecipeSimple second = (RecipeSimple) recipeList.getChildren().get(j);
-                    Recipe s = second.getRecipe();
-
-                    if (f.getRecipeName().compareToIgnoreCase(s.getRecipeName()) < 0) {
-
-                        String tempName = f.getRecipeName();
-                        String tempIng = f.getIngredients();
-                        String tempDir = f.getDirections();
-                        String tempDat = f.getDateCreated();
-
-                        f.setRecipeName(s.getRecipeName());
-                        f.setIngredients(s.getIngredients());
-                        f.setDirections(s.getDirections());
-                        f.setDateCreated(s.getDateCreated());
-                        first.setRecipeName(s.getRecipeName());
-
-                        s.setRecipeName(tempName);
-                        s.setIngredients(tempIng);
-                        s.setDirections(tempDir);
-                        s.setDateCreated(tempDat);
-                        second.setRecipeName(tempName);
-                    }
-                }
-            }
+            recipeList.sortAlphabetically();
 
             // Reload Sorted Recipe List from alternate json file
             JSONSaver.saveRecipeList(recipeList, "app.json");
@@ -201,39 +169,8 @@ public class RecipeListPageFrame extends BorderPane{
         });
 
         reverseOpt.setOnAction(e -> {
-
-            // Sort Recipe List Reverse Alphabetically
-            for (int i = 0; i < recipeList.getChildren().size(); i++) {
-
-                for (int j = i + 1; j < recipeList.getChildren().size(); j++) {
-
-                    RecipeSimple first = (RecipeSimple) recipeList.getChildren().get(i);
-                    Recipe f = first.getRecipe();
-
-                    RecipeSimple second = (RecipeSimple) recipeList.getChildren().get(j);
-                    Recipe s = second.getRecipe();
-
-                    if (f.getRecipeName().compareToIgnoreCase(s.getRecipeName()) > 0) {
-
-                        String tempName = f.getRecipeName();
-                        String tempIng = f.getIngredients();
-                        String tempDir = f.getDirections();
-                        String tempDat = f.getDateCreated();
-
-                        f.setRecipeName(s.getRecipeName());
-                        f.setIngredients(s.getIngredients());
-                        f.setDirections(s.getDirections());
-                        f.setDateCreated(s.getDateCreated());
-                        first.setRecipeName(s.getRecipeName());
-
-                        s.setRecipeName(tempName);
-                        s.setIngredients(tempIng);
-                        s.setDirections(tempDir);
-                        s.setDateCreated(tempDat);
-                        second.setRecipeName(tempName);
-                    }
-                }
-            }
+ 
+            recipeList.sortReverseAlphabetically();
 
             // Reload Sorted Recipe List from alternate json file
             JSONSaver.saveRecipeList(recipeList, "app.json");
@@ -248,38 +185,7 @@ public class RecipeListPageFrame extends BorderPane{
 
         newOpt.setOnAction(e -> {
 
-            // Sort Recipe List from Newest to Oldest
-            for (int i = 0; i < recipeList.getChildren().size(); i++) {
-
-                for (int j = i + 1; j < recipeList.getChildren().size(); j++) {
-
-                    RecipeSimple first = (RecipeSimple) recipeList.getChildren().get(i);
-                    Recipe f = first.getRecipe();
-
-                    RecipeSimple second = (RecipeSimple) recipeList.getChildren().get(j);
-                    Recipe s = second.getRecipe();
-
-                    if (LocalDateTime.parse(f.getDateCreated()).compareTo(LocalDateTime.parse(s.getDateCreated())) > 0) {
-
-                        String tempName = f.getRecipeName();
-                        String tempIng = f.getIngredients();
-                        String tempDir = f.getDirections();
-                        String tempDat = f.getDateCreated();
-
-                        f.setRecipeName(s.getRecipeName());
-                        f.setIngredients(s.getIngredients());
-                        f.setDirections(s.getDirections());
-                        f.setDateCreated(s.getDateCreated());
-                        first.setRecipeName(s.getRecipeName());
-
-                        s.setRecipeName(tempName);
-                        s.setIngredients(tempIng);
-                        s.setDirections(tempDir);
-                        s.setDateCreated(tempDat);
-                        second.setRecipeName(tempName);
-                    }
-                }
-            }
+            recipeList.sortNewest();
 
             // Reload Sorted Recipe List from alternate json file
             JSONSaver.saveRecipeList(recipeList, "app.json");
@@ -294,38 +200,7 @@ public class RecipeListPageFrame extends BorderPane{
 
         oldOpt.setOnAction(e -> {
 
-            // Sort Recipe List from Newest to Oldest
-            for (int i = 0; i < recipeList.getChildren().size(); i++) {
-
-                for (int j = i + 1; j < recipeList.getChildren().size(); j++) {
-
-                    RecipeSimple first = (RecipeSimple) recipeList.getChildren().get(i);
-                    Recipe f = first.getRecipe();
-
-                    RecipeSimple second = (RecipeSimple) recipeList.getChildren().get(j);
-                    Recipe s = second.getRecipe();
-
-                    if (LocalDateTime.parse(f.getDateCreated()).compareTo(LocalDateTime.parse(s.getDateCreated())) < 0) {
-
-                        String tempName = f.getRecipeName();
-                        String tempIng = f.getIngredients();
-                        String tempDir = f.getDirections();
-                        String tempDat = f.getDateCreated();
-
-                        f.setRecipeName(s.getRecipeName());
-                        f.setIngredients(s.getIngredients());
-                        f.setDirections(s.getDirections());
-                        f.setDateCreated(s.getDateCreated());
-                        first.setRecipeName(s.getRecipeName());
-
-                        s.setRecipeName(tempName);
-                        s.setIngredients(tempIng);
-                        s.setDirections(tempDir);
-                        s.setDateCreated(tempDat);
-                        second.setRecipeName(tempName);
-                    }
-                }
-            }
+            recipeList.sortOldest();
 
             // Reload Sorted Recipe List from alternate json file
             JSONSaver.saveRecipeList(recipeList, "app.json");
