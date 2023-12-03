@@ -14,6 +14,7 @@ public class EditRecipePageFrameController {
         this.model = model;
 
         this.view.setSaveButtonAction(this::handleNewSaveButton);
+        this.view.setBackButtonAction(this::handleNewBackButton);
     }
 
     private void handleNewSaveButton(ActionEvent event) {
