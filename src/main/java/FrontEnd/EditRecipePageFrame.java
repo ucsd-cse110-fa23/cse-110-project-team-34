@@ -1,6 +1,8 @@
 package FrontEnd;
 
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -98,7 +100,36 @@ public class EditRecipePageFrame extends BorderPane {
     
     Button newBackButton;
     Button newSaveButton;
+
+    public ViewRecipePageFrame getParen() {
+        return parent;
+    }
+
+    public Button getNewBackButton() {
+        return newBackButton;
+    }
+
+    public Button getNewSaveButton() {
+        return newSaveButton;
+    }
+
+    public Stage getNewStage() {
+        return newStage;
+    }
     
+    public EditRecipe getDetails() {
+        return details;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public String getOriginalRecipeName() {
+        return originalRecipeName;
+    }
+
+
     EditRecipePageFrame(Recipe recipe, Stage newStage, ViewRecipePageFrame parent) {
     	this.originalRecipeName = recipe.getRecipeName();
         this.recipe = recipe;
@@ -154,5 +185,13 @@ public class EditRecipePageFrame extends BorderPane {
         	newStage.close();//close edit page
             }
         );  
+    }
+
+    public void setBackButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newBackButton.setOnAction(eventHandler);
+    }
+
+    public void setSaveButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newSaveButton.setOnAction(eventHandler);
     }
 }
