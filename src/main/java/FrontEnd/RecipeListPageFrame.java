@@ -2,6 +2,8 @@ package FrontEnd;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -62,6 +64,16 @@ public class RecipeListPageFrame extends BorderPane{
      */
     Button newRecipeButton;
 
+    // getter
+    public Button getNewRecipeButton() {
+        return newRecipeButton;
+    }
+    public RecipeList getRecipeList() {
+        return recipeList;
+    }
+    public RecipeList getReversedList() {
+        return reversedList;
+    }
 
     RecipeListPageFrame()
     {
@@ -117,5 +129,10 @@ public class RecipeListPageFrame extends BorderPane{
             stage.show();
 
         });
+    }
+
+
+    public void setNewRecipeButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newRecipeButton.setOnAction(eventHandler);
     }
 }
