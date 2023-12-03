@@ -3,6 +3,8 @@ package FrontEnd;
 import BackEnd.*; //This is only because we do not have a HTTP Server yet. Fix and remove asap
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
@@ -204,6 +206,14 @@ public class LoginPageFrame extends BorderPane{
         addListeners();
     }
 
+    public void setAccountCreationButtonAction(EventHandler<ActionEvent> eventHandler) {
+        AccountCreationButton.setOnAction(eventHandler);
+    }
+
+    public void setLoginButtonAction(EventHandler<ActionEvent> eventHandler) {
+        LoginButton.setOnAction(eventHandler);
+    }
+    
     public void addListeners()
     {
 
