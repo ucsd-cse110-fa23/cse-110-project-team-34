@@ -11,12 +11,14 @@ public class Recipe{
     private String ingredients;
     private String directions;
     private String dateCreated;
+    private String mealType;
 
-    public Recipe(String name, String ingred, String direc, String date){
+    public Recipe(String name, String ingred, String direc, String date, String meal){
         recipeName = name;
         ingredients = ingred;
         directions = direc;
         dateCreated = date;
+        mealType = meal;
     }
 
     //Getters
@@ -36,6 +38,10 @@ public class Recipe{
         return dateCreated;
     }
 
+    public String getMealType() {
+        return mealType;
+    }
+
     //Setters
     public void setRecipeName(String n){
         recipeName = n;
@@ -51,6 +57,10 @@ public class Recipe{
 
     public void setDateCreated(String date) {
         dateCreated = date;
+    }
+
+    public void setMealType(String meal) {
+        mealType = meal;
     }
 
 }

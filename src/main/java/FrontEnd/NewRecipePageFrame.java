@@ -183,7 +183,7 @@ public class NewRecipePageFrame extends BorderPane{
          */
 
         this.stage = stage;
-        recipe = new Recipe("Sample Recipe", "Sample Ingredients", "Sample Directions", "Sample Date & Time");
+        recipe = new Recipe("Sample Recipe", "Sample Ingredients", "Sample Directions", "Sample Date & Time", "Sample Meal Type");
         header = new NewRecipePageHeader();
         footer = new NewRecipePageFooter();
         generator = new RecipeGenerator();
@@ -224,7 +224,7 @@ public class NewRecipePageFrame extends BorderPane{
 
         // Add button functionality
         newBackButton.setOnAction(e -> {
-            RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "storage.json");
+            RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
             stage.setTitle("PantryPal");
             stage.getIcons().add(new Image(Constants.defaultIconPath));
             stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
@@ -286,7 +286,7 @@ public class NewRecipePageFrame extends BorderPane{
                 ingredients = s1[2];
                 directions = s1[3];
 
-                recipe = new Recipe(name, ingredients, directions, date);
+                recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
                 content = new RecipeContent(recipe);
                 scrollPane = new ScrollPane(content);
                 scrollPane.setFitToWidth(true);

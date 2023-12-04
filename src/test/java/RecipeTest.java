@@ -13,7 +13,7 @@ public class RecipeTest {
     
     @BeforeEach
     void setUp() {
-        recipe = new Recipe("Chicken", "1 Chicken", "1. Roast Chicken", "2023-12-02T05:09:21.989948");
+        recipe = new Recipe("Chicken", "1 Chicken", "1. Roast Chicken", "2023-12-02T05:09:21.989948", "Lunch");
     }
     
     @Test
@@ -34,6 +34,11 @@ public class RecipeTest {
     @Test
     void testGetDateCreated() {
         assertEquals("2023-12-02T05:09:21.989948", recipe.getDateCreated());
+    }
+
+    @Test
+    void testGetMealType() {
+        assertEquals("Lunch", recipe.getMealType());
     }
 
     @Test
@@ -58,6 +63,12 @@ public class RecipeTest {
     void testSetDateCreated(){
         recipe.setDateCreated("1900-05-02T04:08:12.000000");
         assertEquals("1900-05-02T04:08:12.000000", recipe.getDateCreated());
+    }
+
+    @Test
+    void testSetMealType(){
+        recipe.setMealType("Dinner");
+        assertEquals("Dinner", recipe.getMealType());
     }
 
 }

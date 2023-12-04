@@ -19,6 +19,7 @@ public class JSONSaver{
                 recipeJSON.put("ingredients", recipe.getIngredients());
                 recipeJSON.put("directions", recipe.getDirections());
                 recipeJSON.put("date", recipe.getDateCreated());
+                recipeJSON.put("mealType", recipe.getMealType());
                 recipeListArr.add(recipeJSON);
             }
         }
@@ -57,6 +58,7 @@ public class JSONSaver{
                     recipe.put("ingredients", newRecipe.getIngredients());
                     recipe.put("directions", newRecipe.getDirections());
                     recipe.put("date", newRecipe.getDateCreated());
+                    recipe.put("mealType", newRecipe.getMealType());
                 }
             }
 
