@@ -8,8 +8,9 @@ import javafx.stage.Stage;
 
 public class EditRecipePageFrameController {
     EditRecipePageFrame view;
+    HTTPRequestModel model;
 
-    public EditRecipePageFrameController(EditRecipePageFrame view, Model model) {
+    public EditRecipePageFrameController(EditRecipePageFrame view, HTTPRequestModel model) {
         this.view = view;
         this.model = model;
 

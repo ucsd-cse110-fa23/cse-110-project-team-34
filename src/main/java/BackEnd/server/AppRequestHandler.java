@@ -5,9 +5,9 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class RequestHandler implements HttpHandler{
+public class AppRequestHandler implements HttpHandler{
 
-    public RequestHandler(){
+    public AppRequestHandler(){
 
     }
 
@@ -36,11 +36,12 @@ public class RequestHandler implements HttpHandler{
         response = e.toString();
         e.printStackTrace();
       }
-    //Sending back response to the client
-    httpExchange.sendResponseHeaders(200, response.length());
-    OutputStream outStream = httpExchange.getResponseBody();
-    outStream.write(response.getBytes());
-    outStream.close();
+
+      //Sending back response to the client
+      httpExchange.sendResponseHeaders(200, response.length());
+      OutputStream outStream = httpExchange.getResponseBody();
+      outStream.write(response.getBytes());
+      outStream.close();
     }
     
     private String handleGet(HttpExchange httpExchange) throws IOException {

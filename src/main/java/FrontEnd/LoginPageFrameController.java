@@ -1,8 +1,10 @@
 package FrontEnd;
 
 public class LoginPageFrameController {
-    LoginPageFrame view;
-    public LoginPageFrameController(LoginPageFrame view, Model model) {
+    private LoginPageFrame view;
+    private HTTPRequestModel model;
+
+    public LoginPageFrameController(LoginPageFrame view, HTTPRequestModel model) {
         this.view = view;
         this.model = model;
 

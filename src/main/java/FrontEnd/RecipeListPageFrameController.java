@@ -8,9 +8,11 @@ import javafx.stage.Stage;
 
 public class RecipeListPageFrameController {
     private RecipeListPageFrame view;
+    private HTTPRequestModel model;
+
     // need to create model
     //private Model model;
-    public RecipeListPageFrameController(RecipeListPageFrame view, Model model) {
+    public RecipeListPageFrameController(RecipeListPageFrame view, HTTPRequestModel model) {
         this.view = view;
         this.model = model;
 
