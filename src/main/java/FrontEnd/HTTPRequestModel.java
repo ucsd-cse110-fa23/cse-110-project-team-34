@@ -50,6 +50,42 @@ public class HTTPRequestModel {
 
     }
 
+    /**
+     * Performs signup request on the server
+     * @param userName
+     * @param password
+     * @return 
+     */
+    public String performSignupRequest(String userName, String password) {
+
+        try {
+
+            if(userName == null || password == null){return null;}
+
+            String urlString = "http://localhost:8100/signup" + "?" + "userName=" + userName + "&" + "password=" + password;
+
+            URL url = new URI(urlString).toURL();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setDoOutput(true);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String response = in.readLine();
+            in.close();
+
+            if(response.trim().equals("null")){
+                return null;
+            }else{
+                return response;
+            }
+            
+        } catch (Exception ex) {
+            ErrorSys.quickErrorPopup("Error with the following request:\n" + "Method: Signup");
+            return null;
+        }
+
+    }
+
     public String performAppRequest(String method, String query) {
         // Implement your HTTP request logic here and return the response
 

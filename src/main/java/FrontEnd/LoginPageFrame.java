@@ -234,22 +234,20 @@ public class LoginPageFrame extends BorderPane{
                 String PasswordText = Password.getText();
                 String Re_Entered_PasswordText = ComfirmPassword.getText();
 
-                if(UserDatabase.usernameExists(NameText)){
-                    ErrorSys.quickErrorPopup("Username Already Exists");
-                }else{
-                    if(!PasswordText.equals(Re_Entered_PasswordText)){
-                        ErrorSys.quickErrorPopup("Password and Retyped Password Do Not Match");
-                    }else{
-                        String userId = UserDatabase.createUser(NameText, PasswordText);
-                        RecipeListDatabase.createEmptyRecipeList(userId);
+                HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove this when controllers implemented
 
+                if(!PasswordText.equals(Re_Entered_PasswordText)){
+                    ErrorSys.quickErrorPopup("Password and Retyped Password Do Not Match");
+                }else{
+                    String response = httpRequestModel.performSignupRequest(NameText, PasswordText);
+                    if(response.equals("Username Already Exists")){
+                        ErrorSys.quickErrorPopup("Username Already Exists");
+                    }else if(response.equals("Account Successfully Created!")){
                         newStage.close();
                         Alert alert = new Alert(AlertType.INFORMATION, "Account Successfully Created!", ButtonType.OK);
                         alert.showAndWait();
-
                     }
                 }
-
                 
             });
 
