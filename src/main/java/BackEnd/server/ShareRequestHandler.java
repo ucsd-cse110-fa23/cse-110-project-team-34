@@ -49,8 +49,11 @@ public class ShareRequestHandler implements HttpHandler{
         String query = uri.getQuery();
         String userID = query.substring(query.indexOf("=") + 1);
         String recipeName = userID.substring(userID.indexOf("=")+1);
-        userID = userID.substring(0,userID.indexOf("recipeName"));
+        userID = userID.substring(0,userID.indexOf("&"));
         //userID now contains userID and recipeName now contains recipeName
+
+        System.out.println("userID " + userID);
+        System.out.println("recipeName " + recipeName);
 
         JSONObject recipe = RecipeListDatabase.getRecipeByIdAndNameAsJSON(userID, recipeName);
 
@@ -63,7 +66,7 @@ public class ShareRequestHandler implements HttpHandler{
                 .append("<html>")
                 .append("<body>")
                 .append("<h1>")
-                .append("Hello ")
+                .append("Recipe Name: " + recipeName)
                 .append("</h1>")
                 .append("<br>")
                 .append("<img src=\"recipeImage.jpg\" alt=\"" + recipeName + " image\" width=\"500\">") // height=\"600\">")
