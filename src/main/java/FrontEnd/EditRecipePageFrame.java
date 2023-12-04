@@ -181,6 +181,10 @@ public class EditRecipePageFrame extends BorderPane {
         	//update RecipeList/file:  with new recipe list
             JSONSaver.updateJSON(originalRecipeName, recipe);
 
+            //Save change to server
+            HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
+            String response = httpRequestModel.performRecipeListPOSTRequest();
+
         	
         	newStage.close();//close edit page
             }
