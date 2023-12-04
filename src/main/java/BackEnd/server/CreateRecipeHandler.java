@@ -46,31 +46,11 @@ public class CreateRecipeHandler implements HttpHandler{
       //No query needed, just audio data
 
       InputStream inStream = httpExchange.getRequestBody();
-      Scanner scanner = new Scanner(inStream);
-      String postData = scanner.nextLine();
-      String recipeListJSONString = postData;
-
-      JSONParser p = new JSONParser();
-      JSONObject recipeListJSONObj = null;
-
-      try{
-        recipeListJSONObj = recipeListJSONObj = (JSONObject) p.parse(recipeListJSONString);  
-      }catch(org.json.simple.parser.ParseException e){
-          e.printStackTrace();
-      }
       
-      scanner.close();
+      System.out.println(inStream.readAllBytes());
+      
 
       return response;
     }
 
-    private String handlePut(HttpExchange httpExchange) throws IOException {
-        String response = "";
-        return response;
-    }
-
-    private String handleDelete(HttpExchange httpExchange) throws IOException {
-        String response = "";
-        return response;
-    }
 }
