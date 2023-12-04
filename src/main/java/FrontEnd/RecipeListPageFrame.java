@@ -2,6 +2,9 @@ package FrontEnd;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.File;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,14 +15,24 @@ import javafx.scene.text.*;
 
 class RecipeListPageHeader extends HBox {
 
+    private Button logoutButton;
+
     RecipeListPageHeader() {
         this.setPrefSize(Constants.WINDOW_WIDTH, 100); // Size of the header
         this.setStyle(Constants.boldBackgroundColor);
 
+        Region r = new Region();
+        r.setPrefSize(50, 100);
+        logoutButton = new Button("Logout");
+        logoutButton.setStyle(Constants.loginButtonStyle);
         Text titleText = new Text("PantryPal"); // Text of the Header
         titleText.setStyle("-fx-font-weight: bold; -fx-font-size: 80;");
-        this.getChildren().add(titleText);
+        this.getChildren().addAll(titleText, r, logoutButton);
         this.setAlignment(Pos.CENTER); // Align the text to the Center
+    }
+
+    public Button getLogoutButton(){
+        return logoutButton;
     }
 }
 
@@ -63,6 +76,7 @@ public class RecipeListPageFrame extends BorderPane{
      * Declare Scene Buttons Here
      */
     Button newRecipeButton;
+    Button logoutButton;
 
     // getter
     public Button getNewRecipeButton() {
@@ -98,6 +112,7 @@ public class RecipeListPageFrame extends BorderPane{
         recipeListComplete.getChildren().addAll(recipeListLabel, recipeListScrollPane);
         
         newRecipeButton = footer.getNewRecipeButton();
+        logoutButton = header.getLogoutButton();
 
         /**
          * Set element positions here
@@ -128,6 +143,22 @@ public class RecipeListPageFrame extends BorderPane{
             stage.setResizable(false);
             stage.show();
 
+        });
+
+        logoutButton.setOnAction(e -> {
+            try{
+                File userFile = new File("user.txt");
+                userFile.delete();
+            }catch(Exception fileException){
+                fileException.printStackTrace();
+            }
+            
+
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            LoginPageFrame newLoginPage = new LoginPageFrame();
+            stage.setScene(new Scene(newLoginPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            stage.setResizable(false);
+            stage.show();
         });
     }
 

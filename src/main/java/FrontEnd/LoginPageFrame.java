@@ -125,6 +125,7 @@ class LoginAccountInfo extends VBox {
         username = new UsernameInfo();
         password = new PasswordInfo();
         rememberMe = new CheckBox("Remember This Login");
+        rememberMe.setStyle(Constants.defaultTextStyle);
         VBox.setMargin(password, new Insets(60, 0, 0, 0));
 
         CreateAccountButton = new Button("Go to Create Account"); // text displayed on add button
@@ -292,6 +293,7 @@ public class LoginPageFrame extends BorderPane{
                         try{
                             FileWriter fw = new FileWriter(new File("user.txt"));
                             fw.write(userID);
+                            fw.close();
                         }catch(Exception rememberException){
                             rememberException.printStackTrace();
                         }
