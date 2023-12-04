@@ -238,6 +238,10 @@ public class NewRecipePageFrame extends BorderPane{
             reverse.getChildren().add(0, new RecipeSimple(recipe));
             //save to .json
             JSONSaver.saveRecipeList(list);
+            
+            HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
+            String response = httpRequestModel.performRecipeListPOSTRequest();
+
             //sort tasks, tasks are added at end, just show by reverse order (for loop starting at the end)
         });
 

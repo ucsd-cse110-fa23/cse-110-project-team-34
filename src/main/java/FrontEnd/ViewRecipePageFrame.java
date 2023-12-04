@@ -181,6 +181,10 @@ public class ViewRecipePageFrame extends BorderPane {
         	
                 //deletes recipe
                 JSONSaver.removeByName(recipe.getRecipeName());
+
+                //Saves change to server
+                HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
+                String response = httpRequestModel.performRecipeListPOSTRequest();
                 
                 // returns to recipe list page
                 // I just did what was there for back button. This is quite jank tbh

@@ -9,6 +9,7 @@ import java.net.*;
 import java.util.*;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class RecipeListRequestHandler implements HttpHandler{
 
@@ -69,8 +70,37 @@ public class RecipeListRequestHandler implements HttpHandler{
     }
 
     private String handlePost(HttpExchange httpExchange) throws IOException {
-        String response = "";
-        return response;
+      String response = "null";
+      URI uri = httpExchange.getRequestURI();
+      String query = uri.getQuery();
+
+      if(query == null) {
+            return response;
+      }
+
+      String userID = query.substring(query.indexOf("=") + 1);
+
+      InputStream inStream = httpExchange.getRequestBody();
+      Scanner scanner = new Scanner(inStream);
+      String postData = scanner.nextLine();
+      String recipeListJSONString = postData;
+
+      JSONParser p = new JSONParser();
+      JSONObject recipeListJSONObj = null;
+
+      try{
+        recipeListJSONObj = recipeListJSONObj = (JSONObject) p.parse(recipeListJSONString);  
+      }catch(org.json.simple.parser.ParseException e){
+          e.printStackTrace();
+      }
+
+      // Store data in Database
+      RecipeListDatabase.setRecipeListByIdGivenJSON(userID, recipeListJSONObj);
+
+      response = "Posted userID " + userID + "\nRecipeList " + recipeListJSONString + "}";
+      scanner.close();
+
+      return response;
     }
 
     private String handlePut(HttpExchange httpExchange) throws IOException {

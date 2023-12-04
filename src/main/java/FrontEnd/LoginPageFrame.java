@@ -275,7 +275,7 @@ public class LoginPageFrame extends BorderPane{
             username = info.getName();
             password = info.getPassword();
 
-            HTTPRequestModel testModel = new HTTPRequestModel(); //This should be handled by the controller eventually! This is just until someone completes the controllers
+            HTTPRequestModel testModel = new HTTPRequestModel(); //TODO: This should be handled by the controller eventually! This is just until someone completes the controllers
 
             String userID = testModel.performLoginRequest(username, password);
 
