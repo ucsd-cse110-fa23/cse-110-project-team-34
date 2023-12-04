@@ -1,8 +1,10 @@
-import BackEnd.RecipeListDatabase;
-import BackEnd.UserDatabase;
 import FrontEnd.Recipe;
 
 import org.junit.jupiter.api.Test;
+
+import BackEnd.database.RecipeListDatabase;
+import BackEnd.database.UserDatabase;
+
 import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

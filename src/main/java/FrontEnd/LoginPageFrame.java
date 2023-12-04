@@ -1,7 +1,8 @@
 package FrontEnd;
 
 import BackEnd.*; //This is only because we do not have a HTTP Server yet. Fix and remove asap
-
+import BackEnd.database.RecipeListDatabase;
+import BackEnd.database.UserDatabase;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
