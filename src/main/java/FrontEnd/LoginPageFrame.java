@@ -277,22 +277,14 @@ public class LoginPageFrame extends BorderPane{
             username = info.getName();
             password = info.getPassword();
 
-            if(UserDatabase.usernameExists(username)){
-                userId = UserDatabase.getIdByUsernamePassword(username, password);
-                if(userId != null){ //Username password combo valid
-                    
-                    //Download storage.json recipelist from database
-                    
-                    try{
-                        JSONObject recipeList = RecipeListDatabase.getRecipelistByIdAsJSON(userId);
-                        FileWriter fw = new FileWriter(new File("storage.json"));
-                        fw.write(recipeList.toJSONString());
-                    }catch(Exception writeerror){
-                        writeerror.printStackTrace();
-                    }
-                    
+            HTTPRequestModel testModel = new HTTPRequestModel(); //This should be handled by the controller eventually! This is just until someone completes the controllers
+
+            String userID = testModel.performLoginRequest(username, password);
+
+            if(userID != null){
+                                    
                     //Set program UserID
-                    UserID.setUserID(userId);
+                    UserID.setUserID(userID);
 
                     //Go to recipe list page
                     stage = (Stage) LoginButton.getScene().getWindow();
@@ -302,9 +294,7 @@ public class LoginPageFrame extends BorderPane{
                     stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
                     stage.setResizable(false);
                     stage.show();
-                }else{
-                    ErrorSys.quickErrorPopup("Incorrect Login Information");
-                }
+
             }else{
                 ErrorSys.quickErrorPopup("Incorrect Login Information");
             }

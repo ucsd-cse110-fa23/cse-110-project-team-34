@@ -104,4 +104,26 @@ public class JSONSaver{
         }
     }
 
+    public static JSONObject jsonStringToObject(String jsonString){
+        JSONParser p = new JSONParser();
+        try{
+            JSONObject jsonObj = (JSONObject) p.parse(jsonString);
+            return jsonObj;
+        }catch(org.json.simple.parser.ParseException e){
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
+
+    public static void saveRecipeListByJSON(JSONObject recipeListJSONObject){
+        try{
+            FileWriter file = new FileWriter("storage.json");
+			file.write(recipeListJSONObject.toJSONString());
+			file.flush();
+			file.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }
