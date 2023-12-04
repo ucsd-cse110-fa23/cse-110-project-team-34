@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CreateRecipeRequestTest",
+            "request": "launch",
+            "mainClass": "CreateRecipeRequestTest",
+            "projectName": "cse-110-project-team-34"
+        },
+        {
+            "type": "java",
             "name": "Server",
             "request": "launch",
             "mainClass": "BackEnd.server.Server",

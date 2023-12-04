@@ -105,8 +105,10 @@ public class HTTPRequestModel {
      * @return Returns the recipe JSON String
      */
     public String performCreateRecipeRequest(){
+
         try {
-            String urlString = "http://localhost:8100/createRecipe";
+            long longBound = System.currentTimeMillis();
+            String urlString = "http://localhost:8100/createRecipe?="+longBound;
             URL url = new URI(urlString).toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -116,7 +118,7 @@ public class HTTPRequestModel {
             File file = new File(Constants.defaultAudioPath);
             
             // Set up request headers
-            String boundary = "Boundary-" + System.currentTimeMillis();
+            String boundary = "Boundary-" + longBound;
             conn.setRequestProperty(
                 "Content-Type",
                 "multipart/form-data; boundary=" + boundary
@@ -125,8 +127,12 @@ public class HTTPRequestModel {
             //Create output stream
             OutputStream out = conn.getOutputStream();
 
+            //Write model parameter
+            MultiPartFormDataHelper.writeParameterToOutputStream(out, "model", "whisper-1", boundary);
+
             // Write file to request body
             MultiPartFormDataHelper.writeFileToOutputStream(out, file, boundary);
+
 
             //Write closing boundary to request body
             out.write(("\r\n--" + boundary + "--\r\n").getBytes());

@@ -8,12 +8,12 @@ public class Whisper {
 
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
     private static final String TOKEN = "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";
-    private static final String MODEL = "whisper-1";
+    //private static final String MODEL = "whisper-1";
     //private static final String FILE_PATH = "CSE110_Lab4_Audio.mp3";
 
     // Helper method to write a parameter to the output stream in multipart form
     // data format
-    private static void writeParameterToOutputStream(
+    /*private static void writeParameterToOutputStream(
             OutputStream outputStream,
             String parameterName,
             String parameterValue,
@@ -48,7 +48,7 @@ public class Whisper {
             outputStream.write(buffer, 0, bytesRead);
         }
         fileInputStream.close();
-    }
+    }*/
 
     // Helper method to handle a successful response
     private static String handleSuccessResponse(HttpURLConnection connection)
@@ -85,11 +85,8 @@ public class Whisper {
         System.out.println("Error Result: " + errorResult);
     }
 
-    public String readAudio(String audioFilePath) throws IOException, URISyntaxException {
+    public String readAudio(InputStream multipartAudioBody, String boundaryNum) throws IOException, URISyntaxException {
         String output = "";
-        // Create file object from file path
-        File file = new File(audioFilePath);
-        
         
         // Set up HTTP connection
         URL url = new URI(API_ENDPOINT).toURL();
@@ -99,7 +96,7 @@ public class Whisper {
         
         
         // Set up request headers
-        String boundary = "Boundary-" + System.currentTimeMillis();
+        String boundary = "Boundary-" + boundaryNum;
         connection.setRequestProperty(
             "Content-Type",
             "multipart/form-data; boundary=" + boundary
@@ -110,17 +107,8 @@ public class Whisper {
         // Set up output stream to write request body
         OutputStream outputStream = connection.getOutputStream();
         
-        
-        // Write model parameter to request body
-        writeParameterToOutputStream(outputStream, "model", MODEL, boundary);
-        
-        
-        // Write file parameter to request body
-        writeFileToOutputStream(outputStream, file, boundary);
-        
-        
-        // Write closing boundary to request body
-        outputStream.write(("\r\n--" + boundary + "--\r\n").getBytes());
+        // Write multipartAudioBody to outputstream
+        multipartAudioBody.transferTo(outputStream);
         
         
         // Flush and close output stream

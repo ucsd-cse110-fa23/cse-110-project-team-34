@@ -2,6 +2,8 @@ package BackEnd.server;
 
 import com.sun.net.httpserver.*;
 
+import BackEnd.api.ChatGPT;
+import BackEnd.api.Whisper;
 import BackEnd.database.RecipeListDatabase;
 
 import java.io.*;
@@ -43,11 +45,28 @@ public class CreateRecipeHandler implements HttpHandler{
     private String handlePost(HttpExchange httpExchange) throws IOException {
       String response = "null";
       URI uri = httpExchange.getRequestURI();
-      //No query needed, just audio data
+      String query = uri.getQuery();
+      String boundaryNum = query.substring(query.indexOf("=")+1);
 
       InputStream inStream = httpExchange.getRequestBody();
       
-      System.out.println(inStream.readAllBytes());
+      Whisper whisper = new Whisper();
+      String audioText = "";
+
+      try{
+        audioText = whisper.readAudio(inStream, boundaryNum);
+      }catch(URISyntaxException urie){
+        urie.printStackTrace();
+      }catch(IOException ioe){
+        ioe.printStackTrace();
+      }
+
+      if(audioText == null || audioText.trim().equals("")){
+        return "EMPTY_RECORDING_ERROR";
+      }
+
+      ChatGPT chatGPT = new ChatGPT();
+
       
 
       return response;

@@ -262,20 +262,11 @@ public class NewRecipePageFrame extends BorderPane{
                 //badMealType.printStackTrace();
             }
 
-            Whisper whisper = new Whisper();
             ChatGPT askChat = new ChatGPT();
 
             String audioText = "something";
 
-            try {
-                audioText = whisper.readAudio("CSE110Voice.wav");
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            } catch (URISyntaxException e1) {
-                    // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
+            
             /**
              * Breakfast Recipe in the format: Recipe Name,  Recipe Ingredients, Recipe Directions in one string, without fluff in the answer. The recipe name, ingredients and directions should be in two paragraphs. I have oranges, bananas, oatmeal
              */
