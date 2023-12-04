@@ -115,6 +115,8 @@ class LoginAccountInfo extends VBox {
     private UsernameInfo username;
     private PasswordInfo password;
 
+    private CheckBox rememberMe;
+
     LoginAccountInfo() {
         this.setPrefSize(Constants.WINDOW_WIDTH, 100);
         this.setStyle(Constants.boldBackgroundColor);
@@ -122,6 +124,7 @@ class LoginAccountInfo extends VBox {
 
         username = new UsernameInfo();
         password = new PasswordInfo();
+        rememberMe = new CheckBox("Remember This Login");
         VBox.setMargin(password, new Insets(60, 0, 0, 0));
 
         CreateAccountButton = new Button("Go to Create Account"); // text displayed on add button
@@ -130,7 +133,7 @@ class LoginAccountInfo extends VBox {
         VBox.setMargin(CreateAccountButton, new Insets(50, 0, 0, 0));
 
 
-        this.getChildren().addAll(username,password,CreateAccountButton); // adding buttons to footer
+        this.getChildren().addAll(username,password,rememberMe,CreateAccountButton); // adding buttons to footer
         this.setAlignment(Pos.CENTER); // aligning the buttons to center
         this.setSpacing(10);
 
@@ -144,6 +147,10 @@ class LoginAccountInfo extends VBox {
     }
     public String getPassword() {
         return password.getPassword();
+    }
+
+    public boolean getRememberMeBoolean(){
+        return rememberMe.isSelected();
     }
 }
 
@@ -280,7 +287,17 @@ public class LoginPageFrame extends BorderPane{
             String userID = testModel.performLoginRequest(username, password);
 
             if(userID != null){
-                                    
+                               
+                    if(info.getRememberMeBoolean()){
+                        try{
+                            FileWriter fw = new FileWriter(new File("user.txt"));
+                            fw.write(userID);
+                        }catch(Exception rememberException){
+                            rememberException.printStackTrace();
+                        }
+                        
+                    }
+
                     //Set program UserID
                     UserID.setUserID(userID);
 
