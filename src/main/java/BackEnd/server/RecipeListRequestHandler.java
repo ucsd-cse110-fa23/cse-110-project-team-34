@@ -1,13 +1,18 @@
 package BackEnd.server;
 
 import com.sun.net.httpserver.*;
+
+import BackEnd.database.RecipeListDatabase;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class AppRequestHandler implements HttpHandler{
+import org.json.simple.JSONObject;
 
-    public AppRequestHandler(){
+public class RecipeListRequestHandler implements HttpHandler{
+
+    public RecipeListRequestHandler(){
 
     }
 
@@ -27,7 +32,7 @@ public class AppRequestHandler implements HttpHandler{
         } 
         else if (method.equals("DELETE")) {
           response = handleDelete(httpExchange);
-        } 
+        }
         else {
           throw new Exception("Not Valid Request Method");
         }
@@ -44,21 +49,23 @@ public class AppRequestHandler implements HttpHandler{
       outStream.close();
     }
     
+    //Get url should be in form https://localhost:8100/recipelist?userID=<USER_ID_HERE>
     private String handleGet(HttpExchange httpExchange) throws IOException {
-        String response = "Invalid GET request";
+        String response = "null";
         URI uri = httpExchange.getRequestURI();
-        String query = uri.getRawQuery();
+        String query = uri.getQuery();
         if(query == null) {
             return response;
         }
-        if(query.equals("getRecipelistByIdAsJSON")) {
+        String userID = query.substring(query.indexOf("=") + 1);
 
+        JSONObject recipeList = RecipeListDatabase.getRecipelistByIdAsJSON(userID);
+
+        if(recipeList == null){
+          return response;
         }
-        else if(query.equals("getUsernameById")) {
 
-        }
-
-        return response;
+        return recipeList.toString();
     }
 
     private String handlePost(HttpExchange httpExchange) throws IOException {

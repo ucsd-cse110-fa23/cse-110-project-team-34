@@ -86,34 +86,49 @@ public class HTTPRequestModel {
 
     }
 
-    public String performAppRequest(String method, String query) {
-        // Implement your HTTP request logic here and return the response
+    public String performRecipeListGETRequest() {
 
         try {
-            String urlString = "http://localhost:8100/";
-            if (query != null) {
-                urlString += "?=" + query;
-            }
+            String urlString = "http://localhost:8100/recipelist?userID=" + UserID.userID;
             URL url = new URI(urlString).toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod(method);
+            conn.setRequestMethod("GET");
             conn.setDoOutput(true);
 
-            if (method.equals("POST") || method.equals("PUT")) {
-                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
-                out.write("");
-                out.flush();
-                out.close();
-            }
-
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String response = in.readLine();
+            String recipeListJSONString = in.readLine();
             in.close();
-            return response;
+
+            JSONSaver.saveRecipeListByJSON(JSONSaver.jsonStringToObject(recipeListJSONString));
+
+            return "Success";
         } catch (Exception ex) {
-            ErrorSys.quickErrorPopup("Error with the following request:\n" + "Method: " + method + "\nQuery: " + query);
+            ErrorSys.quickErrorPopup("Error with the following request:\n" + "Method: GET recipelist");
             return "Error: " + ex.getMessage();
         }
+    }
+
+    public String performRecipeListPOSTRequest() {
+
+        try {
+            String urlString = "http://localhost:8100/recipelist?userID=" + UserID.userID;
+            URL url = new URI(urlString).toURL();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setDoOutput(true);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String recipeListJSONString = in.readLine();
+            in.close();
+
+            JSONSaver.saveRecipeListByJSON(JSONSaver.jsonStringToObject(recipeListJSONString));
+
+            return "Success";
+        } catch (Exception ex) {
+            ErrorSys.quickErrorPopup("Error with the following request:\n" + "Method: POST recipelist");
+            return "Error: " + ex.getMessage();
+        }
+
     }
 
     public String performExampleRequest(String method, String query) {

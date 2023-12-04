@@ -46,7 +46,7 @@ public class ShareRequestHandler implements HttpHandler{
     private String handleGet(HttpExchange httpExchange) throws IOException {
         String response = "Invalid GET request";
         URI uri = httpExchange.getRequestURI();
-        String query = uri.getRawQuery();
+        String query = uri.getQuery();
         String userID = query.substring(query.indexOf("=") + 1);
         String recipeName = userID.substring(userID.indexOf("=")+1);
         userID = userID.substring(0,userID.indexOf("recipeName"));

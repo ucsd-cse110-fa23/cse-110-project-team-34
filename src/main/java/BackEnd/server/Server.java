@@ -26,7 +26,7 @@ public class Server {
         0);
 
     server.createContext("/", new RootRequestHandler());
-    server.createContext("/app", new AppRequestHandler());
+    server.createContext("/recipelist", new RecipeListRequestHandler());
     server.createContext("/login", new LoginRequestHandler());
     server.createContext("/signup", new SignupRequestHandler());
 
