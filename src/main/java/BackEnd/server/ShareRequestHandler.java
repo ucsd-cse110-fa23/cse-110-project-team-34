@@ -1,10 +1,18 @@
 package BackEnd.server;
 
 import com.sun.net.httpserver.*;
+
+import BackEnd.database.RecipeListDatabase;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import org.json.simple.JSONObject;
+
+/*
+     * A share URL should have the format https://localhost:8100/share?userID=<User ID Goes Here>&recipeName=<RecipeNameGoesHere> 
+*/
 public class ShareRequestHandler implements HttpHandler{
 
     public ShareRequestHandler(){
@@ -39,20 +47,34 @@ public class ShareRequestHandler implements HttpHandler{
         String response = "Invalid GET request";
         URI uri = httpExchange.getRequestURI();
         String query = uri.getRawQuery();
-        String name = query.substring(query.indexOf("=") + 1);
+        String userID = query.substring(query.indexOf("=") + 1);
+        String recipeName = userID.substring(userID.indexOf("=")+1);
+        userID = userID.substring(0,userID.indexOf("recipeName"));
+        //userID now contains userID and recipeName now contains recipeName
+
+        JSONObject recipe = RecipeListDatabase.getRecipeByIdAndNameAsJSON(userID, recipeName);
+
+        String ingredients = (String) recipe.get("ingredients");
+        String directions = (String) recipe.get("directions");
+
 
         StringBuilder htmlBuilder = new StringBuilder();
         htmlBuilder
                 .append("<html>")
                 .append("<body>")
-                .append("<marquee direction='right' width='500'>")
                 .append("<h1>")
                 .append("Hello ")
-                .append(name)
                 .append("</h1>")
-                .append("</marquee>")
                 .append("<br>")
-                .append("<img src=\"https://pngfre.com/wp-content/uploads/20220521_111044-1024x1024.png\" alt=\"Dog\" width=\"500\">") // height=\"600\">")
+                .append("<img src=\"recipeImage.jpg\" alt=\"" + recipeName + " image\" width=\"500\">") // height=\"600\">")
+                .append("<br>")
+                .append("<h2>")
+                .append("Ingredients: " + ingredients)
+                .append("</h2>")
+                .append("<br>")
+                .append("<h2>")
+                .append("Directions: " + directions)
+                .append("</h2>")
                 .append("</body>")
                 .append("</html>");
 

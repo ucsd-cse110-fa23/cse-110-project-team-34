@@ -27,7 +27,12 @@ public class Server {
 
     server.createContext("/", new RootRequestHandler());
     server.createContext("/app", new AppRequestHandler());
-    server.createContext("/share", new ShareRequestHandler());
+
+
+    /*
+     * A share URL should have the format https://localhost:8100/share?userID=<User ID Goes Here>&recipeName=<RecipeNameGoesHere> 
+     */
+    server.createContext("/share", new ShareRequestHandler()); 
     server.setExecutor(threadPoolExecutor);
     server.start();
 
