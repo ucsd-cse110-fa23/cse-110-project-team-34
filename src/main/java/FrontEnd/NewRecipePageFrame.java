@@ -7,6 +7,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javax.sound.sampled.*;
+
+import BackEnd.api.ChatGPT;
+import BackEnd.api.Whisper;
+
 import java.io.*;
 import java.net.URISyntaxException;
 

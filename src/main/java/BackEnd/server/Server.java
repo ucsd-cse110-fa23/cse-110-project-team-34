@@ -24,6 +24,7 @@ public class Server {
     server.createContext("/recipelist", new RecipeListRequestHandler());
     server.createContext("/login", new LoginRequestHandler());
     server.createContext("/signup", new SignupRequestHandler());
+    server.createContext("/createRecipe", new CreateRecipeHandler());
 
 
     /*

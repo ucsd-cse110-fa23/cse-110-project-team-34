@@ -20,4 +20,5 @@ public class Constants {
     
     //Paths
     public static final String defaultIconPath = "file:src/main/java/FrontEnd/Images/PantryPalIcon.png";
+    public static final String defaultAudioPath = "CSE110Voice.wav";
 }

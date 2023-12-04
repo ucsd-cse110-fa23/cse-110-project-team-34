@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
@@ -97,6 +98,55 @@ public class HTTPRequestModel {
             return null;
         }
 
+    }
+
+    /**
+     * Performs create recipe and returns the new recipe as a JSON String
+     * @return Returns the recipe JSON String
+     */
+    public String performCreateRecipeRequest(){
+        try {
+            String urlString = "http://localhost:8100/createRecipe";
+            URL url = new URI(urlString).toURL();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            //Send CSE110Voice.wav
+            File file = new File(Constants.defaultAudioPath);
+            
+            // Set up request headers
+            String boundary = "Boundary-" + System.currentTimeMillis();
+            conn.setRequestProperty(
+                "Content-Type",
+                "multipart/form-data; boundary=" + boundary
+            );
+
+            //Create output stream
+            OutputStream out = conn.getOutputStream();
+
+            // Write file to request body
+            MultiPartFormDataHelper.writeFileToOutputStream(out, file, boundary);
+
+            //Write closing boundary to request body
+            out.write(("\r\n--" + boundary + "--\r\n").getBytes());
+            
+            //Cleanup output stream
+            out.flush();
+            out.close();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String recipeJSONString = in.readLine();
+            in.close();
+
+            return recipeJSONString;
+        } catch (ConnectException  ex) {
+            ErrorSys.quickErrorPopup("Error: Server Unavailable");
+            return null;
+        }catch(Exception e){
+            ErrorSys.quickErrorPopup("Unknown Error!");
+            return null;
+        }
     }
 
     public String performRecipeListGETRequest() {
