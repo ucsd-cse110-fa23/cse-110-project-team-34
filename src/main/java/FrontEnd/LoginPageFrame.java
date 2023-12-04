@@ -294,7 +294,7 @@ public class LoginPageFrame extends BorderPane{
                     stage.show();
 
             }else{
-                ErrorSys.quickErrorPopup("Incorrect Login Information");
+                ErrorSys.quickErrorPopup("Login Failed");
             }
 
             

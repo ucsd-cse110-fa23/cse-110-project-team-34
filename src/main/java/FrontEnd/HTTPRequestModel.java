@@ -7,7 +7,9 @@ import java.io.FileReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -47,8 +49,12 @@ public class HTTPRequestModel {
                 return userID;
             }
             
-        } catch (Exception ex) {
-            ErrorSys.quickErrorPopup("Error with the following request:\n" + "Method: Login");
+        } catch (ConnectException  ex) {
+            ErrorSys.quickErrorPopup("Error: Server Unavailable");
+            return null;
+        }catch(Exception e){
+            e.printStackTrace();
+            ErrorSys.quickErrorPopup("Unknown Error!");
             return null;
         }
 
@@ -83,8 +89,11 @@ public class HTTPRequestModel {
                 return response;
             }
             
-        } catch (Exception ex) {
-            ErrorSys.quickErrorPopup("Error with the following request:\n" + "Method: Signup");
+        } catch (ConnectException  ex) {
+            ErrorSys.quickErrorPopup("Error: Server Unavailable");
+            return null;
+        }catch(Exception e){
+            ErrorSys.quickErrorPopup("Unknown Error!");
             return null;
         }
 
@@ -106,9 +115,12 @@ public class HTTPRequestModel {
             JSONSaver.saveRecipeListByJSON(JSONSaver.jsonStringToObject(recipeListJSONString));
 
             return "Success";
-        } catch (Exception ex) {
-            ErrorSys.quickErrorPopup("Error with the following request:\n" + "Method: GET recipelist");
-            return "Error: " + ex.getMessage();
+        } catch (ConnectException  ex) {
+            ErrorSys.quickErrorPopup("Error: Server Unavailable");
+            return null;
+        }catch(Exception e){
+            ErrorSys.quickErrorPopup("Unknown Error!");
+            return null;
         }
     }
 
@@ -131,9 +143,12 @@ public class HTTPRequestModel {
             in.close();
 
             return response;
-        } catch (Exception ex) {
-            ErrorSys.quickErrorPopup("Error with the following request:\n" + "Method: POST recipelist");
-            return "Error: " + ex.getMessage();
+        } catch (ConnectException  ex) {
+            ErrorSys.quickErrorPopup("Error: Server Unavailable");
+            return null;
+        }catch(Exception e){
+            ErrorSys.quickErrorPopup("Unknown Error!");
+            return null;
         }
 
     }
@@ -162,9 +177,12 @@ public class HTTPRequestModel {
             String response = in.readLine();
             in.close();
             return response;
-        } catch (Exception ex) {
-            ErrorSys.quickErrorPopup("Error with the following request:\n" + "Method: " + method + "\nQuery: " + query);
-            return "Error: " + ex.getMessage();
+        } catch (ConnectException  ex) {
+            ErrorSys.quickErrorPopup("Error: Server Unavailable");
+            return null;
+        }catch(Exception e){
+            ErrorSys.quickErrorPopup("Unknown Error!");
+            return null;
         }
     }
 
