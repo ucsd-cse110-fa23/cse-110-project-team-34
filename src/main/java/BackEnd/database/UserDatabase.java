@@ -1,4 +1,4 @@
-package BackEnd;
+package BackEnd.database;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
