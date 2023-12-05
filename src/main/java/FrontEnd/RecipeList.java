@@ -12,7 +12,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Scanner;
 
 /**
  * Simple recipe display for recipe list
@@ -102,7 +104,7 @@ public class RecipeList extends VBox{
 
             JSONObject jsonObject;
 
-            FileReader reader = new FileReader(fileName);
+            FileReader reader = new FileReader(fileName, StandardCharsets.UTF_8);
 
             if (reader.ready()) { //checks if file is empty
             	jsonObject = (JSONObject) parser.parse(reader); //Read JSON file
@@ -117,6 +119,14 @@ public class RecipeList extends VBox{
                     String directions = (String) recipe.get("directions");
                     String dateCreated = (String) recipe.get("date");
                     String mealType = (String) recipe.get("mealType");
+
+                    if(dateCreated == null){
+                        dateCreated = LocalDateTime.now().toString();
+                    }
+
+                    if(mealType == null){
+                        mealType = "Breakfast";
+                    }
                     
                     this.getChildren().add(new RecipeSimple(new Recipe(recipeName, ingredients, directions, dateCreated, mealType)));
             	}
@@ -131,6 +141,7 @@ public class RecipeList extends VBox{
         	System.out.println("exception in RecipeList: io exception");
         } catch (ParseException e) {
         	System.out.println("exception in RecipeList: parse exception");
+            e.printStackTrace();
         } catch (Exception e) {
         	System.out.println("exception in RecipeList");
         }

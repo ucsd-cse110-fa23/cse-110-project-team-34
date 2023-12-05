@@ -275,7 +275,7 @@ public class NewRecipePageFrame extends BorderPane{
                 ErrorSys.quickErrorPopup("Empty Recording");
                 return;
             }else if(recipeJSONString.equals("CHAT_GPT_FAILED_ERROR")){
-                ErrorSys.quickErrorPopup("ChatGPT Failed, please verify ingredients");
+                ErrorSys.quickErrorPopup("ChatGPT Failed\nLimit 3 Generates Per Minute!");
                 return;
             }else if(recipeJSONString.equals("INVALID_INGREDIENTS_ERROR")){
                 ErrorSys.quickErrorPopup("Ingredients deemed inedible by ChatGPT");

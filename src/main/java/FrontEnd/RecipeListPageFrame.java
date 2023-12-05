@@ -110,6 +110,10 @@ public class RecipeListPageFrame extends BorderPane{
     MenuItem lunch;
     MenuItem dinner;
 
+    RecipeListPageFrame(){
+        this("Sort", "Filter", "storage.json");
+    }
+
     RecipeListPageFrame(String sortMenu, String filterMenu, String fileName)
     {
 
