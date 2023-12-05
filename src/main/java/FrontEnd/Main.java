@@ -12,9 +12,15 @@ import javafx.scene.image.*;
 
 public class Main extends Application {
 
+    // public static Controller controller;    
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+
+        // LoginPageFrame view = new LoginPageFrame();
+        // HTTPRequestModel model = new HTTPRequestModel();
+
+        // LoginPageFrameController controller = new LoginPageFrameController(view, model);
         // Set the title of the app
         primaryStage.setTitle("PantryPal");
         // Set the window icon
@@ -60,7 +66,12 @@ public class Main extends Application {
         }else{
 
             //FrontPage layout
+            //LoginPageFrame frontPage = new LoginPageFrame();
+
             LoginPageFrame frontPage = new LoginPageFrame();
+            HTTPRequestModel model = new HTTPRequestModel();
+
+            LoginPageFrameController controller = new LoginPageFrameController(frontPage, model);
 
             // Create scene of mentioned size with the border pane
             primaryStage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
@@ -77,5 +88,11 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+    // // create interface controller, use controller type.
+    // public static void setController(Controller newcontroller) {
+    //     controller = newcontroller;
+    //     // give it an empty controller
+    // }
 
 }
