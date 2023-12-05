@@ -3,6 +3,7 @@ package BackEnd.server;
 import com.sun.net.httpserver.*;
 
 import BackEnd.database.RecipeListDatabase;
+import FrontEnd.Constants;
 
 import java.io.*;
 import java.net.*;
@@ -52,8 +53,8 @@ public class ShareRequestHandler implements HttpHandler{
         userID = userID.substring(0,userID.indexOf("&"));
         //userID now contains userID and recipeName now contains recipeName
 
-        System.out.println("userID " + userID);
-        System.out.println("recipeName " + recipeName);
+        //System.out.println("userID " + userID);
+        //System.out.println("recipeName " + recipeName);
 
         JSONObject recipe = RecipeListDatabase.getRecipeByIdAndNameAsJSON(userID, recipeName);
 
@@ -63,19 +64,29 @@ public class ShareRequestHandler implements HttpHandler{
 
         StringBuilder htmlBuilder = new StringBuilder();
         htmlBuilder
+                .append("<!DOCTYPE html>")
                 .append("<html>")
-                .append("<body>")
-                .append("<h1>")
+
+                //Head
+                .append("<head>")
+                .append("<title>PantryPal - " + recipeName + "</title>")
+                .append("</head>")
+
+                //Body
+                .append("<body style=\"background-color: #C6F5E4;\">")
+                .append("<header style=\"background-color: #3EB489; margin: 0; padding: 0;\"><h1 style=\"font-family:arial;margin:0;text-align:center;\">PantyPal</h1></header>")
+
+                .append("<h2 style=\"font-family:arial;text-align:left;\">")
                 .append("Recipe Name: " + recipeName)
-                .append("</h1>")
+                .append("</h2>")
                 .append("<br>")
-                .append("<img src=\"recipeImage.jpg\" alt=\"" + recipeName + " image\" width=\"500\">") // height=\"600\">")
+                .append("<img style=\"display:block;margin-left:auto;margin-right:auto;\" src=\"recipeImage.jpg\" alt=\"" + recipeName + " image\" width=\"500\">") // height=\"600\">")
                 .append("<br>")
-                .append("<h2>")
+                .append("<h2 style=\"font-family:arial;text-align:left;\">")
                 .append("Ingredients: " + ingredients)
                 .append("</h2>")
                 .append("<br>")
-                .append("<h2>")
+                .append("<h2 style=\"font-family:arial;text-align:left;\">")
                 .append("Directions: " + directions)
                 .append("</h2>")
                 .append("</body>")
