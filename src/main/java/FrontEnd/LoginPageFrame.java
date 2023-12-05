@@ -1,8 +1,8 @@
 package FrontEnd;
 
-import BackEnd.*; //This is only because we do not have a HTTP Server yet. Fix and remove asap
-
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
@@ -112,6 +112,8 @@ class LoginAccountInfo extends VBox {
     private UsernameInfo username;
     private PasswordInfo password;
 
+    private CheckBox rememberMe;
+
     LoginAccountInfo() {
         this.setPrefSize(Constants.WINDOW_WIDTH, 100);
         this.setStyle(Constants.boldBackgroundColor);
@@ -119,6 +121,8 @@ class LoginAccountInfo extends VBox {
 
         username = new UsernameInfo();
         password = new PasswordInfo();
+        rememberMe = new CheckBox("Remember This Login");
+        rememberMe.setStyle(Constants.defaultTextStyle);
         VBox.setMargin(password, new Insets(60, 0, 0, 0));
 
         CreateAccountButton = new Button("Go to Create Account"); // text displayed on add button
@@ -127,7 +131,7 @@ class LoginAccountInfo extends VBox {
         VBox.setMargin(CreateAccountButton, new Insets(50, 0, 0, 0));
 
 
-        this.getChildren().addAll(username,password,CreateAccountButton); // adding buttons to footer
+        this.getChildren().addAll(username,password,rememberMe,CreateAccountButton); // adding buttons to footer
         this.setAlignment(Pos.CENTER); // aligning the buttons to center
         this.setSpacing(10);
 
@@ -141,6 +145,10 @@ class LoginAccountInfo extends VBox {
     }
     public String getPassword() {
         return password.getPassword();
+    }
+
+    public boolean getRememberMeBoolean(){
+        return rememberMe.isSelected();
     }
 }
 
@@ -204,6 +212,14 @@ public class LoginPageFrame extends BorderPane{
         addListeners();
     }
 
+    public void setAccountCreationButtonAction(EventHandler<ActionEvent> eventHandler) {
+        AccountCreationButton.setOnAction(eventHandler);
+    }
+
+    public void setLoginButtonAction(EventHandler<ActionEvent> eventHandler) {
+        LoginButton.setOnAction(eventHandler);
+    }
+    
     public void addListeners()
     {
 
@@ -223,22 +239,20 @@ public class LoginPageFrame extends BorderPane{
                 String PasswordText = Password.getText();
                 String Re_Entered_PasswordText = ComfirmPassword.getText();
 
-                if(UserDatabase.usernameExists(NameText)){
-                    ErrorSys.quickErrorPopup("Username Already Exists");
-                }else{
-                    if(!PasswordText.equals(Re_Entered_PasswordText)){
-                        ErrorSys.quickErrorPopup("Password and Retyped Password Do Not Match");
-                    }else{
-                        String userId = UserDatabase.createUser(NameText, PasswordText);
-                        RecipeListDatabase.createEmptyRecipeList(userId);
+                HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove this when controllers implemented
 
+                if(!PasswordText.equals(Re_Entered_PasswordText)){
+                    ErrorSys.quickErrorPopup("Password and Retyped Password Do Not Match");
+                }else{
+                    String response = httpRequestModel.performSignupRequest(NameText, PasswordText);
+                    if(response.equals("Username Already Exists")){
+                        ErrorSys.quickErrorPopup("Username Already Exists");
+                    }else if(response.equals("Account Successfully Created!")){
                         newStage.close();
                         Alert alert = new Alert(AlertType.INFORMATION, "Account Successfully Created!", ButtonType.OK);
                         alert.showAndWait();
-
                     }
                 }
-
                 
             });
 
@@ -266,22 +280,25 @@ public class LoginPageFrame extends BorderPane{
             username = info.getName();
             password = info.getPassword();
 
-            if(UserDatabase.usernameExists(username)){
-                userId = UserDatabase.getIdByUsernamePassword(username, password);
-                if(userId != null){ //Username password combo valid
-                    
-                    //Download storage.json recipelist from database
-                    
-                    try{
-                        JSONObject recipeList = RecipeListDatabase.getRecipelistByIdAsJSON(userId);
-                        FileWriter fw = new FileWriter(new File("storage.json"));
-                        fw.write(recipeList.toJSONString());
-                    }catch(Exception writeerror){
-                        writeerror.printStackTrace();
+            HTTPRequestModel testModel = new HTTPRequestModel(); //TODO: This should be handled by the controller eventually! This is just until someone completes the controllers
+
+            String userID = testModel.performLoginRequest(username, password);
+
+            if(userID != null){
+                               
+                    if(info.getRememberMeBoolean()){
+                        try{
+                            FileWriter fw = new FileWriter(new File("user.txt"));
+                            fw.write(userID);
+                            fw.close();
+                        }catch(Exception rememberException){
+                            rememberException.printStackTrace();
+                        }
+                        
                     }
-                    
+
                     //Set program UserID
-                    UserID.setUserID(userId);
+                    UserID.setUserID(userID);
 
                     //Go to recipe list page
                     stage = (Stage) LoginButton.getScene().getWindow();
@@ -291,11 +308,9 @@ public class LoginPageFrame extends BorderPane{
                     stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
                     stage.setResizable(false);
                     stage.show();
-                }else{
-                    ErrorSys.quickErrorPopup("Incorrect Login Information");
-                }
+
             }else{
-                ErrorSys.quickErrorPopup("Incorrect Login Information");
+                ErrorSys.quickErrorPopup("Login Failed");
             }
 
             

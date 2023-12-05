@@ -64,6 +64,7 @@ class ViewRecipePageFooter extends HBox {
 	private Button BackButton;
 	private Button EditButton;
 	private Button DeleteButton;
+    private Button shareButton;
 	
 	ViewRecipePageFooter() {
 		this.setPrefSize(Constants.WINDOW_WIDTH, 100);
@@ -79,7 +80,10 @@ class ViewRecipePageFooter extends HBox {
         DeleteButton = new Button("Delete"); // text displayed on add button
         DeleteButton.setStyle(Constants.defaultButtonStyle);
 
-        this.getChildren().addAll(BackButton, EditButton, DeleteButton); // adding buttons to footer
+        shareButton = new Button("Share"); // text displayed on add button
+        shareButton.setStyle(Constants.defaultButtonStyle);
+
+        this.getChildren().addAll(BackButton, EditButton, DeleteButton, shareButton); // adding buttons to footer
         this.setAlignment(Pos.CENTER); // aligning the buttons to center
 	}
 	
@@ -93,6 +97,10 @@ class ViewRecipePageFooter extends HBox {
 	
 	public Button getDeleteButton() {
         return DeleteButton;
+    }
+
+    public Button getShareButton(){
+        return shareButton;
     }
 	
 }
@@ -115,6 +123,7 @@ public class ViewRecipePageFrame extends BorderPane {
     Button newBackButton;
     Button newEditButton;
     Button newDeleteButton;
+    Button shareButton;
     
     ViewRecipePageFrame(Recipe recipe, Stage stage) {
     	
@@ -131,6 +140,7 @@ public class ViewRecipePageFrame extends BorderPane {
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
         
+        shareButton = footer.getShareButton();
         newBackButton = footer.getBackButton();
         newEditButton = footer.getEditButton();
         newDeleteButton = footer.getDeleteButton();
@@ -181,6 +191,10 @@ public class ViewRecipePageFrame extends BorderPane {
         	
                 //deletes recipe
                 JSONSaver.removeByName(recipe.getRecipeName());
+
+                //Saves change to server
+                HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
+                String response = httpRequestModel.performRecipeListPOSTRequest();
                 
                 // returns to recipe list page
                 // I just did what was there for back button. This is quite jank tbh
@@ -193,6 +207,15 @@ public class ViewRecipePageFrame extends BorderPane {
 
             }
         );
+
+        shareButton.setOnAction(e -> {
+
+            Stage popupStage = new Stage();
+            popupStage.setTitle("Share");
+            popupStage.setScene(new Scene(new SharePopup(recipe.getRecipeName()), Constants.SHAREWINDOWWIDTH, Constants.SHAREWINDOWHEIGHT));
+            popupStage.show();
+
+        });
         
     }
 
