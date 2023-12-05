@@ -176,7 +176,30 @@ public class LoginPageFrame extends BorderPane{
     Button AccountCreationButton;
     Button LoginButton;
 
+    public String getUsername(){
+        return username;
+    }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public LoginAccountInfo getInfo() {
+        return info;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Button getLoginButton() {
+        return LoginButton;
+    }
+
+    public Button getAccountCreationButton() {
+        return AccountCreationButton;
+    }
+ 
     LoginPageFrame()
     {
         /**
@@ -212,13 +235,13 @@ public class LoginPageFrame extends BorderPane{
         addListeners();
     }
 
-    public void setAccountCreationButtonAction(EventHandler<ActionEvent> eventHandler) {
-        AccountCreationButton.setOnAction(eventHandler);
-    }
+    // public void setAccountCreationButtonAction(EventHandler<ActionEvent> eventHandler) {
+    //     AccountCreationButton.setOnAction(eventHandler);
+    // }
 
-    public void setLoginButtonAction(EventHandler<ActionEvent> eventHandler) {
-        LoginButton.setOnAction(eventHandler);
-    }
+    // public void setLoginButtonAction(EventHandler<ActionEvent> eventHandler) {
+    //     LoginButton.setOnAction(eventHandler);
+    // }
     
     public void addListeners()
     {
