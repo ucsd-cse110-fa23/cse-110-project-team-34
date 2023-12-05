@@ -57,7 +57,7 @@ public class NewRecipePageFrameController implements Controller {
         // String directions;
         // String mealTypeString = "Breakfast";
         // try {
-        //     mealTypeString = getMealTypeString();
+        //     mealTypeString = view.getMealTypeString();
         // } catch (Exception badMealType) {
         //     ErrorSys.quickErrorPopup("No Meal Type Selected!\nPlease select a meal type.");
         //     return;
@@ -83,8 +83,11 @@ public class NewRecipePageFrameController implements Controller {
         // ingredients = (String) recipeJSON.get("ingredients");
         // directions = (String) recipeJSON.get("directions");
 
+        // Recipe recipe = view.getRecipe();
         // recipe = new Recipe(name, ingredients, directions);
+        // RecipeContent content = view.getContent();
         // content = new RecipeContent(recipe);
+        // ScrollPane scrollPane = view.getScrollPane();
         // scrollPane = new ScrollPane(content);
         // scrollPane.setFitToWidth(true);
         // scrollPane.setFitToHeight(true);
@@ -114,15 +117,24 @@ public class NewRecipePageFrameController implements Controller {
     }
 
     public void handleBreakfastButton(ActionEvent event) {
-
+        view.getBreakfastButton().setStyle(Constants.defaultButtonPressedStyle);
+        view.getLunchButton().setStyle(Constants.defaultButtonStyle);
+        view.getDinnerButton().setStyle(Constants.defaultButtonStyle);
+        view.setMealType(1);
     }
 
     public void handleLunchButton(ActionEvent event) {
-
+        view.getBreakfastButton().setStyle(Constants.defaultButtonPressedStyle);
+        view.getLunchButton().setStyle(Constants.defaultButtonStyle);
+        view.getDinnerButton().setStyle(Constants.defaultButtonStyle);
+        view.setMealType(2);
     }
 
     public void handleDinnerButton(ActionEvent event) {
-
+        view.getBreakfastButton().setStyle(Constants.defaultButtonPressedStyle);
+        view.getLunchButton().setStyle(Constants.defaultButtonStyle);
+        view.getDinnerButton().setStyle(Constants.defaultButtonStyle);
+        view.setMealType(3);
     }
 
 }
