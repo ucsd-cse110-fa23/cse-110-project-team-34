@@ -3,13 +3,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "ChatGPTTest",
-            "request": "launch",
-            "mainClass": "ChatGPTTest",
-            "projectName": "cse-110-project-team-34"
-        },
-        {
-            "type": "java",
             "name": "Server",
             "request": "launch",
             "mainClass": "BackEnd.server.Server",

@@ -23,23 +23,5 @@ public class ChatGPTTest {
     void setUp() {
         
     }
-    
-    //@Test
-    public static void main(String[] args) {
-        Scanner input;
-        try {
-            input = new Scanner(new File("storage.json"), StandardCharsets.UTF_8);
-            while (input.hasNextLine())
-            {
-                System.out.println(input.nextLine());
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-            
-        
-    }
 
 }
