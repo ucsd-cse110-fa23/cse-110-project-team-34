@@ -203,7 +203,7 @@ public class HTTPRequestModel {
             ErrorSys.quickErrorPopup("Error: Server Unavailable");
             return null;
         }catch(Exception e){
-            ErrorSys.quickErrorPopup("Unknown Error!");
+            ErrorSys.quickErrorPopup("Unknown Error! POST");
             return null;
         }
 

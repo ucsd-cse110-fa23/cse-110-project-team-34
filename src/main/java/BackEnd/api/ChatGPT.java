@@ -79,6 +79,7 @@ public class ChatGPT {
             e.printStackTrace();
         }
             
+        System.out.println(valid);
 
         if(valid.toLowerCase().trim().equals("yes")){
             return true;
@@ -92,7 +93,7 @@ public class ChatGPT {
         String recipeIngredientList = null;
         String recipeDirections = null;
 
-        if(verifyIngredients(ingredients)){
+        if(true){//verifyIngredients(ingredients)){ Verifying ingredients list not needed right now. Prompt needs to be edited.
             recipeName = createRecipeName(ingredients, mealType);
         }else{
             return "INVALID_INGREDIENTS_ERROR";
@@ -149,10 +150,6 @@ public class ChatGPT {
         }
 
         return directions.trim();
-    }
-
-    public String createRecipePromptFromIngredientList(String ingredients, String mealType){
-        return "Temp";
     }
 
     private String[] parseOutput(String chatOutput) {
