@@ -40,6 +40,11 @@ class ViewRecipe extends VBox {
     ViewRecipe(Recipe recipe) {
         this.setPadding(new Insets(50));
 
+        Image image = new Image(recipe.getImg());
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(400);
+        imageView.setFitHeight(275);
+
         ingredientsLabel = new Label("Ingredients: " + recipe.getIngredients());
         ingredientsLabel.setWrapText(true);
         ingredientsLabel.setStyle(Constants.defaultTextStyle);
@@ -50,7 +55,7 @@ class ViewRecipe extends VBox {
         directionsLabel = new Label("Directions: " + recipe.getDirections());
         directionsLabel.setWrapText(true);
         directionsLabel.setStyle(Constants.defaultTextStyle);
-        this.getChildren().addAll(ingredientsLabel, r, directionsLabel);
+        this.getChildren().addAll(imageView, ingredientsLabel, r, directionsLabel);
         this.setAlignment(Pos.CENTER);
     }
 
@@ -138,7 +143,7 @@ public class ViewRecipePageFrame extends BorderPane {
     	
     	scrollPane = new ScrollPane(details);
         scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
+        // scrollPane.setFitToHeight(true);
         
         shareButton = footer.getShareButton();
         newBackButton = footer.getBackButton();
@@ -152,7 +157,7 @@ public class ViewRecipePageFrame extends BorderPane {
          * Set element positions here
          */
         this.setTop(vBox);
-        this.setCenter(details);
+        this.setCenter(scrollPane);
         this.setBottom(footer);
 
 
