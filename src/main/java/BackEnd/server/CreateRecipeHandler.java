@@ -47,6 +47,8 @@ public class CreateRecipeHandler implements HttpHandler{
       URI uri = httpExchange.getRequestURI();
       String query = uri.getQuery();
       String boundaryNum = query.substring(query.indexOf("=")+1);
+      String mealType = boundaryNum.substring(boundaryNum.indexOf("=")+1);
+      boundaryNum = boundaryNum.substring(0, boundaryNum.indexOf("&"));
 
       InputStream inStream = httpExchange.getRequestBody();
       
@@ -67,7 +69,22 @@ public class CreateRecipeHandler implements HttpHandler{
 
       ChatGPT chatGPT = new ChatGPT();
 
-      
+
+      int count = 0;
+      int maxTries = 3;
+      while(true) {
+        try {
+            response = chatGPT.createRecipeAsJSONString(audioText, mealType);
+            if(response == null){
+              throw new Exception("ChatGPT Response Invalid");
+            }
+            break;
+        }catch (Exception e) {
+            if (++count >= maxTries){
+              return "CHAT_GPT_FAILED_ERROR";
+            };
+        }
+      }
 
       return response;
     }
