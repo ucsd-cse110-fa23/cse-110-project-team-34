@@ -251,32 +251,32 @@ public class NewRecipePageFrame extends BorderPane{
         addListeners();
     }
 
-    public void setNewBackButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+    public void setNewBackButtonAction(EventHandler<ActionEvent> eventHandler) {
         newBackButton.setOnAction(eventHandler);
     }
 
-    public void setNewSaveButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+    public void setNewSaveButtonAction(EventHandler<ActionEvent> eventHandler) {
         newSaveButton.setOnAction(eventHandler);
     }
     
-    public void setNewGenerateButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+    public void setNewGenerateButtonAction(EventHandler<ActionEvent> eventHandler) {
         newGenerateButton.setOnAction(eventHandler);
     }
     
     
-    public void setRecordButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+    public void setRecordButtonAction(EventHandler<ActionEvent> eventHandler) {
         recordButton.setOnAction(eventHandler);
     }
 
-    public void setBreakfastButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+    public void setBreakfastButtonAction(EventHandler<ActionEvent> eventHandler) {
         breakfastButton.setOnAction(eventHandler);
     }
 
-    public void setLunchButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+    public void setLunchButtonAction(EventHandler<ActionEvent> eventHandler) {
         lunchButton.setOnAction(eventHandler);
     }
 
-    public void setDinnerButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+    public void setDinnerButtonAction(EventHandler<ActionEvent> eventHandler) {
         dinnerButton.setOnAction(eventHandler);
     }
   
