@@ -166,7 +166,7 @@ public class ViewRecipePageFrame extends BorderPane {
         newBackButton.setOnAction(e -> {
         	
         	// returns to recipe list page
-        	RecipeListPageFrame frontPage = new RecipeListPageFrame();
+        	RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
             stage.setTitle("PantryPal");
             stage.getIcons().add(new Image(Constants.defaultIconPath));
             stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
@@ -198,7 +198,7 @@ public class ViewRecipePageFrame extends BorderPane {
                 
                 // returns to recipe list page
                 // I just did what was there for back button. This is quite jank tbh
-                RecipeListPageFrame frontPage = new RecipeListPageFrame();
+                RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
                 stage.setTitle("PantryPal");
                 stage.getIcons().add(new Image(Constants.defaultIconPath));
                 stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));

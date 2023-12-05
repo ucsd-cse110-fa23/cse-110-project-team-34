@@ -12,7 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 import java.io.*;
-
+import java.time.LocalDateTime;
 
 /**
  * Simple recipe display for recipe list
@@ -22,7 +22,7 @@ class RecipeSimple extends HBox{
     private Recipe recipe;
     private Label recipeName;
     private Button viewButton;
-
+    private Label mealType;
 
     RecipeSimple(Recipe r){
         this.setPrefSize(Constants.WINDOW_WIDTH-100, 60);
@@ -37,6 +37,10 @@ class RecipeSimple extends HBox{
         recipeName.setStyle(Constants.defaultTextStyle);
         recipeName.setAlignment(Pos.CENTER_LEFT);
 
+        mealType = new Label(r.getMealType());
+        mealType.setStyle(Constants.defaultTagStyle);
+        mealType.setAlignment(Pos.CENTER_LEFT);
+
         Region growableRegion = new Region();
         HBox.setHgrow(growableRegion, Priority.ALWAYS);
 
@@ -45,7 +49,7 @@ class RecipeSimple extends HBox{
         viewButton.setMinWidth(Button.USE_PREF_SIZE);
         viewButton.setAlignment(Pos.CENTER_RIGHT);
 
-        this.getChildren().addAll(recipeName, growableRegion, viewButton);
+        this.getChildren().addAll(recipeName, growableRegion, mealType, viewButton);
         this.setAlignment(Pos.CENTER);
         
         addListeners();
@@ -57,6 +61,14 @@ class RecipeSimple extends HBox{
 
     public Recipe getRecipe(){
         return recipe;
+    }
+
+    public String getRecipeName() {
+        return recipeName.toString();
+    }
+
+    public void setRecipeName(String recipeName) {
+        this.recipeName.setText(recipeName);
     }
     
     public void addListeners() {
@@ -76,7 +88,7 @@ class RecipeSimple extends HBox{
  */
 public class RecipeList extends VBox{
     
-    RecipeList() {
+    public RecipeList(String fileName) {
         this.setSpacing(4); // sets spacing between recipes
         this.setPrefSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         this.setStyle(Constants.defaultBackgroundColor);
@@ -90,7 +102,7 @@ public class RecipeList extends VBox{
 
             JSONObject jsonObject;
 
-            FileReader reader = new FileReader("storage.json");
+            FileReader reader = new FileReader(fileName);
 
             if (reader.ready()) { //checks if file is empty
             	jsonObject = (JSONObject) parser.parse(reader); //Read JSON file
@@ -103,15 +115,17 @@ public class RecipeList extends VBox{
             		String recipeName = (String) recipe.get("recipeName");
                     String ingredients = (String) recipe.get("ingredients");
                     String directions = (String) recipe.get("directions");
+                    String dateCreated = (String) recipe.get("date");
+                    String mealType = (String) recipe.get("mealType");
                     
-                    this.getChildren().add(new RecipeSimple(new Recipe(recipeName, ingredients, directions)));
+                    this.getChildren().add(new RecipeSimple(new Recipe(recipeName, ingredients, directions, dateCreated, mealType)));
             	}
             }
         	reader.close();
-        	//parser.close();
         	
         } catch (FileNotFoundException e) {
-            JSONSaver.saveRecipeList(this);
+            this.sortNewest();
+            JSONSaver.saveRecipeList(this, fileName);
         	//System.out.println("exception in RecipeList: file not found");
         } catch (IOException e) {
         	System.out.println("exception in RecipeList: io exception");
@@ -126,6 +140,161 @@ public class RecipeList extends VBox{
             if(list.getChildren().get(i) instanceof RecipeSimple){
                 Recipe temp = ((RecipeSimple)list.getChildren().get(i)).getRecipe();
                 getChildren().add(new RecipeSimple(temp));
+            }
+        }
+    }
+
+    // Sorts RecipeList Alphabetically
+    public void sortAlphabetically() {
+        for (int i = 0; i < this.getChildren().size(); i++) {
+
+            for (int j = i + 1; j < this.getChildren().size(); j++) {
+
+                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
+                Recipe f = first.getRecipe();
+
+                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
+                Recipe s = second.getRecipe();
+
+                if (f.getRecipeName().compareToIgnoreCase(s.getRecipeName()) < 0) {
+
+                    String tempName = f.getRecipeName();
+                    String tempIng = f.getIngredients();
+                    String tempDir = f.getDirections();
+                    String tempDat = f.getDateCreated();
+                    String tempCre = f.getMealType();
+
+                    f.setRecipeName(s.getRecipeName());
+                    f.setIngredients(s.getIngredients());
+                    f.setDirections(s.getDirections());
+                    f.setDateCreated(s.getDateCreated());
+                    f.setMealType(s.getMealType());
+
+                    s.setRecipeName(tempName);
+                    s.setIngredients(tempIng);
+                    s.setDirections(tempDir);
+                    s.setDateCreated(tempDat);
+                    s.setMealType(tempCre);
+                }
+            }
+        }
+    }
+    
+    // Sort Recipe List Reverse Alphabetically
+    public void sortReverseAlphabetically() {
+        for (int i = 0; i < this.getChildren().size(); i++) {
+
+            for (int j = i + 1; j < this.getChildren().size(); j++) {
+
+                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
+                Recipe f = first.getRecipe();
+
+                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
+                Recipe s = second.getRecipe();
+
+                if (f.getRecipeName().compareToIgnoreCase(s.getRecipeName()) > 0) {
+
+                    String tempName = f.getRecipeName();
+                    String tempIng = f.getIngredients();
+                    String tempDir = f.getDirections();
+                    String tempDat = f.getDateCreated();
+                    String tempCre = f.getMealType();
+
+                    f.setRecipeName(s.getRecipeName());
+                    f.setIngredients(s.getIngredients());
+                    f.setDirections(s.getDirections());
+                    f.setDateCreated(s.getDateCreated());
+                    f.setMealType(s.getMealType());
+
+                    s.setRecipeName(tempName);
+                    s.setIngredients(tempIng);
+                    s.setDirections(tempDir);
+                    s.setDateCreated(tempDat);
+                    s.setMealType(tempCre);
+                }
+            }
+        }
+    }
+
+    // Sort Recipe List from Newest to Oldest
+    public void sortNewest() {
+        for (int i = 0; i < this.getChildren().size(); i++) {
+
+            for (int j = i + 1; j < this.getChildren().size(); j++) {
+
+                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
+                Recipe f = first.getRecipe();
+
+                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
+                Recipe s = second.getRecipe();
+
+                if (LocalDateTime.parse(f.getDateCreated()).compareTo(LocalDateTime.parse(s.getDateCreated())) > 0) {
+
+                    String tempName = f.getRecipeName();
+                    String tempIng = f.getIngredients();
+                    String tempDir = f.getDirections();
+                    String tempDat = f.getDateCreated();
+                    String tempCre = f.getMealType();
+
+                    f.setRecipeName(s.getRecipeName());
+                    f.setIngredients(s.getIngredients());
+                    f.setDirections(s.getDirections());
+                    f.setDateCreated(s.getDateCreated());
+                    f.setMealType(s.getMealType());
+
+                    s.setRecipeName(tempName);
+                    s.setIngredients(tempIng);
+                    s.setDirections(tempDir);
+                    s.setDateCreated(tempDat);
+                    s.setMealType(tempCre);
+                }
+            }
+        }
+    }
+
+    // Sort Recipe List from Oldest to Newest
+    public void sortOldest() {
+        for (int i = 0; i < this.getChildren().size(); i++) {
+
+            for (int j = i + 1; j < this.getChildren().size(); j++) {
+
+                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
+                Recipe f = first.getRecipe();
+
+                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
+                Recipe s = second.getRecipe();
+
+                if (LocalDateTime.parse(f.getDateCreated()).compareTo(LocalDateTime.parse(s.getDateCreated())) < 0) {
+
+                    String tempName = f.getRecipeName();
+                    String tempIng = f.getIngredients();
+                    String tempDir = f.getDirections();
+                    String tempDat = f.getDateCreated();
+                    String tempCre = f.getMealType();
+
+                    f.setRecipeName(s.getRecipeName());
+                    f.setIngredients(s.getIngredients());
+                    f.setDirections(s.getDirections());
+                    f.setDateCreated(s.getDateCreated());
+                    f.setMealType(s.getMealType());
+
+                    s.setRecipeName(tempName);
+                    s.setIngredients(tempIng);
+                    s.setDirections(tempDir);
+                    s.setDateCreated(tempDat);
+                    s.setMealType(tempCre);
+                }
+            }
+        }
+    }
+
+    // Filter Recipe List for Meal Type
+    public void filter(String type) {
+        for (int i = this.getChildren().size() - 1; i >= 0; i--) {
+            Recipe f = ((RecipeSimple) this.getChildren().get(i)).getRecipe();
+
+            if (f.getMealType().compareTo(type) != 0) {
+                this.getChildren().remove(i);
             }
         }
     }

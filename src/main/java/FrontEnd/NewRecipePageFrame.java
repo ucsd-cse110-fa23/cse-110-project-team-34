@@ -15,6 +15,7 @@ import BackEnd.api.Whisper;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 
 class NewRecipePageHeader extends HBox {
     private Button Breakfast;
@@ -188,7 +189,7 @@ public class NewRecipePageFrame extends BorderPane{
          */
 
         this.stage = stage;
-        recipe = new Recipe("Sample Recipe", "Sample Ingredients", "Sample Directions");
+        recipe = new Recipe("Sample Recipe", "Sample Ingredients", "Sample Directions", "Sample Date & Time", "Sample Meal Type");
         header = new NewRecipePageHeader();
         footer = new NewRecipePageFooter();
         generator = new RecipeGenerator();
@@ -229,7 +230,7 @@ public class NewRecipePageFrame extends BorderPane{
 
         // Add button functionality
         newBackButton.setOnAction(e -> {
-            RecipeListPageFrame frontPage = new RecipeListPageFrame();
+            RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
             stage.setTitle("PantryPal");
             stage.getIcons().add(new Image(Constants.defaultIconPath));
             stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
@@ -240,10 +241,12 @@ public class NewRecipePageFrame extends BorderPane{
 
         newSaveButton.setOnAction(e -> {
             //add recipe to recipeList
+            recipe.setDateCreated(LocalDateTime.now().toString());
             list.getChildren().add(new RecipeSimple(recipe));
             reverse.getChildren().add(0, new RecipeSimple(recipe));
+            list.sortNewest();
             //save to .json
-            JSONSaver.saveRecipeList(list);
+            JSONSaver.saveRecipeList(list,"storage.json");
             
             HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
             String response = httpRequestModel.performRecipeListPOSTRequest();
@@ -256,6 +259,7 @@ public class NewRecipePageFrame extends BorderPane{
             String ingredients;
             String directions;
             String mealTypeString = "Breakfast";
+            String date = LocalDateTime.now().toString();
             try{
                 mealTypeString = getMealTypeString();
             }catch(Exception badMealType){
@@ -283,7 +287,7 @@ public class NewRecipePageFrame extends BorderPane{
             ingredients = (String)recipeJSON.get("ingredients");
             directions = (String)recipeJSON.get("directions");
 
-            recipe = new Recipe(name, ingredients, directions);
+            recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
             content = new RecipeContent(recipe);
             scrollPane = new ScrollPane(content);
             scrollPane.setFitToWidth(true);
