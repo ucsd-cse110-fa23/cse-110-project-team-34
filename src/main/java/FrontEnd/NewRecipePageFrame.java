@@ -178,6 +178,33 @@ public class NewRecipePageFrame extends BorderPane{
     Button newGenerateButton;
     Button recordButton;
 
+    public Button getNewSaveButton() {
+        return newSaveButton;
+    }
+
+    public Button getNewBackButton() {
+        return newBackButton;
+    }
+
+    public Button getNewGenerateButton() {
+        return newGenerateButton;
+    }
+
+    public Button getRecordButton() {
+        return recordButton;
+    }
+
+    public Button getBreakfastButton() {
+        return breakfastButton;
+    }
+
+    public Button getLunchButton() {
+        return lunchButton;
+    }
+
+    public Button getDinnerButton() {
+        return dinnerButton;
+    }
 
     NewRecipePageFrame(Stage stage, RecipeList recipeList, RecipeList reverseList)
     {
