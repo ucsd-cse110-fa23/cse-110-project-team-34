@@ -89,6 +89,10 @@ public class RecipeListPageFrame extends BorderPane{
         return reversedList;
     }
 
+    public Button getlogoutButton() {
+        return logoutButton;
+    }
+
     RecipeListPageFrame()
     {
         /**
@@ -123,7 +127,7 @@ public class RecipeListPageFrame extends BorderPane{
 
 
         //Add button listeners
-        addListeners();
+        //addListeners();
     }
 
     public void addListeners()
@@ -162,6 +166,10 @@ public class RecipeListPageFrame extends BorderPane{
         });
     }
 
+
+    public void setlogoutButtonAction(EventHandler<ActionEvent> eventHandler) {
+        logoutButton.setOnAction(eventHandler);
+    }
 
     public void setNewRecipeButtonAction(EventHandler<ActionEvent> eventHandler) {
         newRecipeButton.setOnAction(eventHandler);

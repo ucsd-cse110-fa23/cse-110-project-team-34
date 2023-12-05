@@ -1,22 +1,25 @@
 package FrontEnd;
 
+import java.io.File;
+
 import javax.swing.text.View;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class RecipeListPageFrameController {
+public class RecipeListPageFrameController implements Controller {
     private RecipeListPageFrame view;
     private HTTPRequestModel model;
 
     // need to create model
-    //private Model model;
+    // private Model model;
     public RecipeListPageFrameController(RecipeListPageFrame view, HTTPRequestModel model) {
         this.view = view;
         this.model = model;
 
         this.view.setNewRecipeButtonAction(this::handleNewRecipeButton);
+        this.view.setlogoutButtonAction(this::handlelogoutButton);
     }
 
     private void handleNewRecipeButton(ActionEvent event) {
@@ -25,6 +28,23 @@ public class RecipeListPageFrameController {
         stage.setScene(new Scene(NewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
         stage.setResizable(false);
         stage.show();
-        // String response = model does something;
     }
+
+    private void handlelogoutButton(ActionEvent event) {
+        try {
+            File userFile = new File("user.txt");
+            userFile.delete();
+        } catch (Exception fileException) {
+            fileException.printStackTrace();
+        }
+
+        Stage stage = (Stage) view.getlogoutButton().getScene().getWindow();
+        LoginPageFrame newLoginPage = new LoginPageFrame();
+        Controller frontPController = new LoginPageFrameController(newLoginPage, model);
+        Main.setController(frontPController);
+        stage.setScene(new Scene(newLoginPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+        stage.setResizable(false);
+        stage.show();
+    }
+
 }
