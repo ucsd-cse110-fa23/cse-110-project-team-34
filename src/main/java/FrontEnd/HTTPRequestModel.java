@@ -104,11 +104,11 @@ public class HTTPRequestModel {
      * Performs create recipe and returns the new recipe as a JSON String
      * @return Returns the recipe JSON String
      */
-    public String performCreateRecipeRequest(){
+    public String performCreateRecipeRequest(String mealType){
 
         try {
             long longBound = System.currentTimeMillis();
-            String urlString = "http://localhost:8100/createRecipe?="+longBound;
+            String urlString = "http://localhost:8100/createRecipe?bound="+longBound+"&mealtype="+mealType;
             URL url = new URI(urlString).toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");

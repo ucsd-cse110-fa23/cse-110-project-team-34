@@ -21,7 +21,7 @@ public class ChatGPT {
     // could change maybe
     private static final String MODEL = "text-davinci-003";
 
-    public String[] runChatGPT(String option) throws IOException, InterruptedException, URISyntaxException{
+    public String runChatGPT(String option) throws IOException, InterruptedException, URISyntaxException{
 
         // Set request parameters
         // change prompt to the json file, which we can get from reading mp3 file with whisper.
@@ -65,8 +65,94 @@ public class ChatGPT {
 
         JSONArray choices = responseJson.getJSONArray("choices");
         String generatedText = choices.getJSONObject(0).getString("text");
-        String[] output = parseOutput(generatedText);
-        return output;
+        //String[] output = parseOutput(generatedText);
+        return generatedText;
+    }
+
+    public boolean verifyIngredients(String ingredients){
+        String prompt = "Would you say the following items surrounded by brackets are generally ingredients? [" + ingredients + "]" + " If you believe so, please respond with 'YES'. If you don't believe so, please respond with 'NO'.";
+        
+        String valid = "no";
+        try{
+            valid = runChatGPT(prompt);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+            
+
+        if(valid.toLowerCase().trim().equals("yes")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public String createRecipeAsJSONString(String ingredients, String mealType){
+        String recipeName = null;
+        String recipeIngredientList = null;
+        String recipeDirections = null;
+
+        if(verifyIngredients(ingredients)){
+            recipeName = createRecipeName(ingredients, mealType);
+        }else{
+            return "INVALID_INGREDIENTS_ERROR";
+        }
+
+        if(recipeName != null){
+            recipeIngredientList = createIngredientList(ingredients, recipeName);
+            recipeDirections = createRecipeDirections(recipeName, recipeIngredientList);
+        }
+
+        JSONObject recipe = new JSONObject();
+        recipe.put("recipeName", recipeName);
+        recipe.put("ingredients", recipeIngredientList);
+        recipe.put("directions", recipeDirections);
+
+        return recipe.toString();
+
+    }
+
+    public String createRecipeName(String ingredients, String mealType){
+        String prompt = "Create a recipe that is for " + mealType + " that uses the following ingredients surrounded in brackets [" + ingredients + "]. Please respond with only the recipe name and nothing else.";
+        
+        String recipeName = null;
+        try{
+            recipeName = runChatGPT(prompt);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return recipeName.trim();
+    }
+
+    public String createIngredientList(String ing, String recipeName){
+        String prompt = "Create an ingredients list as a comma separated list that includes the ingredient and the quantity in parentheses and is for the following dish '" + recipeName + "'' that includes the following ingredients '" + ing + "' and any other ingredients needed. Please respond with only the ingredients list and nothing else.";
+        
+        String ingredients = null;
+        try{
+            ingredients = runChatGPT(prompt);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return ingredients.trim();
+    }
+
+    public String createRecipeDirections(String recipeName, String ingredientList){
+        String prompt = "Create directions as a numbered list for the following dish '" + recipeName + "'' that uses the following ingredients '" + ingredientList + "'. Please respond with only the directions and nothing else.";
+        
+        String directions = null;
+        try{
+            directions = runChatGPT(prompt);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return directions.trim();
+    }
+
+    public String createRecipePromptFromIngredientList(String ingredients, String mealType){
+        return "Temp";
     }
 
     private String[] parseOutput(String chatOutput) {
@@ -74,4 +160,6 @@ public class ChatGPT {
             String lines[] = chatOutput.split("#");
             return lines;
     }
+
+
 }
