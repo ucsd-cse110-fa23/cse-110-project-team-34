@@ -25,6 +25,8 @@ public class RecipeListPageFrameController implements Controller {
     private void handleNewRecipeButton(ActionEvent event) {
         Stage stage = (Stage) view.getNewRecipeButton().getScene().getWindow();
         NewRecipePageFrame NewRecipePage = new NewRecipePageFrame(stage, view.getRecipeList(), view.getReversedList());
+        NewRecipePageFrameController newRepPageCon = new NewRecipePageFrameController(NewRecipePage, model);
+        Main.setController(newRepPageCon);
         stage.setScene(new Scene(NewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
         stage.setResizable(false);
         stage.show();

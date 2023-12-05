@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
-public class NewRecipePageFrameController {
+public class NewRecipePageFrameController implements Controller{
 
     NewRecipePageFrame view;
     HTTPRequestModel model;
@@ -13,8 +13,8 @@ public class NewRecipePageFrameController {
         this.view = view;
         this.model = model;
 
-        this.view.setNewBackButtonAction(null);
-        this.view.setNewSaveButtonAction(null);
+        this.view.setNewBackButtonAction(this::handleNewBackButton);
+        this.view.setNewSaveButtonAction(this::handleNewSaveButton);
         this.view.setNewGenerateButtonAction(null);
         this.view.setRecordButtonAction(null);
         this.view.setBreakfastButtonAction(null);
@@ -36,10 +36,10 @@ public class NewRecipePageFrameController {
     public void handleNewSaveButton(ActionEvent event) {
 
             //add recipe to recipeList
-            list.getChildren().add(new RecipeSimple(recipe));
-            reverse.getChildren().add(0, new RecipeSimple(recipe));
+            view.getList().getChildren().add(new RecipeSimple(view.getRecipe()));
+            view.getReverse().getChildren().add(0, new RecipeSimple((view.getRecipe())));
             //save to .json
-            JSONSaver.saveRecipeList(list);
+            JSONSaver.saveRecipeList(view.getList());
             
             HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
             String response = httpRequestModel.performRecipeListPOSTRequest();
