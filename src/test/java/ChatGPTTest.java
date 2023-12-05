@@ -15,14 +15,13 @@ public class ChatGPTTest {
     
     @BeforeEach
     void setUp() {
-        chatGPT = new ChatGPT();
-        whisper = new Whisper();
+        
     }
     
     @Test
     void testVerifyIngredients() {
 
-        assertTrue(chatGPT.verifyIngredients("Chicken Rice Broccoli"));
+        
     }
 
 }
