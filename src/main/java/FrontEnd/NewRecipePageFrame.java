@@ -2,6 +2,8 @@ package FrontEnd;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -249,6 +251,35 @@ public class NewRecipePageFrame extends BorderPane{
         addListeners();
     }
 
+    public void setNewBackButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newBackButton.setOnAction(eventHandler);
+    }
+
+    public void setNewSaveButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newSaveButton.setOnAction(eventHandler);
+    }
+    
+    public void setNewGenerateButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newGenerateButton.setOnAction(eventHandler);
+    }
+    
+    
+    public void setRecordButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+        recordButton.setOnAction(eventHandler);
+    }
+
+    public void setBreakfastButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+        breakfastButton.setOnAction(eventHandler);
+    }
+
+    public void setLunchButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+        lunchButton.setOnAction(eventHandler);
+    }
+
+    public void setDinnerButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+        dinnerButton.setOnAction(eventHandler);
+    }
+  
     public void addListeners()
     {
 
