@@ -210,7 +210,9 @@ public class ViewRecipePageFrame extends BorderPane {
 
         shareButton.setOnAction(e -> {
 
-            
+            Stage popupStage = new Stage();
+            popupStage.setScene(new Scene(new SharePopup(recipe.getRecipeName()), Constants.SHAREWINDOWWIDTH, Constants.SHAREWINDOWHEIGHT));
+            popupStage.show();
 
         });
         
