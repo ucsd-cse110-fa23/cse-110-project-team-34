@@ -290,6 +290,8 @@ public class NewRecipePageFrame extends BorderPane{
             scrollPane.setFitToHeight(true);
             this.setCenter(content);
 
+            this.newGenerateButton.setText("Re-generate");
+
         });
 
         recordButton.setOnAction(e -> {
