@@ -27,7 +27,7 @@ public class Main extends Application {
                 String userID = Files.readString(Paths.get(userTxt.toURI()));
                 if(userID != null && !userID.trim().equals("")){
                     UserID.setUserID(userID);
-                
+                    
                     HTTPRequestModel httpRequestModel = new HTTPRequestModel();
                     String success = httpRequestModel.performRecipeListGETRequest();
 
@@ -35,7 +35,7 @@ public class Main extends Application {
 
                     if(success != null){
                         RecipeListPageFrame recipeListPF = new RecipeListPageFrame();
-
+                        controller = new RecipeListPageFrameController(recipeListPF, httpRequestModel);
                         // Create scene of mentioned size with the border pane
                         primaryStage.setScene(new Scene(recipeListPF, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
 
