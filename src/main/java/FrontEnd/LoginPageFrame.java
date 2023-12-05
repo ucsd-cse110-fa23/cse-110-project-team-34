@@ -235,13 +235,13 @@ public class LoginPageFrame extends BorderPane{
         addListeners();
     }
 
-    // public void setAccountCreationButtonAction(EventHandler<ActionEvent> eventHandler) {
-    //     AccountCreationButton.setOnAction(eventHandler);
-    // }
+    public void setAccountCreationButtonAction(EventHandler<ActionEvent> eventHandler) {
+        AccountCreationButton.setOnAction(eventHandler);
+    }
 
-    // public void setLoginButtonAction(EventHandler<ActionEvent> eventHandler) {
-    //     LoginButton.setOnAction(eventHandler);
-    // }
+    public void setLoginButtonAction(EventHandler<ActionEvent> eventHandler) {
+        LoginButton.setOnAction(eventHandler);
+    }
     
     public void addListeners()
     {
