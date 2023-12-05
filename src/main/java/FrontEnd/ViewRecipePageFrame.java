@@ -117,6 +117,18 @@ public class ViewRecipePageFrame extends BorderPane {
     Button newBackButton;
     Button newEditButton;
     Button newDeleteButton;
+
+	public Button getBackButton() {
+        return newBackButton;
+    }
+	
+	public Button getEditButton() {
+        return newEditButton;
+    }
+	
+	public Button getDeleteButton() {
+        return newDeleteButton;
+    }
     
     ViewRecipePageFrame(Recipe recipe, Stage stage) {
     	

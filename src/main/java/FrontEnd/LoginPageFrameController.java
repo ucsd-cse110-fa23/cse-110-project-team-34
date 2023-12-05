@@ -2,20 +2,20 @@ package FrontEnd;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class LoginPageFrameController {
+public class LoginPageFrameController implements Controller{
     private LoginPageFrame view;
     private HTTPRequestModel model;
 
     public LoginPageFrameController(LoginPageFrame view, HTTPRequestModel model) {
         this.view = view;
         this.model = model;
-
         this.view.setAccountCreationButtonAction(this::handleAccountCreationButton);
         this.view.setLoginButtonAction(this::handleLoginButton);
 
@@ -33,7 +33,7 @@ public class LoginPageFrameController {
         username = view.getInfo().getName();
         password = view.getInfo().getPassword();
 
-        // HTTPRequestModel testModel = new HTTPRequestModel(); 
+        //HTTPRequestModel testModel = new HTTPRequestModel(); 
 
         String userID = model.performLoginRequest(username, password);
 
@@ -55,10 +55,12 @@ public class LoginPageFrameController {
             Stage stage = view.getStage();
             // Go to recipe list page
             stage = (Stage) view.getLoginButton().getScene().getWindow();
-            RecipeListPageFrame frontPage = new RecipeListPageFrame();
+            RecipeListPageFrame recipeListPage = new RecipeListPageFrame();
+            Controller c1 = new RecipeListPageFrameController(recipeListPage, model);
+            Main.setController(c1);
             stage.setTitle("PantryPal");
             stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            stage.setScene(new Scene(recipeListPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
             stage.setResizable(false);
             stage.show();
 

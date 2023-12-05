@@ -173,8 +173,8 @@ public class LoginPageFrame extends BorderPane{
     /**
      * Declare Scene Buttons Here
      */
-    Button AccountCreationButton;
-    Button LoginButton;
+    private Button AccountCreationButton;
+    private Button LoginButton;
 
     public String getUsername(){
         return username;
@@ -229,17 +229,19 @@ public class LoginPageFrame extends BorderPane{
         this.setTop(headercomplete);
         this.setCenter(info);
         this.setBottom(footer);
-
+        this.requestLayout();
 
         //Add button listeners
-        addListeners();
+        // addListeners();
     }
 
     public void setAccountCreationButtonAction(EventHandler<ActionEvent> eventHandler) {
+        System.out.println("pls be in here");
         AccountCreationButton.setOnAction(eventHandler);
     }
 
     public void setLoginButtonAction(EventHandler<ActionEvent> eventHandler) {
+        System.out.println("pls be in he2");
         LoginButton.setOnAction(eventHandler);
     }
     

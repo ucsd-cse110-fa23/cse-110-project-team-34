@@ -174,6 +174,45 @@ public class NewRecipePageFrame extends BorderPane{
     private int mealType = 0; //1 == breakfast, 2 == lunch, 3 == dinner, else undef/null
     private Stage stage;
 
+    public void setMealType(int num) {
+        mealType = num;
+    }
+    public void setAudioForm(AudioFormat audioForm){
+        audioFormat = audioForm;
+    }
+
+    public void setRecording(boolean TF) {
+        recording = TF;
+    }
+
+    public boolean getRecording() {
+        return recording;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public RecipeList getList() {
+        return list;
+    }
+
+    public RecipeList getReverse() {
+        return reverse;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public RecipeContent getContent() {
+        return content;
+    }
+
+    public ScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
     /**
      * Declare Scene Buttons Here
      */
@@ -208,6 +247,14 @@ public class NewRecipePageFrame extends BorderPane{
 
     public Button getDinnerButton() {
         return dinnerButton;
+    }
+
+    // public NewRecipePageFrame newRep() {
+    //     return this;
+    // }
+
+    public void helpSetCenter(RecipeContent content) {
+        this.content = content;
     }
 
     NewRecipePageFrame(Stage stage, RecipeList recipeList, RecipeList reverseList)
@@ -250,7 +297,7 @@ public class NewRecipePageFrame extends BorderPane{
 
 
         //Add button listeners
-        addListeners();
+        //addListeners();
     }
 
     public void setNewBackButtonAction(EventHandler<ActionEvent> eventHandler) {
@@ -399,7 +446,7 @@ public class NewRecipePageFrame extends BorderPane{
         
     }
 
-    private AudioFormat getAudioFormat() {
+    public AudioFormat getAudioFormat() {
         // the number of samples of audio per second.
         // 44100 represents the typical sample rate for CD-quality audio.
         float sampleRate = 44100;
@@ -424,7 +471,7 @@ public class NewRecipePageFrame extends BorderPane{
             bigEndian);
     }
 
-    private void startRecording() {
+    public void startRecording() {
         Thread t = new Thread(
             new Runnable() {
                 @Override
@@ -460,7 +507,7 @@ public class NewRecipePageFrame extends BorderPane{
         t.start();
     }
 
-    private void stopRecording() {
+    public void stopRecording() {
         targetDataLine.stop();
         targetDataLine.close();
     }
