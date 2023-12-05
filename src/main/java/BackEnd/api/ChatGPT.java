@@ -14,6 +14,7 @@ import org.json.JSONObject;
 // import org.json.simple.JSONArray;
 // import org.json.simple.JSONObject;
 // import org.json.simple.parser.*;
+import org.json.simple.parser.JSONParser;
 
 public class ChatGPT {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/completions";
@@ -28,7 +29,7 @@ public class ChatGPT {
         // option for breakfast, lunch or dinner
         // 
         String prompt = option;
-        int maxTokens = 120;
+        int maxTokens = 250;
 
         // Create a request body which you will pass into request object
         JSONObject requestBody = new JSONObject();
@@ -89,7 +90,7 @@ public class ChatGPT {
     }
 
     public String createRecipeAsJSONString(String ingredients, String mealType){
-        String recipeName = null;
+        /**String recipeName = null;
         String recipeIngredientList = null;
         String recipeDirections = null;
 
@@ -109,7 +110,38 @@ public class ChatGPT {
         recipe.put("ingredients", recipeIngredientList);
         recipe.put("directions", recipeDirections);
 
-        return recipe.toString();
+        return recipe.toString();**/
+
+        String recipeNamePrompt = "Create a recipe that is for " + mealType + " that uses the following ingredients surrounded in brackets [" + ingredients + "]. Please respond with only the recipe name and nothing else.";
+        String recipeIngredientListPrompt = "Create an ingredients list as a comma separated list that includes the ingredient and the quantity in parentheses and is for the dish indicated by the value associated with the key 'recipeName' that includes the following ingredients '" + ingredients + "' and any other ingredients needed. Please respond with only the ingredients list and nothing else.";
+        String recipeDirectionsPrompt = "Create directions as a numbered list for the dish indicated by the value associated with the key 'recipeName' that uses the ingredient list indicated by the value associated with the key 'ingredients'. Please respond with only the directions and nothing else.";
+        String prompt = "Respond in the form of a single line json object formatted string where the key \"recipeName\" is assigned to value equal to the response to the following prompt indicated by brackets [" + recipeNamePrompt + "], the key \"ingredients\" is assigned to value equal to the response to the following prompt indicated by brackets [" + recipeIngredientListPrompt + "], and the final key \"directions'\" is assigned to value equal to the response to the following prompt indicated by brackets [" + recipeDirectionsPrompt + "]. Make sure to use double quotes for the json object keys.";
+
+        String recipeJSONString = null;
+
+        try{
+            recipeJSONString = runChatGPT(prompt);
+            recipeJSONString = recipeJSONString.substring(recipeJSONString.indexOf("{"), recipeJSONString.indexOf("}")+1);
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+        //System.out.println(recipeJSONString);
+
+        JSONParser p = new JSONParser();
+        org.json.simple.JSONObject jsonObj = null;
+        try{
+            jsonObj = (org.json.simple.JSONObject) p.parse(recipeJSONString);
+            jsonObj.get("recipeName");
+            jsonObj.get("ingredients");
+            jsonObj.get("directions");
+        }catch(org.json.simple.parser.ParseException e){
+            e.printStackTrace();
+            return null;
+        }
+        
+        return jsonObj.toString();
 
     }
 

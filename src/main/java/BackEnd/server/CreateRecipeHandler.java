@@ -75,6 +75,9 @@ public class CreateRecipeHandler implements HttpHandler{
       while(true) {
         try {
             response = chatGPT.createRecipeAsJSONString(audioText, mealType);
+            if(response == null){
+              throw new Exception("ChatGPT Response Invalid");
+            }
             break;
         }catch (Exception e) {
             if (++count >= maxTries){
