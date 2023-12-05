@@ -41,14 +41,13 @@ public class NewRecipePageFrameController implements Controller{
             //save to .json
             JSONSaver.saveRecipeList(view.getList());
             
-            HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
-            String response = httpRequestModel.performRecipeListPOSTRequest();
+            String response = model.performRecipeListPOSTRequest();
 
             //sort tasks, tasks are added at end, just show by reverse order (for loop starting at the end)
     }
 
     public void handleNewGenerateButton(ActionEvent event) {
-
+        
     }
 
     public void handleRecordButton(ActionEvent event) {
