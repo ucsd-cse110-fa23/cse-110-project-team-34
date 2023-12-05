@@ -200,20 +200,13 @@ public class HTTPRequestModel {
             String response = in.readLine();
             in.close();
 
-            return response;
+            return "SUCCESS_POST_REQUEST";
         } catch (ConnectException  ex) {
             ErrorSys.quickErrorPopup("Error: Server Unavailable");
             return null;
         }catch(Exception e){
             ErrorSys.quickErrorPopup("Unknown Error! POST");
             e.printStackTrace();
-
-            try {
-                System.out.println(Files.readString(Paths.get("storage.json")));
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
             return null;
         }
 

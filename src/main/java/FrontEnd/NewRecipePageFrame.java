@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javax.sound.sampled.*;
@@ -250,6 +251,11 @@ public class NewRecipePageFrame extends BorderPane{
             
             HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
             String response = httpRequestModel.performRecipeListPOSTRequest();
+
+            if(response.equals("SUCCESS_POST_REQUEST")){
+                Alert alert = new Alert(AlertType.INFORMATION, "Recipe Successfully Saved!", ButtonType.OK);
+                alert.showAndWait();
+            }
 
             //sort tasks, tasks are added at end, just show by reverse order (for loop starting at the end)
         });
