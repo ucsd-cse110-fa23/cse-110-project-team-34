@@ -55,8 +55,9 @@ public class RecipeListPageFrame extends BorderPane{
     private VBox recipeListComplete;
     private ScrollPane recipeListScrollPane;
     private Label recipeListLabel;
-    private RecipeList recipeList;
-    private RecipeList reversedList;
+    private RecipeListDisplay recipeList;
+    private RecipeListData recipeListData;
+    private RecipeListDisplay reversedList;
     private HBox buttonMenu;
     private AnchorPane left;
     private AnchorPane middle;
@@ -95,7 +96,7 @@ public class RecipeListPageFrame extends BorderPane{
          */
         header = new RecipeListPageHeader();
         footer = new RecipeListPageFooter();
-        recipeList = new RecipeList(fileName); //default constructor reads .json file
+        recipeList = new RecipeListDisplay(fileName); //default constructor reads .json file
         recipeListComplete = new VBox();
         buttonMenu = new HBox();
         right = new AnchorPane();
@@ -123,7 +124,7 @@ public class RecipeListPageFrame extends BorderPane{
         recipeListLabel = new Label("Recipe List:");
         recipeListLabel.setStyle(Constants.defaultTextStyle);
         recipeListLabel.setPadding(new Insets(10));
-        reversedList = new RecipeList(recipeList); //Uses new RecipeList constructor to reverse the order
+        reversedList = new RecipeListDisplay(recipeList); //Uses new RecipeList constructor to reverse the order
 
         // Align Menu Bar Elements
         left.getChildren().add(recipeListLabel);
@@ -180,15 +181,16 @@ public class RecipeListPageFrame extends BorderPane{
 
         alphaOpt.setOnAction(e -> {
 
-            recipeList = new RecipeList("storage.json");
+            recipeList = new RecipeListDisplay("storage.json");
+            recipeListData = recipeList.getRecipeListData();
 
-            if (filterMenuName != "Filter" && filterMenuName != "All") {
-                recipeList.filter(filterMenuName);
+            if (filterMenuName != "Filter") {
+                recipeListData.filter(filterMenuName);
             }
-            recipeList.sortAlphabetically();
+            recipeListData.sortAlphabetically();
 
             // Reload Sorted Recipe List from alternate json file
-            JSONSaver.saveRecipeList(recipeList, "sorted.json");
+            JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
             Stage stage = (Stage) newRecipeButton.getScene().getWindow();
             RecipeListPageFrame frontPage = new RecipeListPageFrame(alphaOpt.getText(), filterMenuName, "sorted.json");
             stage.setTitle("PantryPal");
@@ -200,15 +202,16 @@ public class RecipeListPageFrame extends BorderPane{
 
         reverseOpt.setOnAction(e -> {
  
-            recipeList = new RecipeList("storage.json");
+            recipeList = new RecipeListDisplay("storage.json");
+            recipeListData = recipeList.getRecipeListData();
 
-            if (filterMenuName != "Filter" && filterMenuName != "All") {
-                recipeList.filter(filterMenuName);
+            if (filterMenuName != "Filter") {
+                recipeListData.filter(filterMenuName);
             }
-            recipeList.sortReverseAlphabetically();
+            recipeListData.sortReverseAlphabetically();
 
             // Reload Sorted Recipe List from alternate json file
-            JSONSaver.saveRecipeList(recipeList, "sorted.json");
+            JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
             Stage stage = (Stage) newRecipeButton.getScene().getWindow();
             RecipeListPageFrame frontPage = new RecipeListPageFrame(reverseOpt.getText(), filterMenuName, "sorted.json");
             stage.setTitle("PantryPal");
@@ -220,15 +223,16 @@ public class RecipeListPageFrame extends BorderPane{
 
         newOpt.setOnAction(e -> {
 
-            recipeList = new RecipeList("storage.json");
+            recipeList = new RecipeListDisplay("storage.json");
+            recipeListData = recipeList.getRecipeListData();
 
-            if (filterMenuName != "Filter" && filterMenuName != "All") {
-                recipeList.filter(filterMenuName);
+            if (filterMenuName != "Filter") {
+                recipeListData.filter(filterMenuName);
             }
-            recipeList.sortNewest();
+            recipeListData.sortNewest();
 
             // Reload Sorted Recipe List from alternate json file
-            JSONSaver.saveRecipeList(recipeList, "sorted.json");
+            JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
             Stage stage = (Stage) newRecipeButton.getScene().getWindow();
             RecipeListPageFrame frontPage = new RecipeListPageFrame(newOpt.getText(), filterMenuName, "sorted.json");
             stage.setTitle("PantryPal");
@@ -240,15 +244,16 @@ public class RecipeListPageFrame extends BorderPane{
 
         oldOpt.setOnAction(e -> {
 
-            recipeList = new RecipeList("storage.json");
+            recipeList = new RecipeListDisplay("storage.json");
+            recipeListData = recipeList.getRecipeListData();
 
-            if (filterMenuName != "Filter" && filterMenuName != "All") {
-                recipeList.filter(filterMenuName);
+            if (filterMenuName != "Filter") {
+                recipeListData.filter(filterMenuName);
             }
-            recipeList.sortOldest();
+            recipeListData.sortOldest();
 
             // Reload Sorted Recipe List from alternate json file
-            JSONSaver.saveRecipeList(recipeList, "sorted.json");
+            JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
             Stage stage = (Stage) newRecipeButton.getScene().getWindow();
             RecipeListPageFrame frontPage = new RecipeListPageFrame(oldOpt.getText(), filterMenuName, "sorted.json");
             stage.setTitle("PantryPal");
@@ -260,20 +265,22 @@ public class RecipeListPageFrame extends BorderPane{
 
         all.setOnAction(e -> {
 
-            recipeList = new RecipeList("storage.json");
+            recipeList = new RecipeListDisplay("storage.json");
+            recipeListData = recipeList.getRecipeListData();
 
+            recipeListData.filter("All");
             if (sortMenuName == "A-Z") {
-                recipeList.sortAlphabetically();
+                recipeListData.sortAlphabetically();
             } else if (sortMenuName == "Z-A") {
-                recipeList.sortReverseAlphabetically();
+                recipeListData.sortReverseAlphabetically();
             } else if (sortMenuName == "Newest" || sortMenuName == "Sort") {
-                recipeList.sortNewest();
+                recipeListData.sortNewest();
             } else if (sortMenuName == "Oldest") {
-                recipeList.sortOldest();
+                recipeListData.sortOldest();
             }
 
             // Reload Filtered Recipe List from alternate json file
-            JSONSaver.saveRecipeList(recipeList, "filtered.json");
+            JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
             Stage stage = (Stage) newRecipeButton.getScene().getWindow();
             RecipeListPageFrame frontPage = new RecipeListPageFrame(sortMenuName, all.getText(), "filtered.json");
             stage.setTitle("PantryPal");
@@ -285,21 +292,22 @@ public class RecipeListPageFrame extends BorderPane{
 
         breakfast.setOnAction(e -> {
 
-            recipeList = new RecipeList("storage.json");
+            recipeList = new RecipeListDisplay("storage.json");
+            recipeListData = recipeList.getRecipeListData();
 
-            recipeList.filter("Breakfast");
+            recipeListData.filter("Breakfast");
             if (sortMenuName == "A-Z") {
-                recipeList.sortAlphabetically();
+                recipeListData.sortAlphabetically();
             } else if (sortMenuName == "Z-A") {
-                recipeList.sortReverseAlphabetically();
+                recipeListData.sortReverseAlphabetically();
             } else if (sortMenuName == "Newest" || sortMenuName == "Sort") {
-                recipeList.sortNewest();
+                recipeListData.sortNewest();
             } else if (sortMenuName == "Oldest") {
-                recipeList.sortOldest();
+                recipeListData.sortOldest();
             }
 
             // Reload Filtered Recipe List from alternate json file
-            JSONSaver.saveRecipeList(recipeList, "filtered.json");
+            JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
             Stage stage = (Stage) newRecipeButton.getScene().getWindow();
             RecipeListPageFrame frontPage = new RecipeListPageFrame(sortMenuName, breakfast.getText(), "filtered.json");
             stage.setTitle("PantryPal");
@@ -311,21 +319,22 @@ public class RecipeListPageFrame extends BorderPane{
 
         lunch.setOnAction(e -> {
 
-            recipeList = new RecipeList("storage.json");
+            recipeList = new RecipeListDisplay("storage.json");
+            recipeListData = recipeList.getRecipeListData();
 
-            recipeList.filter("Lunch");
+            recipeListData.filter("Lunch");
             if (sortMenuName == "A-Z") {
-                recipeList.sortAlphabetically();
+                recipeListData.sortAlphabetically();
             } else if (sortMenuName == "Z-A") {
-                recipeList.sortReverseAlphabetically();
+                recipeListData.sortReverseAlphabetically();
             } else if (sortMenuName == "Newest" || sortMenuName == "Sort") {
-                recipeList.sortNewest();
+                recipeListData.sortNewest();
             } else if (sortMenuName == "Oldest") {
-                recipeList.sortOldest();
+                recipeListData.sortOldest();
             }
 
             // Reload Filtered Recipe List from alternate json file
-            JSONSaver.saveRecipeList(recipeList, "filtered.json");
+            JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
             Stage stage = (Stage) newRecipeButton.getScene().getWindow();
             RecipeListPageFrame frontPage = new RecipeListPageFrame(sortMenuName, lunch.getText(), "filtered.json");
             stage.setTitle("PantryPal");
@@ -337,21 +346,22 @@ public class RecipeListPageFrame extends BorderPane{
 
         dinner.setOnAction(e -> {
 
-            recipeList = new RecipeList("storage.json");
+            recipeList = new RecipeListDisplay("storage.json");
+            recipeListData = recipeList.getRecipeListData();
 
-            recipeList.filter("Dinner");
+            recipeListData.filter("Dinner");
             if (sortMenuName == "A-Z") {
-                recipeList.sortAlphabetically();
+                recipeListData.sortAlphabetically();
             } else if (sortMenuName == "Z-A") {
-                recipeList.sortReverseAlphabetically();
+                recipeListData.sortReverseAlphabetically();
             } else if (sortMenuName == "Newest" || sortMenuName == "Sort") {
-                recipeList.sortNewest();
+                recipeListData.sortNewest();
             } else if (sortMenuName == "Oldest") {
-                recipeList.sortOldest();
+                recipeListData.sortOldest();
             }
 
             // Reload Filtered Recipe List from alternate json file
-            JSONSaver.saveRecipeList(recipeList, "filtered.json");
+            JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
             Stage stage = (Stage) newRecipeButton.getScene().getWindow();
             RecipeListPageFrame frontPage = new RecipeListPageFrame(sortMenuName, dinner.getText(), "filtered.json");
             stage.setTitle("PantryPal");

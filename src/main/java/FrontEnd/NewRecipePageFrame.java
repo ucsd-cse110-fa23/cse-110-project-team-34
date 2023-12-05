@@ -151,8 +151,8 @@ public class NewRecipePageFrame extends BorderPane{
     private RecipeGenerator generator;
     private Recipe recipe;
     private RecipeContent content;
-    private RecipeList list;
-    private RecipeList reverse;
+    private RecipeListDisplay list;
+    private RecipeListDisplay reverse;
     private AudioFormat audioFormat;
     private TargetDataLine targetDataLine;
 
@@ -176,7 +176,7 @@ public class NewRecipePageFrame extends BorderPane{
     Button recordButton;
 
 
-    NewRecipePageFrame(Stage stage, RecipeList recipeList, RecipeList reverseList)
+    NewRecipePageFrame(Stage stage, RecipeListDisplay recipeList, RecipeListDisplay reverseList)
     {
         /**
          * Initialize / Assign Elements Here
@@ -238,7 +238,6 @@ public class NewRecipePageFrame extends BorderPane{
             recipe.setDateCreated(LocalDateTime.now().toString());
             list.getChildren().add(new RecipeSimple(recipe));
             reverse.getChildren().add(0, new RecipeSimple(recipe));
-            list.sortNewest();
             //save to .json
             JSONSaver.saveRecipeList(list, "storage.json");
             //sort tasks, tasks are added at end, just show by reverse order (for loop starting at the end)
