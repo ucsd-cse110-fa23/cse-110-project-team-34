@@ -149,48 +149,8 @@ public class EditRecipePageFrame extends BorderPane {
         this.setCenter(details);
         this.setBottom(footer);
         
-        //addListeners();
     }
     
-    public void addListeners() {
-
-        // Add button functionality
-        newBackButton.setOnAction(e -> {
-        	// returns to recipe list page
-        	newStage.close();
-            }
-        );
-
-        newSaveButton.setOnAction(e -> {
-        	// saves changes and returns to detailed view
-        	newRecipeName = details.getRecipeName();
-            newIngredients = details.getIngredients();
-            newDirections = details.getDirections();
-            
-        	recipe.setRecipeName(newRecipeName);
-        	recipe.setIngredients(newIngredients);
-        	recipe.setDirections(newDirections);
-        	
-        	//open recipe details page with updated info
-        	/**ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, stage);
-        	stage.setScene(new Scene(ViewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-        	stage.setResizable(false);
-        	stage.show();*/
-            parent.refresh();
-        	
-        	//update RecipeList/file:  with new recipe list
-            JSONSaver.updateJSON(originalRecipeName, recipe);
-
-            //Save change to server
-            HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
-            String response = httpRequestModel.performRecipeListPOSTRequest();
-
-        	
-        	newStage.close();//close edit page
-            }
-        );  
-    }
-
     public void setBackButtonAction(EventHandler<ActionEvent> eventHandler) {
         newBackButton.setOnAction(eventHandler);
     }

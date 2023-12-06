@@ -231,116 +231,14 @@ public class LoginPageFrame extends BorderPane{
         this.setBottom(footer);
         this.requestLayout();
 
-        //Add button listeners
-        // addListeners();
     }
 
     public void setAccountCreationButtonAction(EventHandler<ActionEvent> eventHandler) {
-        System.out.println("pls be in here");
         AccountCreationButton.setOnAction(eventHandler);
     }
 
     public void setLoginButtonAction(EventHandler<ActionEvent> eventHandler) {
-        System.out.println("pls be in he2");
         LoginButton.setOnAction(eventHandler);
     }
     
-    public void addListeners()
-    {
-
-        // Add button functionality
-        AccountCreationButton.setOnAction(create -> {
-        	
-            Stage newStage = new Stage();
-            newStage.setTitle("Create Account");
-
-            TextField Username = new TextField("");//"Enter Username");
-            TextField Password = new TextField("");//"Enter Password");
-            TextField ComfirmPassword = new TextField("");//"Re-enter Password");
-
-            Button CreateAccount = new Button("Create Account");
-            CreateAccount.setOnAction(e -> { //add CreateButton functionality
-                String NameText = Username.getText();
-                String PasswordText = Password.getText();
-                String Re_Entered_PasswordText = ComfirmPassword.getText();
-
-                HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove this when controllers implemented
-
-                if(!PasswordText.equals(Re_Entered_PasswordText)){
-                    ErrorSys.quickErrorPopup("Password and Retyped Password Do Not Match");
-                }else{
-                    String response = httpRequestModel.performSignupRequest(NameText, PasswordText);
-                    if(response.equals("Username Already Exists")){
-                        ErrorSys.quickErrorPopup("Username Already Exists");
-                    }else if(response.equals("Account Successfully Created!")){
-                        newStage.close();
-                        Alert alert = new Alert(AlertType.INFORMATION, "Account Successfully Created!", ButtonType.OK);
-                        alert.showAndWait();
-                    }
-                }
-                
-            });
-
-            //Create layout for new page
-            VBox AccountDetail = new VBox(10);
-            AccountDetail.getChildren().addAll(
-                    new Label("Username:"),
-                    Username,
-                    new Label("Password:"),
-                    Password,
-                    new Label("Re-enter Password:"),
-                    ComfirmPassword,
-                    CreateAccount
-            );
-            AccountDetail.setStyle("-fx-font-size: 18;");
-            //Set scene
-            Scene CreateAccountScene = new Scene(AccountDetail , 500, 600);
-            newStage.setScene(CreateAccountScene);
-            newStage.show();
-            }
-        );
-
-        LoginButton.setOnAction(e -> {
-            
-            username = info.getName();
-            password = info.getPassword();
-
-            HTTPRequestModel testModel = new HTTPRequestModel(); //TODO: This should be handled by the controller eventually! This is just until someone completes the controllers
-
-            String userID = testModel.performLoginRequest(username, password);
-
-            if(userID != null){
-                               
-                    if(info.getRememberMeBoolean()){
-                        try{
-                            FileWriter fw = new FileWriter(new File("user.txt"));
-                            fw.write(userID);
-                            fw.close();
-                        }catch(Exception rememberException){
-                            rememberException.printStackTrace();
-                        }
-                        
-                    }
-
-                    //Set program UserID
-                    UserID.setUserID(userID);
-
-                    //Go to recipe list page
-                    stage = (Stage) LoginButton.getScene().getWindow();
-                    RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
-                    stage.setTitle("PantryPal");
-                    stage.getIcons().add(new Image(Constants.defaultIconPath));
-                    stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-                    stage.setResizable(false);
-                    stage.show();
-
-            }else{
-                ErrorSys.quickErrorPopup("Login Failed");
-            }
-
-            
-
-            
-        });
-    }
 }

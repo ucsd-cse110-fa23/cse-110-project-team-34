@@ -183,6 +183,9 @@ public class NewRecipePageFrame extends BorderPane{
         audioFormat = audioForm;
     }
 
+    public void setRecipe(Recipe rec) {
+        recipe = rec;
+    }
     public void setRecording(boolean TF) {
         recording = TF;
     }
@@ -251,9 +254,6 @@ public class NewRecipePageFrame extends BorderPane{
         return dinnerButton;
     }
 
-    // public NewRecipePageFrame newRep() {
-    //     return this;
-    // }
 
     public void helpSetCenter(RecipeContent content) {
         this.content = content;
@@ -297,9 +297,6 @@ public class NewRecipePageFrame extends BorderPane{
         this.setCenter(content);
         this.setBottom(footer);
 
-
-        //Add button listeners
-        //addListeners();
     }
 
     public void setNewBackButtonAction(EventHandler<ActionEvent> eventHandler) {
@@ -329,131 +326,6 @@ public class NewRecipePageFrame extends BorderPane{
 
     public void setDinnerButtonAction(EventHandler<ActionEvent> eventHandler) {
         dinnerButton.setOnAction(eventHandler);
-    }
-  
-    public void addListeners()
-    {
-
-        // Add button functionality
-        newBackButton.setOnAction(e -> {
-            RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-            
-        });
-
-        newSaveButton.setOnAction(e -> {
-            //add recipe to recipeList
-            recipe.setDateCreated(LocalDateTime.now().toString());
-            list.getChildren().add(new RecipeSimple(recipe));
-            reverse.getChildren().add(0, new RecipeSimple(recipe));
-            list.sortNewest();
-            //save to .json
-            JSONSaver.saveRecipeList(list,"storage.json");
-            
-            HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
-            String response = httpRequestModel.performRecipeListPOSTRequest();
-
-            if(response.equals("SUCCESS_POST_REQUEST")){
-                Alert alert = new Alert(AlertType.INFORMATION, "Recipe Successfully Saved!", ButtonType.OK);
-                alert.showAndWait();
-            }
-
-            //sort tasks, tasks are added at end, just show by reverse order (for loop starting at the end)
-        });
-
-        newGenerateButton.setOnAction(e -> {
-            String name;
-            String ingredients;
-            String directions;
-            String mealTypeString = "Breakfast";
-            String date = LocalDateTime.now().toString();
-            try{
-                mealTypeString = getMealTypeString();
-            }catch(Exception badMealType){
-                ErrorSys.quickErrorPopup("No Meal Type Selected!\nPlease select a meal type.");
-                return;
-                //badMealType.printStackTrace();
-            }
-
-            HTTPRequestModel httpRequestModel = new HTTPRequestModel();
-            String recipeJSONString = httpRequestModel.performCreateRecipeRequest(mealTypeString);
-
-            if(recipeJSONString.equals("EMPTY_RECORDING_ERROR")){
-                ErrorSys.quickErrorPopup("Empty Recording");
-                return;
-            }else if(recipeJSONString.equals("CHAT_GPT_FAILED_ERROR")){
-                ErrorSys.quickErrorPopup("ChatGPT Failed\nLimit 3 Generates Per Minute!");
-                return;
-            }else if(recipeJSONString.equals("INVALID_INGREDIENTS_ERROR")){
-                ErrorSys.quickErrorPopup("Ingredients deemed inedible by ChatGPT");
-                return;
-            }
-
-            JSONObject recipeJSON = JSONSaver.jsonStringToObject(recipeJSONString);
-            name = (String)recipeJSON.get("recipeName");
-            ingredients = (String)recipeJSON.get("ingredients");
-            directions = (String)recipeJSON.get("directions");
-
-            recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
-            content = new RecipeContent(recipe);
-            scrollPane = new ScrollPane(content);
-            scrollPane.setFitToWidth(true);
-            scrollPane.setFitToHeight(true);
-            this.setCenter(content);
-
-            this.newGenerateButton.setText("Re-generate");
-
-        });
-
-        recordButton.setOnAction(e -> {
-
-            // 1) record voice
-            if(!recording){
-                recordButton.setStyle(Constants.recordButtonStyleOn);
-                recordButton.setText("Recording...");
-                audioFormat = getAudioFormat();
-                startRecording();
-                recording = true;
-            }else{
-                recordButton.setStyle(Constants.recordButtonStyleOff);
-                recordButton.setText("Record Ingredients");
-                stopRecording();
-                recording = false;
-            }
-            // 2) plug into chatGPT
-            // 3) get output and set to name, ingredients, directions
-
-
-            // recipe.setRecipeName(name);
-            // recipe.setIngredients(ingredients);
-            // recipe.setDirections(directions);
-        });
-
-        breakfastButton.setOnAction(e -> {
-            breakfastButton.setStyle(Constants.defaultButtonPressedStyle);
-            lunchButton.setStyle(Constants.defaultButtonStyle);
-            dinnerButton.setStyle(Constants.defaultButtonStyle);
-            mealType = 1;
-        });
-
-        lunchButton.setOnAction(e -> {
-            lunchButton.setStyle(Constants.defaultButtonPressedStyle);
-            breakfastButton.setStyle(Constants.defaultButtonStyle);
-            dinnerButton.setStyle(Constants.defaultButtonStyle);
-            mealType = 2;
-        });
-
-        dinnerButton.setOnAction(e -> {
-            dinnerButton.setStyle(Constants.defaultButtonPressedStyle);
-            breakfastButton.setStyle(Constants.defaultButtonStyle);
-            lunchButton.setStyle(Constants.defaultButtonStyle);
-            mealType = 3;
-        });
-        
     }
 
     public AudioFormat getAudioFormat() {

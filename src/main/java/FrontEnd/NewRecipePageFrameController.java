@@ -51,12 +51,12 @@ public class NewRecipePageFrameController implements Controller {
             //save to .json
             JSONSaver.saveRecipeList(view.getList(),"storage.json");
             
-            HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
-            String response = httpRequestModel.performRecipeListPOSTRequest();
+            // HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
+            String response = model.performRecipeListPOSTRequest();
 
             if(response.equals("SUCCESS_POST_REQUEST")){
                 Alert alert = new Alert(AlertType.INFORMATION, "Recipe Successfully Saved!", ButtonType.OK);
-                alert.showAndWait();
+                alert.showAndWait();    
             }
     }
 
@@ -93,8 +93,10 @@ public class NewRecipePageFrameController implements Controller {
         ingredients = (String) recipeJSON.get("ingredients");
         directions = (String) recipeJSON.get("directions");
 
-        Recipe recipe = view.getRecipe();
-        recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
+        // Recipe recipe = view.getRecipe();
+        // recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
+        Recipe recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
+        view.setRecipe(recipe);
         RecipeContent content = view.getContent();
         content = new RecipeContent(recipe);
         ScrollPane scrollPane = view.getScrollPane();
