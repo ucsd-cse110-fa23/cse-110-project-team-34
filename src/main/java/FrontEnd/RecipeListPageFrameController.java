@@ -232,7 +232,7 @@ public class RecipeListPageFrameController implements Controller {
         }
 
         // Reload Filtered Recipe List from alternate json file
-        JSONSaver.saveRecipeList(recipeList, "filtered.json");
+        JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
         Stage stage = (Stage) view.getNewRecipeButton().getScene().getWindow();
         RecipeListPageFrame frontPage = new RecipeListPageFrame(view.getSortMenuName(), view.getLunch().getText(),
                 "filtered.json");
@@ -262,7 +262,7 @@ public class RecipeListPageFrameController implements Controller {
         }
 
         // Reload Filtered Recipe List from alternate json file
-        JSONSaver.saveRecipeList(recipeList, "filtered.json");
+        JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
         Stage stage = (Stage) view.getNewRecipeButton().getScene().getWindow();
         RecipeListPageFrame frontPage = new RecipeListPageFrame(view.getSortMenuName(), view.getDinner().getText(),
                 "filtered.json");
