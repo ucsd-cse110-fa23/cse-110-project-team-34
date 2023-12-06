@@ -1,24 +1,13 @@
 package FrontEnd;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
-import javax.sound.sampled.*;
-import java.io.*;
-import java.net.URISyntaxException;
-import java.util.jar.Attributes.Name;
-
-import javafx.scene.control.Alert.AlertType;
-
-import org.json.simple.*;
 
 class LoginPageHeader extends HBox {
 
@@ -166,17 +155,40 @@ public class LoginPageFrame extends BorderPane{
     private String password;
     private VBox headercomplete;
 
-    private String userId;
+    //private String userId;
 
     Stage stage;
 
     /**
      * Declare Scene Buttons Here
      */
-    Button AccountCreationButton;
-    Button LoginButton;
+    private Button AccountCreationButton;
+    private Button LoginButton;
 
+    public String getUsername(){
+        return username;
+    }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public LoginAccountInfo getInfo() {
+        return info;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Button getLoginButton() {
+        return LoginButton;
+    }
+
+    public Button getAccountCreationButton() {
+        return AccountCreationButton;
+    }
+ 
     LoginPageFrame()
     {
         /**
@@ -206,10 +218,8 @@ public class LoginPageFrame extends BorderPane{
         this.setTop(headercomplete);
         this.setCenter(info);
         this.setBottom(footer);
+        this.requestLayout();
 
-
-        //Add button listeners
-        addListeners();
     }
 
     public void setAccountCreationButtonAction(EventHandler<ActionEvent> eventHandler) {
@@ -220,102 +230,4 @@ public class LoginPageFrame extends BorderPane{
         LoginButton.setOnAction(eventHandler);
     }
     
-    public void addListeners()
-    {
-
-        // Add button functionality
-        AccountCreationButton.setOnAction(create -> {
-        	
-            Stage newStage = new Stage();
-            newStage.setTitle("Create Account");
-
-            TextField Username = new TextField("");//"Enter Username");
-            TextField Password = new TextField("");//"Enter Password");
-            TextField ComfirmPassword = new TextField("");//"Re-enter Password");
-
-            Button CreateAccount = new Button("Create Account");
-            CreateAccount.setOnAction(e -> { //add CreateButton functionality
-                String NameText = Username.getText();
-                String PasswordText = Password.getText();
-                String Re_Entered_PasswordText = ComfirmPassword.getText();
-
-                HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove this when controllers implemented
-
-                if(!PasswordText.equals(Re_Entered_PasswordText)){
-                    ErrorSys.quickErrorPopup("Password and Retyped Password Do Not Match");
-                }else{
-                    String response = httpRequestModel.performSignupRequest(NameText, PasswordText);
-                    if(response.equals("Username Already Exists")){
-                        ErrorSys.quickErrorPopup("Username Already Exists");
-                    }else if(response.equals("Account Successfully Created!")){
-                        newStage.close();
-                        Alert alert = new Alert(AlertType.INFORMATION, "Account Successfully Created!", ButtonType.OK);
-                        alert.showAndWait();
-                    }
-                }
-                
-            });
-
-            //Create layout for new page
-            VBox AccountDetail = new VBox(10);
-            AccountDetail.getChildren().addAll(
-                    new Label("Username:"),
-                    Username,
-                    new Label("Password:"),
-                    Password,
-                    new Label("Re-enter Password:"),
-                    ComfirmPassword,
-                    CreateAccount
-            );
-            AccountDetail.setStyle("-fx-font-size: 18;");
-            //Set scene
-            Scene CreateAccountScene = new Scene(AccountDetail , 500, 600);
-            newStage.setScene(CreateAccountScene);
-            newStage.show();
-            }
-        );
-
-        LoginButton.setOnAction(e -> {
-            
-            username = info.getName();
-            password = info.getPassword();
-
-            HTTPRequestModel testModel = new HTTPRequestModel(); //TODO: This should be handled by the controller eventually! This is just until someone completes the controllers
-
-            String userID = testModel.performLoginRequest(username, password);
-
-            if(userID != null){
-                               
-                    if(info.getRememberMeBoolean()){
-                        try{
-                            FileWriter fw = new FileWriter(new File("user.txt"));
-                            fw.write(userID);
-                            fw.close();
-                        }catch(Exception rememberException){
-                            rememberException.printStackTrace();
-                        }
-                        
-                    }
-
-                    //Set program UserID
-                    UserID.setUserID(userID);
-
-                    //Go to recipe list page
-                    stage = (Stage) LoginButton.getScene().getWindow();
-                    RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
-                    stage.setTitle("PantryPal");
-                    stage.getIcons().add(new Image(Constants.defaultIconPath));
-                    stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-                    stage.setResizable(false);
-                    stage.show();
-
-            }else{
-                ErrorSys.quickErrorPopup("Login Failed");
-            }
-
-            
-
-            
-        });
-    }
 }

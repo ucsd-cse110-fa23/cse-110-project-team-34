@@ -1,7 +1,8 @@
 package FrontEnd;
 
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -129,6 +130,31 @@ public class ViewRecipePageFrame extends BorderPane {
     Button newEditButton;
     Button newDeleteButton;
     Button shareButton;
+
+	public Button getBackButton() {
+        return newBackButton;
+    }
+	
+	public Button getEditButton() {
+        return newEditButton;
+    }
+	
+	public Button getDeleteButton() {
+        return newDeleteButton;
+    }
+
+    public Button getShareButton(){
+        return shareButton;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
     
     ViewRecipePageFrame(Recipe recipe, Stage stage) {
     	
@@ -160,70 +186,24 @@ public class ViewRecipePageFrame extends BorderPane {
         this.setCenter(scrollPane);
         this.setBottom(footer);
 
+    }
 
-        //Add button listeners
-        addListeners();
+    public void setBackButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newBackButton.setOnAction(eventHandler);
+    }
+
+    public void setEditButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newEditButton.setOnAction(eventHandler);
+    }
+
+    public void setDeleteButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newDeleteButton.setOnAction(eventHandler);
+    }
+
+    public void setShareButtonAction(EventHandler<ActionEvent> eventHandler){
+        shareButton.setOnAction(eventHandler);
     }
     
-    public void addListeners() {
-
-        // Add button functionality
-        newBackButton.setOnAction(e -> {
-        	
-        	// returns to recipe list page
-        	RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-            }
-        );
-
-        newEditButton.setOnAction(e -> {
-        	
-        	//opens new window with textfields to edit recipe
-            Stage newStage = new Stage();
-        	EditRecipePageFrame editRecipePage = new EditRecipePageFrame(this.recipe, newStage, this);
-        	newStage.setScene(new Scene(editRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-        	newStage.setResizable(false);
-        	newStage.showAndWait();
-
-            }
-        );
-
-        newDeleteButton.setOnAction(e -> {
-        	
-                //deletes recipe
-                JSONSaver.removeByName(recipe.getRecipeName());
-
-                //Saves change to server
-                HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
-                String response = httpRequestModel.performRecipeListPOSTRequest();
-                
-                // returns to recipe list page
-                // I just did what was there for back button. This is quite jank tbh
-                RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
-                stage.setTitle("PantryPal");
-                stage.getIcons().add(new Image(Constants.defaultIconPath));
-                stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-                stage.setResizable(false);
-                stage.show();
-
-            }
-        );
-
-        shareButton.setOnAction(e -> {
-
-            Stage popupStage = new Stage();
-            popupStage.setTitle("Share");
-            popupStage.setScene(new Scene(new SharePopup(recipe.getRecipeName()), Constants.SHAREWINDOWWIDTH, Constants.SHAREWINDOWHEIGHT));
-            popupStage.show();
-
-        });
-        
-    }
-
     public void refresh(){
         this.header.refresh(this.recipe);
         this.details.refresh(this.recipe);

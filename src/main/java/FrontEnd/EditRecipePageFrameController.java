@@ -1,12 +1,9 @@
 package FrontEnd;
 
-import javax.swing.text.View;
 
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
-public class EditRecipePageFrameController {
+public class EditRecipePageFrameController implements Controller{
     EditRecipePageFrame view;
     HTTPRequestModel model;
 
@@ -34,12 +31,20 @@ public class EditRecipePageFrameController {
         	
         	//update RecipeList/file:  with new recipe list
             JSONSaver.updateJSON(view.getOriginalRecipeName(), view.getRecipe());
+            String success = model.performRecipeListPOSTRequest();
 
+            if(success.equals("Success!")){
+                
+            }
         	
         	view.getNewStage().close();//close edit page
     }
 
     private void handleNewBackButton(ActionEvent event) {
+        // might need to add controller to go back here...
+        // so when we click view, is a new controller set?
+        // it should set to this controller...so we should have a new controlelr set to something
+        // else
         view.getNewStage().close();
     }
 }

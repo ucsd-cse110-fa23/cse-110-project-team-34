@@ -7,6 +7,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.image.*;
 
 import org.json.simple.JSONArray;
@@ -15,7 +17,6 @@ import org.json.simple.parser.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Scanner;
 
 /**
  * Simple recipe display for recipe list
@@ -75,6 +76,9 @@ class RecipeSimple extends HBox{
         return recipe;
     }
 
+    public void setViewButtonAction(EventHandler<ActionEvent> eventHandler) {
+        viewButton.setOnAction(eventHandler);
+    }
     public String getRecipeName() {
         return recipeName.toString();
     }
@@ -87,6 +91,10 @@ class RecipeSimple extends HBox{
     	viewButton.setOnAction(e -> {
     	Stage stage = (Stage) viewButton.getScene().getWindow();
     	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, stage);
+        // add a controller here... 
+        HTTPRequestModel httpRequestModel = new HTTPRequestModel();
+        ViewRecipePageFrameController controller = new ViewRecipePageFrameController(ViewRecipePage, httpRequestModel);
+        if(controller != null){}
     	stage.setScene(new Scene(ViewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
     	stage.setResizable(false);
     	stage.show();

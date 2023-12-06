@@ -1,16 +1,10 @@
 package FrontEnd;
 
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-import java.io.File;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
@@ -71,7 +65,7 @@ public class RecipeListPageFrame extends BorderPane{
     private ScrollPane recipeListScrollPane;
     private Label recipeListLabel;
     private RecipeListDisplay recipeList;
-    private RecipeListData recipeListData;
+    //private RecipeListData recipeListData; Not used
     private RecipeListDisplay reversedList;
     private HBox buttonMenu;
     private AnchorPane left;
@@ -97,6 +91,18 @@ public class RecipeListPageFrame extends BorderPane{
     String sortMenuName;
     String filterMenuName;
 
+    public Button getlogoutButton() {
+        return logoutButton;
+    }
+
+    public String getSortMenuName() {
+        return sortMenuName;
+    }
+
+    public String getFilterMenuName() {
+        return filterMenuName;
+    }
+
     // Declare Sort Dropdown
     MenuButton sortButton;
     MenuItem alphaOpt;
@@ -104,12 +110,43 @@ public class RecipeListPageFrame extends BorderPane{
     MenuItem newOpt;
     MenuItem oldOpt;
 
+    public MenuItem getAlphaOpt() {
+        return alphaOpt;
+    }
+
+    public MenuItem getReverseOpt() {
+        return reverseOpt;
+    }
+
+    public MenuItem getNewOpt() {
+        return newOpt;
+    }
+
+    public MenuItem getOldOpt() {
+        return oldOpt;
+    }
     // Declare Filter Dropdown
     MenuButton filterButton;
     MenuItem all;
     MenuItem breakfast;
     MenuItem lunch;
     MenuItem dinner;
+
+    public MenuItem getAll() {
+        return all;
+    }
+
+    public MenuItem getBreakfast() {
+        return breakfast;
+    }
+
+    public MenuItem getLunch() {
+        return lunch;
+    }
+
+    public MenuItem getDinner() {
+        return dinner;
+    }
 
     RecipeListPageFrame(){
         this("Sort", "Filter", "storage.json");
@@ -184,244 +221,50 @@ public class RecipeListPageFrame extends BorderPane{
         this.setBottom(footer);
 
         //Add button listeners
-        addListeners();
     }
 
     public MenuButton getSortButton() {
         return sortButton;
     }
 
-    public void addListeners()
-    {
-        // Add button functionality (just changes the Stage to the NewRecipePageFrame)
-        newRecipeButton.setOnAction(e -> {
-            // Stage primaryStage = new Stage();
-            // //need to pass in recipeList so recipes can be added to it
-            // //need to pass in reversedList so recipes can be added to it
-            // NewRecipePageFrame NewRecipePage = new NewRecipePageFrame(recipeList, reversedList); 
-            // primaryStage.setScene(new Scene(NewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            // primaryStage.setResizable(false);
-            // primaryStage.show();
-            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
-            NewRecipePageFrame NewRecipePage = new NewRecipePageFrame(stage, recipeList, reversedList);
-            stage.setScene(new Scene(NewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-
-        });
-
-        logoutButton.setOnAction(e -> {
-            try{
-                File userFile = new File("user.txt");
-                userFile.delete();
-            }catch(Exception fileException){
-                fileException.printStackTrace();
-            }
-            
-
-            Stage stage = (Stage) logoutButton.getScene().getWindow();
-            LoginPageFrame newLoginPage = new LoginPageFrame();
-            stage.setScene(new Scene(newLoginPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-        });
-    
-
-    
-        alphaOpt.setOnAction(e -> {
-
-            recipeList = new RecipeListDisplay("storage.json");
-            recipeListData = recipeList.getRecipeListData();
-
-            if (filterMenuName != "Filter") {
-                recipeListData.filter(filterMenuName);
-            }
-            recipeListData.sortAlphabetically();
-
-            // Reload Sorted Recipe List from alternate json file
-            JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
-            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
-            RecipeListPageFrame frontPage = new RecipeListPageFrame(alphaOpt.getText(), filterMenuName, "sorted.json");
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-        });
-
-        reverseOpt.setOnAction(e -> {
- 
-            recipeList = new RecipeListDisplay("storage.json");
-            recipeListData = recipeList.getRecipeListData();
-
-            if (filterMenuName != "Filter") {
-                recipeListData.filter(filterMenuName);
-            }
-            recipeListData.sortReverseAlphabetically();
-
-            // Reload Sorted Recipe List from alternate json file
-            JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
-            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
-            RecipeListPageFrame frontPage = new RecipeListPageFrame(reverseOpt.getText(), filterMenuName, "sorted.json");
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-        });
-
-        newOpt.setOnAction(e -> {
-
-            recipeList = new RecipeListDisplay("storage.json");
-            recipeListData = recipeList.getRecipeListData();
-
-            if (filterMenuName != "Filter") {
-                recipeListData.filter(filterMenuName);
-            }
-            recipeListData.sortNewest();
-
-            // Reload Sorted Recipe List from alternate json file
-            JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
-            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
-            RecipeListPageFrame frontPage = new RecipeListPageFrame(newOpt.getText(), filterMenuName, "sorted.json");
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-        });
-
-        oldOpt.setOnAction(e -> {
-
-            recipeList = new RecipeListDisplay("storage.json");
-            recipeListData = recipeList.getRecipeListData();
-
-            if (filterMenuName != "Filter") {
-                recipeListData.filter(filterMenuName);
-            }
-            recipeListData.sortOldest();
-
-            // Reload Sorted Recipe List from alternate json file
-            JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
-            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
-            RecipeListPageFrame frontPage = new RecipeListPageFrame(oldOpt.getText(), filterMenuName, "sorted.json");
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-        });
-
-        all.setOnAction(e -> {
-
-            recipeList = new RecipeListDisplay("storage.json");
-            recipeListData = recipeList.getRecipeListData();
-
-            recipeListData.filter("All");
-            if (sortMenuName == "A-Z") {
-                recipeListData.sortAlphabetically();
-            } else if (sortMenuName == "Z-A") {
-                recipeListData.sortReverseAlphabetically();
-            } else if (sortMenuName == "Newest" || sortMenuName == "Sort") {
-                recipeListData.sortNewest();
-            } else if (sortMenuName == "Oldest") {
-                recipeListData.sortOldest();
-            }
-
-            // Reload Filtered Recipe List from alternate json file
-            JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
-            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
-            RecipeListPageFrame frontPage = new RecipeListPageFrame(sortMenuName, all.getText(), "filtered.json");
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-        });
-
-        breakfast.setOnAction(e -> {
-
-            recipeList = new RecipeListDisplay("storage.json");
-            recipeListData = recipeList.getRecipeListData();
-
-            recipeListData.filter("Breakfast");
-            if (sortMenuName == "A-Z") {
-                recipeListData.sortAlphabetically();
-            } else if (sortMenuName == "Z-A") {
-                recipeListData.sortReverseAlphabetically();
-            } else if (sortMenuName == "Newest" || sortMenuName == "Sort") {
-                recipeListData.sortNewest();
-            } else if (sortMenuName == "Oldest") {
-                recipeListData.sortOldest();
-            }
-
-            // Reload Filtered Recipe List from alternate json file
-            JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
-            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
-            RecipeListPageFrame frontPage = new RecipeListPageFrame(sortMenuName, breakfast.getText(), "filtered.json");
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-        });
-
-        lunch.setOnAction(e -> {
-
-            recipeList = new RecipeListDisplay("storage.json");
-            recipeListData = recipeList.getRecipeListData();
-
-            recipeListData.filter("Lunch");
-            if (sortMenuName == "A-Z") {
-                recipeListData.sortAlphabetically();
-            } else if (sortMenuName == "Z-A") {
-                recipeListData.sortReverseAlphabetically();
-            } else if (sortMenuName == "Newest" || sortMenuName == "Sort") {
-                recipeListData.sortNewest();
-            } else if (sortMenuName == "Oldest") {
-                recipeListData.sortOldest();
-            }
-
-            // Reload Filtered Recipe List from alternate json file
-            JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
-            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
-            RecipeListPageFrame frontPage = new RecipeListPageFrame(sortMenuName, lunch.getText(), "filtered.json");
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-        });
-
-        dinner.setOnAction(e -> {
-
-            recipeList = new RecipeListDisplay("storage.json");
-            recipeListData = recipeList.getRecipeListData();
-
-            recipeListData.filter("Dinner");
-            if (sortMenuName == "A-Z") {
-                recipeListData.sortAlphabetically();
-            } else if (sortMenuName == "Z-A") {
-                recipeListData.sortReverseAlphabetically();
-            } else if (sortMenuName == "Newest" || sortMenuName == "Sort") {
-                recipeListData.sortNewest();
-            } else if (sortMenuName == "Oldest") {
-                recipeListData.sortOldest();
-            }
-
-            // Reload Filtered Recipe List from alternate json file
-            JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
-            Stage stage = (Stage) newRecipeButton.getScene().getWindow();
-            RecipeListPageFrame frontPage = new RecipeListPageFrame(sortMenuName, dinner.getText(), "filtered.json");
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-        });
+    public void setlogoutButtonAction(EventHandler<ActionEvent> eventHandler) {
+        logoutButton.setOnAction(eventHandler);
     }
 
     public void setNewRecipeButtonAction(EventHandler<ActionEvent> eventHandler) {
         newRecipeButton.setOnAction(eventHandler);
     }
+    
+    public void setAlphaOptAction(EventHandler<ActionEvent> eventHandler) {
+        alphaOpt.setOnAction(eventHandler);
+    }
+
+    public void setReverseOptAction(EventHandler<ActionEvent> eventHandler) {
+        reverseOpt.setOnAction(eventHandler);
+    }
+
+    public void setNewOptAction(EventHandler<ActionEvent> eventHandler) {
+        newOpt.setOnAction(eventHandler);
+    }
+
+    public void setOldOptAction(EventHandler<ActionEvent> eventHandler) {
+        oldOpt.setOnAction(eventHandler);
+    }
+
+    public void setAllAction(EventHandler<ActionEvent> eventHandler) {
+        all.setOnAction(eventHandler);
+    }
+
+    public void setBreakfastAction(EventHandler<ActionEvent> eventHandler) {
+        breakfast.setOnAction(eventHandler);
+    }
+
+    public void setLunchAction(EventHandler<ActionEvent> eventHandler) {
+        lunch.setOnAction(eventHandler);
+    }
+
+    public void setDinnerAction(EventHandler<ActionEvent> eventHandler) {
+        dinner.setOnAction(eventHandler);
+    }
+
 }

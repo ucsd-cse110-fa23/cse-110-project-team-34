@@ -1,22 +1,17 @@
 package FrontEnd;
 
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javax.sound.sampled.*;
 
-import org.json.simple.JSONObject;
 
-import BackEnd.api.ChatGPT;
-import BackEnd.api.Whisper;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.time.LocalDateTime;
 
 class NewRecipePageHeader extends HBox {
     private Button Breakfast;
@@ -183,6 +178,53 @@ public class NewRecipePageFrame extends BorderPane{
     private int mealType = 0; //1 == breakfast, 2 == lunch, 3 == dinner, else undef/null
     private Stage stage;
 
+    public void setMealType(int num) {
+        mealType = num;
+    }
+    public void setAudioForm(AudioFormat audioForm){
+        audioFormat = audioForm;
+    }
+
+    public void setRecipe(Recipe rec) {
+        recipe = rec;
+    }
+
+    public void setScrollPane(ScrollPane s){
+        scrollPane = s;
+    }
+
+    public void setRecording(boolean TF) {
+        recording = TF;
+    }
+
+    public boolean getRecording() {
+        return recording;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public RecipeListDisplay getList() {
+        return list;
+    }
+
+    public RecipeListDisplay getReverse() {
+        return reverse;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public RecipeContent getContent() {
+        return content;
+    }
+
+    public ScrollPane getScrollPane() {
+        return scrollPane;
+    }
+
     /**
      * Declare Scene Buttons Here
      */
@@ -191,6 +233,38 @@ public class NewRecipePageFrame extends BorderPane{
     Button newGenerateButton;
     Button recordButton;
 
+    public Button getNewSaveButton() {
+        return newSaveButton;
+    }
+
+    public Button getNewBackButton() {
+        return newBackButton;
+    }
+
+    public Button getNewGenerateButton() {
+        return newGenerateButton;
+    }
+
+    public Button getRecordButton() {
+        return recordButton;
+    }
+
+    public Button getBreakfastButton() {
+        return breakfastButton;
+    }
+
+    public Button getLunchButton() {
+        return lunchButton;
+    }
+
+    public Button getDinnerButton() {
+        return dinnerButton;
+    }
+
+
+    public void helpSetCenter(RecipeContent content) {
+        this.content = content;
+    }
 
     NewRecipePageFrame(Stage stage, RecipeListDisplay recipeList, RecipeListDisplay reverseList)
     {
@@ -231,139 +305,38 @@ public class NewRecipePageFrame extends BorderPane{
         this.setCenter(scrollPane);
         this.setBottom(footer);
 
-
-        //Add button listeners
-        addListeners();
     }
 
-    public void addListeners()
-    {
-
-        // Add button functionality
-        newBackButton.setOnAction(e -> {
-            RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
-            stage.setTitle("PantryPal");
-            stage.getIcons().add(new Image(Constants.defaultIconPath));
-            stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
-            stage.setResizable(false);
-            stage.show();
-            
-        });
-
-        newSaveButton.setOnAction(e -> {
-            //add recipe to recipeList
-            recipe.setDateCreated(LocalDateTime.now().toString());
-            list.getChildren().add(new RecipeSimple(recipe));
-            reverse.getChildren().add(0, new RecipeSimple(recipe));
-            //save to .json
-            JSONSaver.saveRecipeList(list,"storage.json");
-            
-            HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
-            String response = httpRequestModel.performRecipeListPOSTRequest();
-
-            if(response.equals("SUCCESS_POST_REQUEST")){
-                Alert alert = new Alert(AlertType.INFORMATION, "Recipe Successfully Saved!", ButtonType.OK);
-                alert.showAndWait();
-            }
-
-            //sort tasks, tasks are added at end, just show by reverse order (for loop starting at the end)
-        });
-
-        newGenerateButton.setOnAction(e -> {
-            String name;
-            String ingredients;
-            String directions;
-            String mealTypeString = "Breakfast";
-            String date = LocalDateTime.now().toString();
-            String image;
-            try{
-                mealTypeString = getMealTypeString();
-            }catch(Exception badMealType){
-                ErrorSys.quickErrorPopup("No Meal Type Selected!\nPlease select a meal type.");
-                return;
-                //badMealType.printStackTrace();
-            }
-
-            HTTPRequestModel httpRequestModel = new HTTPRequestModel();
-            String recipeJSONString = httpRequestModel.performCreateRecipeRequest(mealTypeString);
-
-            if(recipeJSONString.equals("EMPTY_RECORDING_ERROR")){
-                ErrorSys.quickErrorPopup("Empty Recording");
-                return;
-            }else if(recipeJSONString.equals("CHAT_GPT_FAILED_ERROR")){
-                ErrorSys.quickErrorPopup("ChatGPT Failed\nLimit 3 Generates Per Minute!");
-                return;
-            }else if(recipeJSONString.equals("INVALID_INGREDIENTS_ERROR")){
-                ErrorSys.quickErrorPopup("Ingredients deemed inedible by ChatGPT");
-                return;
-            }
-
-            JSONObject recipeJSON = JSONSaver.jsonStringToObject(recipeJSONString);
-            name = (String)recipeJSON.get("recipeName");
-            ingredients = (String)recipeJSON.get("ingredients");
-            directions = (String)recipeJSON.get("directions");
-            image = (String)recipeJSON.get("image");
-
-            recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
-            recipe.setImg(image); //doing this way to not mess with constructor
-            content = new RecipeContent(recipe);
-            scrollPane = new ScrollPane(content);
-            scrollPane.setFitToWidth(true);
-            // scrollPane.setFitToHeight(true);
-            this.setCenter(scrollPane);
-
-            this.newGenerateButton.setText("Re-generate");
-
-        });
-
-        recordButton.setOnAction(e -> {
-
-            // 1) record voice
-            if(!recording){
-                recordButton.setStyle(Constants.recordButtonStyleOn);
-                recordButton.setText("Recording...");
-                audioFormat = getAudioFormat();
-                startRecording();
-                recording = true;
-            }else{
-                recordButton.setStyle(Constants.recordButtonStyleOff);
-                recordButton.setText("Record Ingredients");
-                stopRecording();
-                recording = false;
-            }
-            // 2) plug into chatGPT
-            // 3) get output and set to name, ingredients, directions
-
-
-            // recipe.setRecipeName(name);
-            // recipe.setIngredients(ingredients);
-            // recipe.setDirections(directions);
-        });
-
-        breakfastButton.setOnAction(e -> {
-            breakfastButton.setStyle(Constants.defaultButtonPressedStyle);
-            lunchButton.setStyle(Constants.defaultButtonStyle);
-            dinnerButton.setStyle(Constants.defaultButtonStyle);
-            mealType = 1;
-        });
-
-        lunchButton.setOnAction(e -> {
-            lunchButton.setStyle(Constants.defaultButtonPressedStyle);
-            breakfastButton.setStyle(Constants.defaultButtonStyle);
-            dinnerButton.setStyle(Constants.defaultButtonStyle);
-            mealType = 2;
-        });
-
-        dinnerButton.setOnAction(e -> {
-            dinnerButton.setStyle(Constants.defaultButtonPressedStyle);
-            breakfastButton.setStyle(Constants.defaultButtonStyle);
-            lunchButton.setStyle(Constants.defaultButtonStyle);
-            mealType = 3;
-        });
-        
+    public void setNewBackButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newBackButton.setOnAction(eventHandler);
     }
 
-    private AudioFormat getAudioFormat() {
+    public void setNewSaveButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newSaveButton.setOnAction(eventHandler);
+    }
+    
+    public void setNewGenerateButtonAction(EventHandler<ActionEvent> eventHandler) {
+        newGenerateButton.setOnAction(eventHandler);
+    }
+    
+    
+    public void setRecordButtonAction(EventHandler<ActionEvent> eventHandler) {
+        recordButton.setOnAction(eventHandler);
+    }
+
+    public void setBreakfastButtonAction(EventHandler<ActionEvent> eventHandler) {
+        breakfastButton.setOnAction(eventHandler);
+    }
+
+    public void setLunchButtonAction(EventHandler<ActionEvent> eventHandler) {
+        lunchButton.setOnAction(eventHandler);
+    }
+
+    public void setDinnerButtonAction(EventHandler<ActionEvent> eventHandler) {
+        dinnerButton.setOnAction(eventHandler);
+    }
+
+    public AudioFormat getAudioFormat() {
         // the number of samples of audio per second.
         // 44100 represents the typical sample rate for CD-quality audio.
         float sampleRate = 44100;
@@ -388,7 +361,7 @@ public class NewRecipePageFrame extends BorderPane{
             bigEndian);
     }
 
-    private void startRecording() {
+    public void startRecording() {
         Thread t = new Thread(
             new Runnable() {
                 @Override
@@ -424,7 +397,7 @@ public class NewRecipePageFrame extends BorderPane{
         t.start();
     }
 
-    private void stopRecording() {
+    public void stopRecording() {
         targetDataLine.stop();
         targetDataLine.close();
     }

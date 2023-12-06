@@ -1,17 +1,12 @@
 package FrontEnd;
 
-import org.json.simple.parser.*;
-import org.json.simple.*;
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -199,6 +194,10 @@ public class HTTPRequestModel {
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String response = in.readLine();
             in.close();
+
+            if(response.equals("Success!")){
+                
+            }
 
             return "SUCCESS_POST_REQUEST";
         } catch (ConnectException  ex) {
