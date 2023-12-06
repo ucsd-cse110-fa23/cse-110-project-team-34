@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.image.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,6 +28,9 @@ class RecipeSimple extends HBox{
     private Label recipeName;
     private Button viewButton;
     private Label mealType;
+    private Image image;
+    private ImageView imageView;
+
 
     RecipeSimple(Recipe r){
         this.setPrefSize(Constants.WINDOW_WIDTH-100, 60);
@@ -41,6 +45,12 @@ class RecipeSimple extends HBox{
         recipeName.setStyle(Constants.defaultTextStyle);
         recipeName.setAlignment(Pos.CENTER_LEFT);
 
+        image = new Image(r.getImg());
+        imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        // imageView.setFitWidth(400);
+        imageView.setFitHeight(60);
+
         mealType = new Label(r.getMealType());
         mealType.setStyle(Constants.defaultTagStyle);
         mealType.setAlignment(Pos.CENTER_LEFT);
@@ -53,7 +63,7 @@ class RecipeSimple extends HBox{
         viewButton.setMinWidth(Button.USE_PREF_SIZE);
         viewButton.setAlignment(Pos.CENTER_RIGHT);
 
-        this.getChildren().addAll(recipeName, growableRegion, mealType, viewButton);
+        this.getChildren().addAll(imageView, recipeName, growableRegion, mealType, viewButton);
         this.setAlignment(Pos.CENTER);
         
         addListeners();
@@ -127,6 +137,7 @@ public class RecipeList extends VBox{
                     String directions = (String) recipe.get("directions");
                     String dateCreated = (String) recipe.get("date");
                     String mealType = (String) recipe.get("mealType");
+                    String image = (String) recipe.get("image");
 
                     if(dateCreated == null){
                         dateCreated = LocalDateTime.now().toString();
@@ -135,8 +146,10 @@ public class RecipeList extends VBox{
                     if(mealType == null){
                         mealType = "Breakfast";
                     }
-                    
-                    this.getChildren().add(new RecipeSimple(new Recipe(recipeName, ingredients, directions, dateCreated, mealType)));
+                    Recipe toAdd = new Recipe(recipeName, ingredients, directions, dateCreated, mealType);
+                    toAdd.setImg(image);
+
+                    this.getChildren().add(new RecipeSimple(toAdd));
             	}
             }
         	reader.close();

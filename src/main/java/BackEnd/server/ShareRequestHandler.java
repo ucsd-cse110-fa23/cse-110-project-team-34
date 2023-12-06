@@ -60,6 +60,7 @@ public class ShareRequestHandler implements HttpHandler{
 
         String ingredients = (String) recipe.get("ingredients");
         String directions = (String) recipe.get("directions");
+        String image = (String) recipe.get("image");
 
 
         StringBuilder htmlBuilder = new StringBuilder();
@@ -74,13 +75,13 @@ public class ShareRequestHandler implements HttpHandler{
 
                 //Body
                 .append("<body style=\"background-color: #C6F5E4;\">")
-                .append("<header style=\"background-color: #3EB489; margin: 0; padding: 0;\"><h1 style=\"font-family:arial;margin:0;text-align:center;\">PantyPal</h1></header>")
+                .append("<header style=\"background-color: #3EB489; margin: 0; padding: 0;\"><h1 style=\"font-family:arial;margin:0;text-align:center;\">PantryPal</h1></header>")
 
                 .append("<h2 style=\"font-family:arial;text-align:left;\">")
                 .append("Recipe Name: " + recipeName)
                 .append("</h2>")
                 .append("<br>")
-                .append("<img style=\"display:block;margin-left:auto;margin-right:auto;\" src=\"recipeImage.jpg\" alt=\"" + recipeName + " image\" width=\"500\">") // height=\"600\">")
+                .append("<img src=\"" + image + "\" alt=" + recipeName + " width=\"" + 500 + "\" height=\"" + 500 + "\">")
                 .append("<br>")
                 .append("<h2 style=\"font-family:arial;text-align:left;\">")
                 .append("Ingredients: " + ingredients)
