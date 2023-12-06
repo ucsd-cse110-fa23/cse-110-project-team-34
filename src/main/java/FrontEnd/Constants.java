@@ -5,6 +5,9 @@ public class Constants {
     public static final int WINDOW_WIDTH = 600;
     public static final int WINDOW_HEIGHT = 800;
 
+    public static final int SHAREWINDOWWIDTH = 400;
+    public static final int SHAREWINDOWHEIGHT = 200;
+
     //Styles
     public static final String boldBackgroundColor = "-fx-background-color: #3EB489;";
     public static final String defaultBackgroundColor = "-fx-background-color: #C6F5E4;";
@@ -16,8 +19,10 @@ public class Constants {
     public static final String recordButtonStyleOff = "-fx-background-color: #C6F5E4;  -fx-font-weight: bold; -fx-font: 30 arial;";
     public static final String recordButtonStyleOn = "-fx-background-color: #FF0000;  -fx-font-weight: bold; -fx-font: 30 arial;";
     public static final String defaultRecipeTitle = "-fx-font-weight: bold; -fx-font-size: 30;";
+    public static final String loginButtonStyle = "-fx-background-color: #C6F5E4;  -fx-font-weight: bold; -fx-font: 10 arial;";
     public static final String defaultTagStyle = "-fx-background-color: #3EB489; -fx-font-weight: bold; -fx-font: 20 arial;";
     
     //Paths
     public static final String defaultIconPath = "file:src/main/java/FrontEnd/Images/PantryPalIcon.png";
+    public static final String defaultAudioPath = "CSE110Voice.wav";
 }

@@ -42,8 +42,12 @@ public class RecipeListData {
                     String directions = (String) recipe.get("directions");
                     String dateCreated = (String) recipe.get("date");
                     String mealType = (String) recipe.get("mealType");
-                    
-                    list.add(new Recipe(recipeName, ingredients, directions, dateCreated, mealType));
+                    String image = (String) recipe.get("image");
+
+                    Recipe toAdd = new Recipe(recipeName, ingredients, directions, dateCreated, mealType);
+                    toAdd.setImg(image);
+
+                    list.add(toAdd);
             	}
             }
         	reader.close();

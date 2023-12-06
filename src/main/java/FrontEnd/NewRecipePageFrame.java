@@ -4,9 +4,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javax.sound.sampled.*;
+
+import org.json.simple.JSONObject;
+
+import BackEnd.api.ChatGPT;
+import BackEnd.api.Whisper;
+
 import java.io.*;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
@@ -111,13 +118,22 @@ class RecipeContent extends VBox {
     private Label ingredientsLabel;
     private Region r2;
     private Label directionsLabel;
+    private Image image;
+    private ImageView imageView;
 
     RecipeContent(Recipe recipe) {
         int width = 500;
+
         recipeNameLabel = new Label("Recipe Name: " + recipe.getRecipeName());
         recipeNameLabel.setMaxWidth(width);
         recipeNameLabel.setWrapText(true);
         recipeNameLabel.setStyle(Constants.defaultTextStyle);
+
+        image = new Image(recipe.getImg());
+        imageView = new ImageView(image);
+        // imageView.setPreserveRatio(true);
+        imageView.setFitWidth(400);
+        imageView.setFitHeight(275);
 
         r1 = new Region();
         r1.setPrefSize(width, 50);
@@ -135,7 +151,7 @@ class RecipeContent extends VBox {
         directionsLabel.setWrapText(true);
         directionsLabel.setStyle(Constants.defaultTextStyle);
 
-        this.getChildren().addAll(recipeNameLabel, r1, ingredientsLabel, r2, directionsLabel);
+        this.getChildren().addAll(imageView, recipeNameLabel, r1, ingredientsLabel, r2, directionsLabel);
         this.setAlignment(Pos.CENTER);
     }
 }
@@ -184,6 +200,7 @@ public class NewRecipePageFrame extends BorderPane{
 
         this.stage = stage;
         recipe = new Recipe("Sample Recipe", "Sample Ingredients", "Sample Directions", "Sample Date & Time", "Sample Meal Type");
+        recipe.setImg("https://img.freepik.com/premium-photo/cat-wearing-chef-hat-sits-counter-front-stove-with-cooking-utensils_256339-3088.jpg"); //placeholder picture
         header = new NewRecipePageHeader();
         footer = new NewRecipePageFooter();
         generator = new RecipeGenerator();
@@ -193,7 +210,7 @@ public class NewRecipePageFrame extends BorderPane{
 
         scrollPane = new ScrollPane(content);
         scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
+        // scrollPane.setFitToHeight(true);
         
         breakfastButton = header.getBButton();
         lunchButton = header.getLButton();
@@ -211,7 +228,7 @@ public class NewRecipePageFrame extends BorderPane{
          * Set element positions here
          */
         this.setTop(vBox);
-        this.setCenter(content);
+        this.setCenter(scrollPane);
         this.setBottom(footer);
 
 
@@ -239,7 +256,16 @@ public class NewRecipePageFrame extends BorderPane{
             list.getChildren().add(new RecipeSimple(recipe));
             reverse.getChildren().add(0, new RecipeSimple(recipe));
             //save to .json
-            JSONSaver.saveRecipeList(list, "storage.json");
+            JSONSaver.saveRecipeList(list,"storage.json");
+            
+            HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
+            String response = httpRequestModel.performRecipeListPOSTRequest();
+
+            if(response.equals("SUCCESS_POST_REQUEST")){
+                Alert alert = new Alert(AlertType.INFORMATION, "Recipe Successfully Saved!", ButtonType.OK);
+                alert.showAndWait();
+            }
+
             //sort tasks, tasks are added at end, just show by reverse order (for loop starting at the end)
         });
 
@@ -249,6 +275,7 @@ public class NewRecipePageFrame extends BorderPane{
             String directions;
             String mealTypeString = "Breakfast";
             String date = LocalDateTime.now().toString();
+            String image;
             try{
                 mealTypeString = getMealTypeString();
             }catch(Exception badMealType){
@@ -257,45 +284,36 @@ public class NewRecipePageFrame extends BorderPane{
                 //badMealType.printStackTrace();
             }
 
-            Whisper whisper = new Whisper();
-            ChatGPT askChat = new ChatGPT();
+            HTTPRequestModel httpRequestModel = new HTTPRequestModel();
+            String recipeJSONString = httpRequestModel.performCreateRecipeRequest(mealTypeString);
 
-            String audioText = "something";
-
-            try {
-                audioText = whisper.readAudio("CSE110Voice.wav");
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            } catch (URISyntaxException e1) {
-                    // TODO Auto-generated catch block
-                e1.printStackTrace();
+            if(recipeJSONString.equals("EMPTY_RECORDING_ERROR")){
+                ErrorSys.quickErrorPopup("Empty Recording");
+                return;
+            }else if(recipeJSONString.equals("CHAT_GPT_FAILED_ERROR")){
+                ErrorSys.quickErrorPopup("ChatGPT Failed\nLimit 3 Generates Per Minute!");
+                return;
+            }else if(recipeJSONString.equals("INVALID_INGREDIENTS_ERROR")){
+                ErrorSys.quickErrorPopup("Ingredients deemed inedible by ChatGPT");
+                return;
             }
-            /**
-             * Breakfast Recipe in the format: Recipe Name,  Recipe Ingredients, Recipe Directions in one string, without fluff in the answer. The recipe name, ingredients and directions should be in two paragraphs. I have oranges, bananas, oatmeal
-             */
 
-            String prompt = "Follow my instructions as precisely as possible. Given that "
-            + audioText + ",create a recipe for" + mealTypeString + "Format the recipe into 3 sentences, with the first sentence being name, second sentence being ingredients, third sentence being directions. Each sentence a ‘#’ symbol. Do not add any fluff to the answer.";
+            JSONObject recipeJSON = JSONSaver.jsonStringToObject(recipeJSONString);
+            name = (String)recipeJSON.get("recipeName");
+            ingredients = (String)recipeJSON.get("ingredients");
+            directions = (String)recipeJSON.get("directions");
+            image = (String)recipeJSON.get("image");
 
-                // could change back to String[].
-            try {
-                String[] s1 = askChat.runChatGPT(prompt);
-                name = s1[1];
-                ingredients = s1[2];
-                directions = s1[3];
+            recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
+            recipe.setImg(image); //doing this way to not mess with constructor
+            content = new RecipeContent(recipe);
+            scrollPane = new ScrollPane(content);
+            scrollPane.setFitToWidth(true);
+            // scrollPane.setFitToHeight(true);
+            this.setCenter(scrollPane);
 
-                recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
-                content = new RecipeContent(recipe);
-                scrollPane = new ScrollPane(content);
-                scrollPane.setFitToWidth(true);
-                scrollPane.setFitToHeight(true);
-                this.setCenter(content);
+            this.newGenerateButton.setText("Re-generate");
 
-            } catch (IOException | InterruptedException | URISyntaxException e1) {
-                    // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
         });
 
         recordButton.setOnAction(e -> {

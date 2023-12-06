@@ -1,4 +1,4 @@
-package BackEnd;
+package BackEnd.database;
 
 import com.mongodb.DBObject;
 import com.mongodb.client.MongoClient;
@@ -135,7 +135,7 @@ public class RecipeListDatabase {
 
             JSONObject returnJSON = new JSONObject();
             returnJSON.put("recipeList", recipeJSONArray);
-
+            
             return returnJSON;
 
         }catch(Exception e){
@@ -145,6 +145,45 @@ public class RecipeListDatabase {
         return null;
     }
 
+
+    /**
+     * Gets recipe list of a given user as a JSON simple object
+     * @param id id for user account
+     * @return Recipe list of given user as a JSONObject jsonsimple
+     */
+    public static JSONObject getRecipeByIdAndNameAsJSON(String id, String recipeName){
+
+        try(MongoClient mongoClient = MongoClients.create(uri)){
+
+            MongoDatabase pantryPalDatabse = mongoClient.getDatabase("PantryPal");
+            MongoCollection<Document> recipeListsCollection = pantryPalDatabse.getCollection("RecipeLists");
+
+            Bson idFilter = eq("_id", UserDatabase.getObjectIdObjectFromString(id));
+            Document recipeListObj = recipeListsCollection.find(idFilter).first();
+            
+
+            List<Document> recipeList = recipeListObj.getList("recipeList", Document.class);
+
+            JSONParser parser = new JSONParser();
+            JSONObject returnJSON = null;
+
+            for(int i = 0; i < recipeList.size(); i++){
+                Document recipe = recipeList.get(i);
+
+                if(recipe.get("recipeName").equals(recipeName)){
+                    returnJSON = (JSONObject) parser.parse(recipe.toJson());
+                    return returnJSON;
+                }
+            }
+
+            return returnJSON;
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }    
 
     /**
      * 

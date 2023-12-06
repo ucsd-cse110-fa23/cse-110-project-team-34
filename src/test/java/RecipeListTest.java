@@ -35,6 +35,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
 
         recipe = list.get(1);
         assertEquals("Apple Pie", recipe.getRecipeName());
@@ -42,6 +43,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
         
         recipe = list.get(2);
         assertEquals("Lasagna", recipe.getRecipeName());
@@ -49,6 +51,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
     }
 
     @Test
@@ -65,6 +68,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
 
         recipe = list.get(1);
         assertEquals("Lasagna", recipe.getRecipeName());
@@ -72,6 +76,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
 
         recipe = list.get(2);
         assertEquals("Apple Pie", recipe.getRecipeName());
@@ -79,6 +84,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
     }
 
     @Test
@@ -95,6 +101,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
 
         recipe = list.get(1);
         assertEquals("Lasagna", recipe.getRecipeName());
@@ -102,6 +109,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
 
         recipe = list.get(2);
         assertEquals("PB+J Sandwich", recipe.getRecipeName());
@@ -109,6 +117,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
     }
 
     @Test
@@ -125,6 +134,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
 
         recipe = list.get(1);
         assertEquals("PB+J Sandwich", recipe.getRecipeName());
@@ -132,6 +142,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
 
         recipe = list.get(2);
         assertEquals("Lasagna", recipe.getRecipeName());
@@ -139,6 +150,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
     }
 
     @Test
@@ -155,6 +167,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
 
         recipe = list.get(1);
         assertEquals("PB+J Sandwich", recipe.getRecipeName());
@@ -162,6 +175,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
 
         recipe = list.get(2);
         assertEquals("Apple Pie", recipe.getRecipeName());
@@ -169,6 +183,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
     }
 
     @Test
@@ -185,6 +200,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
 
         recipe = list.get(1);
         assertEquals("Apple Pie", recipe.getRecipeName());
@@ -192,6 +208,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
         
         recipe = list.get(2);
         assertEquals("Lasagna", recipe.getRecipeName());
@@ -199,6 +216,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
     }
 
     @Test
@@ -215,6 +233,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
     }
 
     @Test
@@ -230,7 +249,8 @@ public class RecipeListTest {
         assertEquals("crust, apple filling, etc.", recipe.getIngredients());
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
-        assertEquals("Lunch", recipe.getMealType());        
+        assertEquals("Lunch", recipe.getMealType()); 
+        assertEquals("apple_pie.png", recipe.getImg());       
     }
 
     @Test
@@ -247,6 +267,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
     }
 
     // Integration Tests for Sort & Filter
@@ -266,6 +287,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
 
         recipe = list.get(1);
         assertEquals("Lasagna", recipe.getRecipeName());
@@ -273,6 +295,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
 
         recipe = list.get(2);
         assertEquals("Apple Pie", recipe.getRecipeName());
@@ -280,6 +303,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
     }
 
     @Test
@@ -297,6 +321,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
     }
 
     @Test
@@ -314,6 +339,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
     }
 
     @Test
@@ -331,6 +357,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
     }
 
     @Test
@@ -348,6 +375,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
 
         recipe = list.get(1);
         assertEquals("Lasagna", recipe.getRecipeName());
@@ -355,6 +383,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
 
         recipe = list.get(2);
         assertEquals("PB+J Sandwich", recipe.getRecipeName());
@@ -362,6 +391,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
     }
 
     @Test
@@ -379,6 +409,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
     }
 
     @Test
@@ -396,6 +427,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
     }
 
     @Test
@@ -413,6 +445,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
     }
 
     @Test
@@ -430,6 +463,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
 
         recipe = list.get(1);
         assertEquals("PB+J Sandwich", recipe.getRecipeName());
@@ -437,6 +471,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
 
         recipe = list.get(2);
         assertEquals("Lasagna", recipe.getRecipeName());
@@ -444,6 +479,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
     }
 
     @Test
@@ -461,6 +497,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
     }
 
     @Test
@@ -478,6 +515,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
     }
 
     @Test
@@ -495,6 +533,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
     }
 
     @Test
@@ -512,6 +551,7 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
 
         recipe = list.get(1);
         assertEquals("PB+J Sandwich", recipe.getRecipeName());
@@ -519,6 +559,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
 
         recipe = list.get(2);
         assertEquals("Apple Pie", recipe.getRecipeName());
@@ -526,6 +567,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
     }
 
     @Test
@@ -543,6 +585,7 @@ public class RecipeListTest {
         assertEquals("1. take the bread", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Breakfast", recipe.getMealType());
+        assertEquals("pbj.jpeg", recipe.getImg());
     }
 
     @Test
@@ -560,6 +603,7 @@ public class RecipeListTest {
         assertEquals("... 5. Put in oven", recipe.getDirections());
         assertEquals("2023-11-19T21:42:32.838296", recipe.getDateCreated());
         assertEquals("Lunch", recipe.getMealType());
+        assertEquals("apple_pie.png", recipe.getImg());
     }
 
     @Test
@@ -576,5 +620,6 @@ public class RecipeListTest {
         assertEquals("Step 1, Step 2, Step 3", recipe.getDirections());
         assertEquals("2023-12-01T21:42:32.838297", recipe.getDateCreated());
         assertEquals("Dinner", recipe.getMealType());
+        assertEquals("lasagna.jpg", recipe.getImg());
     }
 }

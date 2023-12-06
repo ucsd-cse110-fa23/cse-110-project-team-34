@@ -40,6 +40,11 @@ class ViewRecipe extends VBox {
     ViewRecipe(Recipe recipe) {
         this.setPadding(new Insets(50));
 
+        Image image = new Image(recipe.getImg());
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(400);
+        imageView.setFitHeight(275);
+
         ingredientsLabel = new Label("Ingredients: " + recipe.getIngredients());
         ingredientsLabel.setWrapText(true);
         ingredientsLabel.setStyle(Constants.defaultTextStyle);
@@ -50,7 +55,7 @@ class ViewRecipe extends VBox {
         directionsLabel = new Label("Directions: " + recipe.getDirections());
         directionsLabel.setWrapText(true);
         directionsLabel.setStyle(Constants.defaultTextStyle);
-        this.getChildren().addAll(ingredientsLabel, r, directionsLabel);
+        this.getChildren().addAll(imageView, ingredientsLabel, r, directionsLabel);
         this.setAlignment(Pos.CENTER);
     }
 
@@ -64,6 +69,7 @@ class ViewRecipePageFooter extends HBox {
 	private Button BackButton;
 	private Button EditButton;
 	private Button DeleteButton;
+    private Button shareButton;
 	
 	ViewRecipePageFooter() {
 		this.setPrefSize(Constants.WINDOW_WIDTH, 100);
@@ -79,7 +85,10 @@ class ViewRecipePageFooter extends HBox {
         DeleteButton = new Button("Delete"); // text displayed on add button
         DeleteButton.setStyle(Constants.defaultButtonStyle);
 
-        this.getChildren().addAll(BackButton, EditButton, DeleteButton); // adding buttons to footer
+        shareButton = new Button("Share"); // text displayed on add button
+        shareButton.setStyle(Constants.defaultButtonStyle);
+
+        this.getChildren().addAll(BackButton, EditButton, DeleteButton, shareButton); // adding buttons to footer
         this.setAlignment(Pos.CENTER); // aligning the buttons to center
 	}
 	
@@ -93,6 +102,10 @@ class ViewRecipePageFooter extends HBox {
 	
 	public Button getDeleteButton() {
         return DeleteButton;
+    }
+
+    public Button getShareButton(){
+        return shareButton;
     }
 	
 }
@@ -115,6 +128,7 @@ public class ViewRecipePageFrame extends BorderPane {
     Button newBackButton;
     Button newEditButton;
     Button newDeleteButton;
+    Button shareButton;
     
     ViewRecipePageFrame(Recipe recipe, Stage stage) {
     	
@@ -129,8 +143,9 @@ public class ViewRecipePageFrame extends BorderPane {
     	
     	scrollPane = new ScrollPane(details);
         scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
+        // scrollPane.setFitToHeight(true);
         
+        shareButton = footer.getShareButton();
         newBackButton = footer.getBackButton();
         newEditButton = footer.getEditButton();
         newDeleteButton = footer.getDeleteButton();
@@ -142,7 +157,7 @@ public class ViewRecipePageFrame extends BorderPane {
          * Set element positions here
          */
         this.setTop(vBox);
-        this.setCenter(details);
+        this.setCenter(scrollPane);
         this.setBottom(footer);
 
 
@@ -181,6 +196,10 @@ public class ViewRecipePageFrame extends BorderPane {
         	
                 //deletes recipe
                 JSONSaver.removeByName(recipe.getRecipeName());
+
+                //Saves change to server
+                HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
+                String response = httpRequestModel.performRecipeListPOSTRequest();
                 
                 // returns to recipe list page
                 // I just did what was there for back button. This is quite jank tbh
@@ -193,6 +212,15 @@ public class ViewRecipePageFrame extends BorderPane {
 
             }
         );
+
+        shareButton.setOnAction(e -> {
+
+            Stage popupStage = new Stage();
+            popupStage.setTitle("Share");
+            popupStage.setScene(new Scene(new SharePopup(recipe.getRecipeName()), Constants.SHAREWINDOWWIDTH, Constants.SHAREWINDOWHEIGHT));
+            popupStage.show();
+
+        });
         
     }
 

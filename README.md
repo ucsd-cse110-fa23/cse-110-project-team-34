@@ -2,6 +2,16 @@
 
 Welcome to PantryPal, the AI powered solution to efficient meal planning.
 
+- Elevate your cooking experience with a mere utterance as PantryPal transforms 
+your spoken ingredients into personalized recipes, complete with vibrant visuals 
+that bring your culinary creations to life. 
+
+- Seamlessly share your kitchen triumphs with friends, thanks to easy-to-follow 
+directions and captivating images.
+
+Join the PantryPal community, where ingredients become art, and every dish tells 
+a delicious story. 
+
 ## How do I use PantryPal?
 
 ### Requirements

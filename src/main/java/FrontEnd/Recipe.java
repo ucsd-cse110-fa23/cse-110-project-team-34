@@ -12,6 +12,7 @@ public class Recipe{
     private String directions;
     private String dateCreated;
     private String mealType;
+    private String img; //DallE
 
     public Recipe(String name, String ingred, String direc, String date, String meal){
         recipeName = name;
@@ -42,6 +43,10 @@ public class Recipe{
         return mealType;
     }
 
+    public String getImg() {
+        return img;
+    }
+
     //Setters
     public void setRecipeName(String n){
         recipeName = n;
@@ -61,6 +66,10 @@ public class Recipe{
 
     public void setMealType(String meal) {
         mealType = meal;
+    }
+
+    public void setImg(String i) {
+        img = i;
     }
 
 }

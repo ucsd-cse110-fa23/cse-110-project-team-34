@@ -7,11 +7,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Scanner;
 
 /**
  * Simple recipe display for recipe list
@@ -22,6 +26,9 @@ class RecipeSimple extends HBox{
     private Label recipeName;
     private Button viewButton;
     private Label mealType;
+    private Image image;
+    private ImageView imageView;
+
 
     RecipeSimple(Recipe r){
         this.setPrefSize(Constants.WINDOW_WIDTH-100, 60);
@@ -36,6 +43,12 @@ class RecipeSimple extends HBox{
         recipeName.setStyle(Constants.defaultTextStyle);
         recipeName.setAlignment(Pos.CENTER_LEFT);
 
+        image = new Image(r.getImg());
+        imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        // imageView.setFitWidth(400);
+        imageView.setFitHeight(60);
+
         mealType = new Label(r.getMealType());
         mealType.setStyle(Constants.defaultTagStyle);
         mealType.setAlignment(Pos.CENTER_LEFT);
@@ -48,7 +61,7 @@ class RecipeSimple extends HBox{
         viewButton.setMinWidth(Button.USE_PREF_SIZE);
         viewButton.setAlignment(Pos.CENTER_RIGHT);
 
-        this.getChildren().addAll(recipeName, growableRegion, mealType, viewButton);
+        this.getChildren().addAll(imageView, recipeName, growableRegion, mealType, viewButton);
         this.setAlignment(Pos.CENTER);
         
         addListeners();
@@ -105,7 +118,7 @@ class RecipeListDisplay extends VBox{
 
             JSONObject jsonObject;
 
-            FileReader reader = new FileReader(fileName);
+            FileReader reader = new FileReader(fileName, StandardCharsets.UTF_8);
 
             if (reader.ready()) { //checks if file is empty
             	jsonObject = (JSONObject) parser.parse(reader); //Read JSON file
@@ -120,8 +133,19 @@ class RecipeListDisplay extends VBox{
                     String directions = (String) recipe.get("directions");
                     String dateCreated = (String) recipe.get("date");
                     String mealType = (String) recipe.get("mealType");
-                    
-                    this.getChildren().add(new RecipeSimple(new Recipe(recipeName, ingredients, directions, dateCreated, mealType)));
+                    String image = (String) recipe.get("image");
+
+                    if(dateCreated == null){
+                        dateCreated = LocalDateTime.now().toString();
+                    }
+
+                    if(mealType == null){
+                        mealType = "Breakfast";
+                    }
+                    Recipe toAdd = new Recipe(recipeName, ingredients, directions, dateCreated, mealType);
+                    toAdd.setImg(image);
+
+                    this.getChildren().add(new RecipeSimple(toAdd));
             	}
             }
         	reader.close();
@@ -133,6 +157,7 @@ class RecipeListDisplay extends VBox{
         	System.out.println("exception in RecipeList: io exception");
         } catch (ParseException e) {
         	System.out.println("exception in RecipeList: parse exception");
+            e.printStackTrace();
         } catch (Exception e) {
         	System.out.println("exception in RecipeList");
         }
