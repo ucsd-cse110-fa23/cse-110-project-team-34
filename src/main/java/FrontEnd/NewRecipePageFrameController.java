@@ -66,6 +66,7 @@ public class NewRecipePageFrameController implements Controller {
         String directions;
         String mealTypeString = "Breakfast";
         String date = LocalDateTime.now().toString();
+        String image;
 
         try {
             mealTypeString = view.getMealTypeString();
@@ -92,10 +93,12 @@ public class NewRecipePageFrameController implements Controller {
         name = (String) recipeJSON.get("recipeName");
         ingredients = (String) recipeJSON.get("ingredients");
         directions = (String) recipeJSON.get("directions");
+        image = (String) recipeJSON.get("image");
 
         // Recipe recipe = view.getRecipe();
         // recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
         Recipe recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
+        recipe.setImg(image);
         view.setRecipe(recipe);
         RecipeContent content = view.getContent();
         content = new RecipeContent(recipe);
