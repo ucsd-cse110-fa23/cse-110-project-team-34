@@ -310,8 +310,8 @@ public class NewRecipePageFrame extends BorderPane{
             content = new RecipeContent(recipe);
             scrollPane = new ScrollPane(content);
             scrollPane.setFitToWidth(true);
-            scrollPane.setFitToHeight(true);
-            this.setCenter(content);
+            // scrollPane.setFitToHeight(true);
+            this.setCenter(scrollPane);
 
             this.newGenerateButton.setText("Re-generate");
 
