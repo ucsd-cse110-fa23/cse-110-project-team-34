@@ -21,6 +21,7 @@ public class JSONSaver{
                 recipeJSON.put("directions", recipe.getDirections());
                 recipeJSON.put("date", recipe.getDateCreated());
                 recipeJSON.put("mealType", recipe.getMealType());
+                recipeJSON.put("image", recipe.getImg());
                 recipeListArr.add(recipeJSON);
             }
         }
@@ -60,6 +61,7 @@ public class JSONSaver{
                     recipe.put("directions", newRecipe.getDirections());
                     recipe.put("date", newRecipe.getDateCreated());
                     recipe.put("mealType", newRecipe.getMealType());
+                    recipe.put("image", newRecipe.getImg());
                 }
             }
 

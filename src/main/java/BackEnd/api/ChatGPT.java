@@ -89,7 +89,7 @@ public class ChatGPT {
         }
     }
 
-    public String createRecipeAsJSONString(String ingredients, String mealType){
+    public String createRecipeAsJSONString(String ingredients, String mealType) throws IOException, InterruptedException, URISyntaxException{ //added throws so runDallE would work
         /**String recipeName = null;
         String recipeIngredientList = null;
         String recipeDirections = null;
@@ -131,11 +131,13 @@ public class ChatGPT {
 
         JSONParser p = new JSONParser();
         org.json.simple.JSONObject jsonObj = null;
+        DallE dallE = new DallE();
         try{
             jsonObj = (org.json.simple.JSONObject) p.parse(recipeJSONString);
             jsonObj.get("recipeName");
             jsonObj.get("ingredients");
-            jsonObj.get("directions");
+            Object dallEInput = jsonObj.get("directions");
+            jsonObj.put("image", dallE.runDallE(dallEInput.toString()));
         }catch(org.json.simple.parser.ParseException e){
             e.printStackTrace();
             return null;

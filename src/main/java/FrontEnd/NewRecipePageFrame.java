@@ -118,13 +118,22 @@ class RecipeContent extends VBox {
     private Label ingredientsLabel;
     private Region r2;
     private Label directionsLabel;
+    private Image image;
+    private ImageView imageView;
 
     RecipeContent(Recipe recipe) {
         int width = 500;
+
         recipeNameLabel = new Label("Recipe Name: " + recipe.getRecipeName());
         recipeNameLabel.setMaxWidth(width);
         recipeNameLabel.setWrapText(true);
         recipeNameLabel.setStyle(Constants.defaultTextStyle);
+
+        image = new Image(recipe.getImg());
+        imageView = new ImageView(image);
+        // imageView.setPreserveRatio(true);
+        imageView.setFitWidth(400);
+        imageView.setFitHeight(275);
 
         r1 = new Region();
         r1.setPrefSize(width, 50);
@@ -142,7 +151,7 @@ class RecipeContent extends VBox {
         directionsLabel.setWrapText(true);
         directionsLabel.setStyle(Constants.defaultTextStyle);
 
-        this.getChildren().addAll(recipeNameLabel, r1, ingredientsLabel, r2, directionsLabel);
+        this.getChildren().addAll(imageView, recipeNameLabel, r1, ingredientsLabel, r2, directionsLabel);
         this.setAlignment(Pos.CENTER);
     }
 }
@@ -191,6 +200,7 @@ public class NewRecipePageFrame extends BorderPane{
 
         this.stage = stage;
         recipe = new Recipe("Sample Recipe", "Sample Ingredients", "Sample Directions", "Sample Date & Time", "Sample Meal Type");
+        recipe.setImg("https://img.freepik.com/premium-photo/cat-wearing-chef-hat-sits-counter-front-stove-with-cooking-utensils_256339-3088.jpg"); //placeholder picture
         header = new NewRecipePageHeader();
         footer = new NewRecipePageFooter();
         generator = new RecipeGenerator();
@@ -200,7 +210,7 @@ public class NewRecipePageFrame extends BorderPane{
 
         scrollPane = new ScrollPane(content);
         scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
+        // scrollPane.setFitToHeight(true);
         
         breakfastButton = header.getBButton();
         lunchButton = header.getLButton();
@@ -218,7 +228,7 @@ public class NewRecipePageFrame extends BorderPane{
          * Set element positions here
          */
         this.setTop(vBox);
-        this.setCenter(content);
+        this.setCenter(scrollPane);
         this.setBottom(footer);
 
 
@@ -266,6 +276,7 @@ public class NewRecipePageFrame extends BorderPane{
             String directions;
             String mealTypeString = "Breakfast";
             String date = LocalDateTime.now().toString();
+            String image;
             try{
                 mealTypeString = getMealTypeString();
             }catch(Exception badMealType){
@@ -292,13 +303,15 @@ public class NewRecipePageFrame extends BorderPane{
             name = (String)recipeJSON.get("recipeName");
             ingredients = (String)recipeJSON.get("ingredients");
             directions = (String)recipeJSON.get("directions");
+            image = (String)recipeJSON.get("image");
 
             recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
+            recipe.setImg(image); //doing this way to not mess with constructor
             content = new RecipeContent(recipe);
             scrollPane = new ScrollPane(content);
             scrollPane.setFitToWidth(true);
-            scrollPane.setFitToHeight(true);
-            this.setCenter(content);
+            // scrollPane.setFitToHeight(true);
+            this.setCenter(scrollPane);
 
             this.newGenerateButton.setText("Re-generate");
 
