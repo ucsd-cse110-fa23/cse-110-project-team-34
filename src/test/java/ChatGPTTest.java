@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ChatGPTTest {
     private ChatGPT chatGPT = new MockChatGPT();
-    private Whisper whisper;
     private String prompt;
     private String ingred;
     private String name;
