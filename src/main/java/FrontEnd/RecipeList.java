@@ -104,14 +104,18 @@ class RecipeSimple extends HBox{
 
 /**
  * Reads a .JSON file with the recipes saved from previous uses.
- * Then populates the RecipeList with the existing recipes.
+ * Then populates the RecipeList UI page with the existing recipes.
  */
-public class RecipeList extends VBox{
+class RecipeListDisplay extends VBox{
+
+    RecipeListData recipeListData;
     
-    public RecipeList(String fileName) {
+    public RecipeListDisplay(String fileName) {
         this.setSpacing(4); // sets spacing between recipes
         this.setPrefSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         this.setStyle(Constants.defaultBackgroundColor);
+
+        recipeListData = new RecipeListData(fileName);
 
         /**
          * Reads a .JSON file with the recipes saved from previous uses.
@@ -155,7 +159,6 @@ public class RecipeList extends VBox{
         	reader.close();
         	
         } catch (FileNotFoundException e) {
-            this.sortNewest();
             JSONSaver.saveRecipeList(this, fileName);
         	//System.out.println("exception in RecipeList: file not found");
         } catch (IOException e) {
@@ -167,7 +170,7 @@ public class RecipeList extends VBox{
         	System.out.println("exception in RecipeList");
         }
     }
-    RecipeList(RecipeList list){
+    RecipeListDisplay(RecipeListDisplay list){
         for(int i = list.getChildren().size() - 1; i >= 0; i--){//Makes this the reverse of list
             if(list.getChildren().get(i) instanceof RecipeSimple){
                 Recipe temp = ((RecipeSimple)list.getChildren().get(i)).getRecipe();
@@ -176,158 +179,11 @@ public class RecipeList extends VBox{
         }
     }
 
-    // Sorts RecipeList Alphabetically
-    public void sortAlphabetically() {
-        for (int i = 0; i < this.getChildren().size(); i++) {
-
-            for (int j = i + 1; j < this.getChildren().size(); j++) {
-
-                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
-                Recipe f = first.getRecipe();
-
-                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
-                Recipe s = second.getRecipe();
-
-                if (f.getRecipeName().compareToIgnoreCase(s.getRecipeName()) < 0) {
-
-                    String tempName = f.getRecipeName();
-                    String tempIng = f.getIngredients();
-                    String tempDir = f.getDirections();
-                    String tempDat = f.getDateCreated();
-                    String tempCre = f.getMealType();
-
-                    f.setRecipeName(s.getRecipeName());
-                    f.setIngredients(s.getIngredients());
-                    f.setDirections(s.getDirections());
-                    f.setDateCreated(s.getDateCreated());
-                    f.setMealType(s.getMealType());
-
-                    s.setRecipeName(tempName);
-                    s.setIngredients(tempIng);
-                    s.setDirections(tempDir);
-                    s.setDateCreated(tempDat);
-                    s.setMealType(tempCre);
-                }
-            }
-        }
-    }
-    
-    // Sort Recipe List Reverse Alphabetically
-    public void sortReverseAlphabetically() {
-        for (int i = 0; i < this.getChildren().size(); i++) {
-
-            for (int j = i + 1; j < this.getChildren().size(); j++) {
-
-                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
-                Recipe f = first.getRecipe();
-
-                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
-                Recipe s = second.getRecipe();
-
-                if (f.getRecipeName().compareToIgnoreCase(s.getRecipeName()) > 0) {
-
-                    String tempName = f.getRecipeName();
-                    String tempIng = f.getIngredients();
-                    String tempDir = f.getDirections();
-                    String tempDat = f.getDateCreated();
-                    String tempCre = f.getMealType();
-
-                    f.setRecipeName(s.getRecipeName());
-                    f.setIngredients(s.getIngredients());
-                    f.setDirections(s.getDirections());
-                    f.setDateCreated(s.getDateCreated());
-                    f.setMealType(s.getMealType());
-
-                    s.setRecipeName(tempName);
-                    s.setIngredients(tempIng);
-                    s.setDirections(tempDir);
-                    s.setDateCreated(tempDat);
-                    s.setMealType(tempCre);
-                }
-            }
-        }
+    public RecipeListData getRecipeListData() {
+        return this.recipeListData;
     }
 
-    // Sort Recipe List from Newest to Oldest
-    public void sortNewest() {
-        for (int i = 0; i < this.getChildren().size(); i++) {
-
-            for (int j = i + 1; j < this.getChildren().size(); j++) {
-
-                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
-                Recipe f = first.getRecipe();
-
-                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
-                Recipe s = second.getRecipe();
-
-                if (LocalDateTime.parse(f.getDateCreated()).compareTo(LocalDateTime.parse(s.getDateCreated())) > 0) {
-
-                    String tempName = f.getRecipeName();
-                    String tempIng = f.getIngredients();
-                    String tempDir = f.getDirections();
-                    String tempDat = f.getDateCreated();
-                    String tempCre = f.getMealType();
-
-                    f.setRecipeName(s.getRecipeName());
-                    f.setIngredients(s.getIngredients());
-                    f.setDirections(s.getDirections());
-                    f.setDateCreated(s.getDateCreated());
-                    f.setMealType(s.getMealType());
-
-                    s.setRecipeName(tempName);
-                    s.setIngredients(tempIng);
-                    s.setDirections(tempDir);
-                    s.setDateCreated(tempDat);
-                    s.setMealType(tempCre);
-                }
-            }
-        }
-    }
-
-    // Sort Recipe List from Oldest to Newest
-    public void sortOldest() {
-        for (int i = 0; i < this.getChildren().size(); i++) {
-
-            for (int j = i + 1; j < this.getChildren().size(); j++) {
-
-                RecipeSimple first = (RecipeSimple) this.getChildren().get(i);
-                Recipe f = first.getRecipe();
-
-                RecipeSimple second = (RecipeSimple) this.getChildren().get(j);
-                Recipe s = second.getRecipe();
-
-                if (LocalDateTime.parse(f.getDateCreated()).compareTo(LocalDateTime.parse(s.getDateCreated())) < 0) {
-
-                    String tempName = f.getRecipeName();
-                    String tempIng = f.getIngredients();
-                    String tempDir = f.getDirections();
-                    String tempDat = f.getDateCreated();
-                    String tempCre = f.getMealType();
-
-                    f.setRecipeName(s.getRecipeName());
-                    f.setIngredients(s.getIngredients());
-                    f.setDirections(s.getDirections());
-                    f.setDateCreated(s.getDateCreated());
-                    f.setMealType(s.getMealType());
-
-                    s.setRecipeName(tempName);
-                    s.setIngredients(tempIng);
-                    s.setDirections(tempDir);
-                    s.setDateCreated(tempDat);
-                    s.setMealType(tempCre);
-                }
-            }
-        }
-    }
-
-    // Filter Recipe List for Meal Type
-    public void filter(String type) {
-        for (int i = this.getChildren().size() - 1; i >= 0; i--) {
-            Recipe f = ((RecipeSimple) this.getChildren().get(i)).getRecipe();
-
-            if (f.getMealType().compareTo(type) != 0) {
-                this.getChildren().remove(i);
-            }
-        }
+    public void setRecipeListData(RecipeListData newRecipeListData) {
+        this.recipeListData = newRecipeListData;
     }
 }

@@ -61,16 +61,17 @@ public class RecipeListPageFrameController implements Controller {
     }
 
     private void handleAlphaOpt(ActionEvent event) {
-        RecipeList recipeList = view.getRecipeList();
-        recipeList = new RecipeList("storage.json");
+        RecipeListDisplay recipeList = view.getRecipeList();
+        recipeList = new RecipeListDisplay("storage.json");
+        RecipeListData recipeListData = recipeList.getRecipeListData();
 
         if (view.getFilterMenuName() != "Filter" && view.getFilterMenuName() != "All") {
-            recipeList.filter(view.getFilterMenuName());
+            recipeListData.filter(view.getFilterMenuName());
         }
-        recipeList.sortAlphabetically();
+        recipeListData.sortAlphabetically();
 
         // Reload Sorted Recipe List from alternate json file
-        JSONSaver.saveRecipeList(recipeList, "sorted.json");
+        JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
         Stage stage = (Stage) view.getNewRecipeButton().getScene().getWindow();
         RecipeListPageFrame frontPage = new RecipeListPageFrame(view.getAlphaOpt().getText(), view.getFilterMenuName(),
                 "sorted.json");
@@ -84,16 +85,17 @@ public class RecipeListPageFrameController implements Controller {
     }
 
     private void handleReverseOpt(ActionEvent event) {
-        RecipeList recipeList = view.getRecipeList();
-        recipeList = new RecipeList("storage.json");
+        RecipeListDisplay recipeList = view.getRecipeList();
+        recipeList = new RecipeListDisplay("storage.json");
+        RecipeListData recipeListData = recipeList.getRecipeListData();
 
         if (view.getFilterMenuName() != "Filter" && view.getFilterMenuName() != "All") {
-            recipeList.filter(view.getFilterMenuName());
+            recipeListData.filter(view.getFilterMenuName());
         }
-        recipeList.sortReverseAlphabetically();
+        recipeListData.sortReverseAlphabetically();
 
         // Reload Sorted Recipe List from alternate json file
-        JSONSaver.saveRecipeList(recipeList, "sorted.json");
+        JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
         Stage stage = (Stage) view.getNewRecipeButton().getScene().getWindow();
         RecipeListPageFrame frontPage = new RecipeListPageFrame(view.getReverseOpt().getText(),
                 view.getFilterMenuName(), "sorted.json");
@@ -107,16 +109,17 @@ public class RecipeListPageFrameController implements Controller {
     }
 
     private void handleNewOpt(ActionEvent event) {
-        RecipeList recipeList = view.getRecipeList();
-        recipeList = new RecipeList("storage.json");
+        RecipeListDisplay recipeList = view.getRecipeList();
+        recipeList = new RecipeListDisplay("storage.json");
+        RecipeListData recipeListData = recipeList.getRecipeListData();
 
         if (view.getFilterMenuName() != "Filter" && view.getFilterMenuName() != "All") {
-            recipeList.filter(view.getFilterMenuName());
+            recipeListData.filter(view.getFilterMenuName());
         }
-        recipeList.sortNewest();
+        recipeListData.sortNewest();
 
         // Reload Sorted Recipe List from alternate json file
-        JSONSaver.saveRecipeList(recipeList, "sorted.json");
+        JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
         Stage stage = (Stage) view.getNewRecipeButton().getScene().getWindow();
         RecipeListPageFrame frontPage = new RecipeListPageFrame(view.getNewOpt().getText(), view.getFilterMenuName(),
                 "sorted.json");
@@ -130,16 +133,17 @@ public class RecipeListPageFrameController implements Controller {
     }
 
     private void handleOldOpt(ActionEvent event) {
-        RecipeList recipeList = view.getRecipeList();
-        recipeList = new RecipeList("storage.json");
+        RecipeListDisplay recipeList = view.getRecipeList();
+        recipeList = new RecipeListDisplay("storage.json");
+        RecipeListData recipeListData = recipeList.getRecipeListData();
 
         if (view.getFilterMenuName() != "Filter" && view.getFilterMenuName() != "All") {
-            recipeList.filter(view.getFilterMenuName());
+            recipeListData.filter(view.getFilterMenuName());
         }
-        recipeList.sortOldest();
+        recipeListData.sortOldest();
 
         // Reload Sorted Recipe List from alternate json file
-        JSONSaver.saveRecipeList(recipeList, "sorted.json");
+        JSONSaver.saveRecipeListData(recipeListData, "sorted.json");
         Stage stage = (Stage) view.getNewRecipeButton().getScene().getWindow();
         RecipeListPageFrame frontPage = new RecipeListPageFrame(view.getOldOpt().getText(), view.getFilterMenuName(),
                 "sorted.json");
@@ -153,21 +157,22 @@ public class RecipeListPageFrameController implements Controller {
     }
 
     private void handleAll(ActionEvent event) {
-        RecipeList recipeList = view.getRecipeList();
-        recipeList = new RecipeList("storage.json");
+        RecipeListDisplay recipeList = view.getRecipeList();
+        recipeList = new RecipeListDisplay("storage.json");
+        RecipeListData recipeListData = recipeList.getRecipeListData();
 
         if (view.getSortMenuName() == "A-Z") {
-            recipeList.sortAlphabetically();
+            recipeListData.sortAlphabetically();
         } else if (view.getSortMenuName() == "Z-A") {
-            recipeList.sortReverseAlphabetically();
+            recipeListData.sortReverseAlphabetically();
         } else if (view.getSortMenuName() == "Newest" || view.getSortMenuName() == "Sort") {
-            recipeList.sortNewest();
+            recipeListData.sortNewest();
         } else if (view.getSortMenuName() == "Oldest") {
-            recipeList.sortOldest();
+            recipeListData.sortOldest();
         }
 
         // Reload Filtered Recipe List from alternate json file
-        JSONSaver.saveRecipeList(recipeList, "filtered.json");
+        JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
         Stage stage = (Stage) view.getNewRecipeButton().getScene().getWindow();
         RecipeListPageFrame frontPage = new RecipeListPageFrame(view.getSortMenuName(), view.getAll().getText(),
                 "filtered.json");
@@ -181,22 +186,23 @@ public class RecipeListPageFrameController implements Controller {
     }
 
     private void handleBreakfast(ActionEvent event) {
-        RecipeList recipeList = view.getRecipeList();
-        recipeList = new RecipeList("storage.json");
+        RecipeListDisplay recipeList = view.getRecipeList();
+        recipeList = new RecipeListDisplay("storage.json");
+        RecipeListData recipeListData = recipeList.getRecipeListData();
 
-        recipeList.filter("Breakfast");
+        recipeListData.filter("Breakfast");
         if (view.getSortMenuName() == "A-Z") {
-            recipeList.sortAlphabetically();
+            recipeListData.sortAlphabetically();
         } else if (view.getSortMenuName() == "Z-A") {
-            recipeList.sortReverseAlphabetically();
+            recipeListData.sortReverseAlphabetically();
         } else if (view.getSortMenuName() == "Newest" || view.getSortMenuName() == "Sort") {
-            recipeList.sortNewest();
+            recipeListData.sortNewest();
         } else if (view.getSortMenuName() == "Oldest") {
-            recipeList.sortOldest();
+            recipeListData.sortOldest();
         }
 
         // Reload Filtered Recipe List from alternate json file
-        JSONSaver.saveRecipeList(recipeList, "filtered.json");
+        JSONSaver.saveRecipeListData(recipeListData, "filtered.json");
         Stage stage = (Stage) view.getNewRecipeButton().getScene().getWindow();
         RecipeListPageFrame frontPage = new RecipeListPageFrame(view.getSortMenuName(), view.getBreakfast().getText(),
                 "filtered.json");
@@ -210,18 +216,19 @@ public class RecipeListPageFrameController implements Controller {
     }
 
     private void handleLunch(ActionEvent event) {
-        RecipeList recipeList = view.getRecipeList();
-        recipeList = new RecipeList("storage.json");
+        RecipeListDisplay recipeList = view.getRecipeList();
+        recipeList = new RecipeListDisplay("storage.json");
+        RecipeListData recipeListData = recipeList.getRecipeListData();
 
-        recipeList.filter("Lunch");
+        recipeListData.filter("Lunch");
         if (view.getSortMenuName() == "A-Z") {
-            recipeList.sortAlphabetically();
+            recipeListData.sortAlphabetically();
         } else if (view.getSortMenuName() == "Z-A") {
-            recipeList.sortReverseAlphabetically();
+            recipeListData.sortReverseAlphabetically();
         } else if (view.getSortMenuName() == "Newest" || view.getSortMenuName() == "Sort") {
-            recipeList.sortNewest();
+            recipeListData.sortNewest();
         } else if (view.getSortMenuName() == "Oldest") {
-            recipeList.sortOldest();
+            recipeListData.sortOldest();
         }
 
         // Reload Filtered Recipe List from alternate json file
@@ -239,18 +246,19 @@ public class RecipeListPageFrameController implements Controller {
     }
 
     private void handleDinner(ActionEvent event) {
-        RecipeList recipeList = view.getRecipeList();
-        recipeList = new RecipeList("storage.json");
+        RecipeListDisplay recipeList = view.getRecipeList();
+        recipeList = new RecipeListDisplay("storage.json");
+        RecipeListData recipeListData = recipeList.getRecipeListData();
 
-        recipeList.filter("Dinner");
+        recipeListData.filter("Dinner");
         if (view.getSortMenuName() == "A-Z") {
-            recipeList.sortAlphabetically();
+            recipeListData.sortAlphabetically();
         } else if (view.getSortMenuName() == "Z-A") {
-            recipeList.sortReverseAlphabetically();
+            recipeListData.sortReverseAlphabetically();
         } else if (view.getSortMenuName() == "Newest" || view.getSortMenuName() == "Sort") {
-            recipeList.sortNewest();
+            recipeListData.sortNewest();
         } else if (view.getSortMenuName() == "Oldest") {
-            recipeList.sortOldest();
+            recipeListData.sortOldest();
         }
 
         // Reload Filtered Recipe List from alternate json file

@@ -70,8 +70,9 @@ public class RecipeListPageFrame extends BorderPane{
     private VBox recipeListComplete;
     private ScrollPane recipeListScrollPane;
     private Label recipeListLabel;
-    private RecipeList recipeList;
-    private RecipeList reversedList;
+    private RecipeListDisplay recipeList;
+    private RecipeListData recipeListData;
+    private RecipeListDisplay reversedList;
     private HBox buttonMenu;
     private AnchorPane left;
     private AnchorPane middle;
@@ -87,10 +88,10 @@ public class RecipeListPageFrame extends BorderPane{
     public Button getNewRecipeButton() {
         return newRecipeButton;
     }
-    public RecipeList getRecipeList() {
+    public RecipeListDisplay getRecipeList() {
         return recipeList;
     }
-    public RecipeList getReversedList() {
+    public RecipeListDisplay getReversedList() {
         return reversedList;
     }
     String sortMenuName;
@@ -168,7 +169,7 @@ public class RecipeListPageFrame extends BorderPane{
          */
         header = new RecipeListPageHeader();
         footer = new RecipeListPageFooter();
-        recipeList = new RecipeList(fileName); //default constructor reads .json file
+        recipeList = new RecipeListDisplay(fileName); //default constructor reads .json file
         recipeListComplete = new VBox();
         buttonMenu = new HBox();
         right = new AnchorPane();
@@ -196,7 +197,7 @@ public class RecipeListPageFrame extends BorderPane{
         recipeListLabel = new Label("Recipe List:");
         recipeListLabel.setStyle(Constants.defaultTextStyle);
         recipeListLabel.setPadding(new Insets(10));
-        reversedList = new RecipeList(recipeList); //Uses new RecipeList constructor to reverse the order
+        reversedList = new RecipeListDisplay(recipeList); //Uses new RecipeList constructor to reverse the order
 
         // Align Menu Bar Elements
         left.getChildren().add(recipeListLabel);

@@ -47,7 +47,7 @@ public class NewRecipePageFrameController implements Controller {
             view.getRecipe().setDateCreated(LocalDateTime.now().toString());
             view.getList().getChildren().add(new RecipeSimple(view.getRecipe()));
             view.getReverse().getChildren().add(0, new RecipeSimple(view.getRecipe()));
-            view.getList().sortNewest();
+            view.getList().getRecipeListData().sortNewest();
             //save to .json
             JSONSaver.saveRecipeList(view.getList(),"storage.json");
             

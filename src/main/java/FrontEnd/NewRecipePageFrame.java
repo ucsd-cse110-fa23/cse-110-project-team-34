@@ -169,8 +169,8 @@ public class NewRecipePageFrame extends BorderPane{
     private RecipeGenerator generator;
     private Recipe recipe;
     private RecipeContent content;
-    private RecipeList list;
-    private RecipeList reverse;
+    private RecipeListDisplay list;
+    private RecipeListDisplay reverse;
     private AudioFormat audioFormat;
     private TargetDataLine targetDataLine;
 
@@ -212,11 +212,11 @@ public class NewRecipePageFrame extends BorderPane{
         return stage;
     }
 
-    public RecipeList getList() {
+    public RecipeListDisplay getList() {
         return list;
     }
 
-    public RecipeList getReverse() {
+    public RecipeListDisplay getReverse() {
         return reverse;
     }
 
@@ -273,7 +273,7 @@ public class NewRecipePageFrame extends BorderPane{
         this.content = content;
     }
 
-    NewRecipePageFrame(Stage stage, RecipeList recipeList, RecipeList reverseList)
+    NewRecipePageFrame(Stage stage, RecipeListDisplay recipeList, RecipeListDisplay reverseList)
     {
         /**
          * Initialize / Assign Elements Here

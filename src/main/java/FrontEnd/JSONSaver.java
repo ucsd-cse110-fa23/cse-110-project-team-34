@@ -6,9 +6,10 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.*;
 
 public class JSONSaver{
-    public static void saveRecipeList(RecipeList list, String fileName){
+    public static void saveRecipeList(RecipeListDisplay list, String fileName){
         JSONObject recipeList = new JSONObject();
         JSONArray recipeListArr = new JSONArray();
         for(int i = 0; i < list.getChildren().size(); i++){
@@ -31,6 +32,41 @@ public class JSONSaver{
         try {
 
 			FileWriter file = new FileWriter(fileName, StandardCharsets.UTF_8);
+			file.write(recipeList.toJSONString());
+			file.flush();
+			file.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+    }
+
+    public static void saveRecipeListData(RecipeListData list, String fileName){
+        JSONObject recipeList = new JSONObject();
+        JSONArray recipeListArr = new JSONArray();
+
+        ArrayList<Recipe> array = list.getRecipeList();
+
+        for(int i = 0; i < array.size(); i++){
+            if(array.get(i) instanceof Recipe){
+                JSONObject recipeJSON = new JSONObject();
+                Recipe recipe = array.get(i);
+                recipeJSON.put("recipeName", recipe.getRecipeName());
+                recipeJSON.put("ingredients", recipe.getIngredients());
+                recipeJSON.put("directions", recipe.getDirections());
+                recipeJSON.put("date", recipe.getDateCreated());
+                recipeJSON.put("mealType", recipe.getMealType());
+                recipeJSON.put("image", recipe.getImg());
+                recipeListArr.add(recipeJSON);
+            }
+        }
+
+        recipeList.put("recipeList", recipeListArr);
+
+        try {
+
+			FileWriter file = new FileWriter(fileName);
 			file.write(recipeList.toJSONString());
 			file.flush();
 			file.close();
