@@ -1,24 +1,13 @@
 package FrontEnd;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
-import javax.sound.sampled.*;
-import java.io.*;
-import java.net.URISyntaxException;
-import java.util.jar.Attributes.Name;
-
-import javafx.scene.control.Alert.AlertType;
-
-import org.json.simple.*;
 
 class LoginPageHeader extends HBox {
 
@@ -166,7 +155,7 @@ public class LoginPageFrame extends BorderPane{
     private String password;
     private VBox headercomplete;
 
-    private String userId;
+    //private String userId;
 
     Stage stage;
 

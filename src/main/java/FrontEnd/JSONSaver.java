@@ -5,7 +5,6 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.util.*;
 
 public class JSONSaver{

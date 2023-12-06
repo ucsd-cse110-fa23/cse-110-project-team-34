@@ -2,7 +2,6 @@ package FrontEnd;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;

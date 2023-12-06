@@ -1,16 +1,10 @@
 package FrontEnd;
 
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-import java.io.File;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
@@ -71,7 +65,7 @@ public class RecipeListPageFrame extends BorderPane{
     private ScrollPane recipeListScrollPane;
     private Label recipeListLabel;
     private RecipeListDisplay recipeList;
-    private RecipeListData recipeListData;
+    //private RecipeListData recipeListData; Not used
     private RecipeListDisplay reversedList;
     private HBox buttonMenu;
     private AnchorPane left;

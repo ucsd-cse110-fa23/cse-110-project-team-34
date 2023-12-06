@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class ViewRecipePageFrameController {
+public class ViewRecipePageFrameController implements Controller{
     ViewRecipePageFrame view;
     HTTPRequestModel model;
 
@@ -41,7 +41,8 @@ public class ViewRecipePageFrameController {
         Stage newStage = new Stage();
         Recipe recipe = view.getRecipe();
         EditRecipePageFrame editRecipePage = new EditRecipePageFrame(recipe, newStage, view);
-        EditRecipePageFrameController controller = new EditRecipePageFrameController(editRecipePage, model);
+        EditRecipePageFrameController controller = new EditRecipePageFrameController(editRecipePage, model);//Floating controller since new window
+        if(controller != null){} //Floating controller
         newStage.setScene(new Scene(editRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
         newStage.setResizable(false);
         newStage.showAndWait();
@@ -54,6 +55,7 @@ public class ViewRecipePageFrameController {
         // Saves change to server
        // HTTPRequestModel httpRequestModel = new HTTPRequestModel(); // TODO: Remove when controller is implemented
         String response = model.performRecipeListPOSTRequest();
+        if(response.equals("Success!")){}
 
         // returns to recipe list page
         // I just did what was there for back button. This is quite jank tbh

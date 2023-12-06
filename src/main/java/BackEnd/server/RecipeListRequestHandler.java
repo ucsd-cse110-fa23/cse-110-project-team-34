@@ -89,7 +89,7 @@ public class RecipeListRequestHandler implements HttpHandler{
       JSONObject recipeListJSONObj = null;
 
       try{
-        recipeListJSONObj = recipeListJSONObj = (JSONObject) p.parse(recipeListJSONString);  
+        recipeListJSONObj = (JSONObject) p.parse(recipeListJSONString);  
       }catch(org.json.simple.parser.ParseException e){
           e.printStackTrace();
       }

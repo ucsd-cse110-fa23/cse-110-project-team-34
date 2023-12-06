@@ -7,7 +7,6 @@ import BackEnd.database.UserDatabase;
 
 import java.io.*;
 import java.net.*;
-import java.util.*;
 
 public class SignupRequestHandler implements HttpHandler{
 

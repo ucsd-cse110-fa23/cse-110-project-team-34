@@ -1,10 +1,7 @@
 package FrontEnd;
 
-import javax.swing.text.View;
 
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 public class EditRecipePageFrameController implements Controller{
     EditRecipePageFrame view;
@@ -36,6 +33,9 @@ public class EditRecipePageFrameController implements Controller{
             JSONSaver.updateJSON(view.getOriginalRecipeName(), view.getRecipe());
             String success = model.performRecipeListPOSTRequest();
 
+            if(success.equals("Success!")){
+                
+            }
         	
         	view.getNewStage().close();//close edit page
     }

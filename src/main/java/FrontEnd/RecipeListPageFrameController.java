@@ -2,9 +2,6 @@ package FrontEnd;
 
 import java.io.File;
 
-import javax.swing.Action;
-import javax.swing.text.View;
-
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;

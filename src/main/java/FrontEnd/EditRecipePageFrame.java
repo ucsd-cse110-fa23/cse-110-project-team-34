@@ -94,9 +94,6 @@ public class EditRecipePageFrame extends BorderPane {
     private String originalRecipeName;
     private ViewRecipePageFrame parent;
     private Stage newStage;
-    private String newRecipeName;
-    private String newIngredients;
-    private String newDirections;
     
     Button newBackButton;
     Button newSaveButton;

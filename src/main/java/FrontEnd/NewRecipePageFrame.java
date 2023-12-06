@@ -1,24 +1,17 @@
 package FrontEnd;
 
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javax.sound.sampled.*;
 
-import org.json.simple.JSONObject;
 
-import BackEnd.api.ChatGPT;
-import BackEnd.api.Whisper;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.time.LocalDateTime;
 
 class NewRecipePageHeader extends HBox {
     private Button Breakfast;

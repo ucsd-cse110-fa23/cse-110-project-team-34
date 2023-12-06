@@ -17,7 +17,6 @@ import org.json.simple.parser.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Scanner;
 
 /**
  * Simple recipe display for recipe list
@@ -95,6 +94,7 @@ class RecipeSimple extends HBox{
         // add a controller here... 
         HTTPRequestModel httpRequestModel = new HTTPRequestModel();
         ViewRecipePageFrameController controller = new ViewRecipePageFrameController(ViewRecipePage, httpRequestModel);
+        if(controller != null){}
     	stage.setScene(new Scene(ViewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
     	stage.setResizable(false);
     	stage.show();

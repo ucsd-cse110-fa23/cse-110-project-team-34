@@ -186,11 +186,5 @@ public class ChatGPT {
         return directions.trim();
     }
 
-    private String[] parseOutput(String chatOutput) {
-            // can use lastIndexOf(string)
-            String lines[] = chatOutput.split("#");
-            return lines;
-    }
-
 
 }
