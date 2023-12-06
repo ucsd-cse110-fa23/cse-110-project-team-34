@@ -12,6 +12,9 @@ directions and captivating images.
 Join the PantryPal community, where ingredients become art, and every dish tells 
 a delicious story. 
 
+## Github Repository Link
+[https://github.com/ucsd-cse110-fa23/cse-110-project-team-34](https://github.com/ucsd-cse110-fa23/cse-110-project-team-34)
+
 ## How do I use PantryPal?
 
 ### Requirements
@@ -23,9 +26,10 @@ a delicious story.
 Using VSCode is recommended for ease of use and compatibility
 
 ### General Running Instructions
-1. Copy platform specific JavaFX lib files into the lib folder
+1. Copy platform specific JavaFX lib files into the lib folder - The default has Windows x64 lib files
 2. Run gradle build and clean workspace
-3. Run program using the Main run action
+3. Run server instance by using the Server run action
+4. Run local program using the Main run action
 
 ## FAQs
 
