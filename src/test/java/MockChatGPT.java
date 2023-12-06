@@ -19,7 +19,7 @@ public class MockChatGPT extends ChatGPT{
     @Override
     public boolean verifyIngredients(String ingredients){
         System.out.println("verifying ingredientd");
-        return true;
+        return false;
     }
 
     @Override
