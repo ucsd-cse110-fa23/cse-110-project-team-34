@@ -60,6 +60,7 @@ public class ShareRequestHandler implements HttpHandler{
 
         String ingredients = (String) recipe.get("ingredients");
         String directions = (String) recipe.get("directions");
+        String image = (String) recipe.get("image");
 
 
         StringBuilder htmlBuilder = new StringBuilder();
@@ -80,7 +81,7 @@ public class ShareRequestHandler implements HttpHandler{
                 .append("Recipe Name: " + recipeName)
                 .append("</h2>")
                 .append("<br>")
-                .append("<img style=\"display:block;margin-left:auto;margin-right:auto;\" src=\"recipeImage.jpg\" alt=\"" + recipeName + " image\" width=\"500\">") // height=\"600\">")
+                .append("<img src=\"" + image + "\" alt=" + recipeName + " width=\"" + 500 + "\" height=\"" + 500 + "\">")
                 .append("<br>")
                 .append("<h2 style=\"font-family:arial;text-align:left;\">")
                 .append("Ingredients: " + ingredients)
