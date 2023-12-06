@@ -105,10 +105,11 @@ public class NewRecipePageFrameController implements Controller {
         ScrollPane scrollPane = view.getScrollPane();
         scrollPane = new ScrollPane(content);
         scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
+        //scrollPane.setFitToHeight(true);
         // this is not working
         // view.helpSetCenter(content);
-        view.setCenter(content);
+        view.setScrollPane(scrollPane);
+        view.setCenter(view.getScrollPane());
         Button newGenerateButton = view.getNewGenerateButton();
         newGenerateButton.setText("Re-generate");
         // this.newGenerateButton.setText("Re-generate");

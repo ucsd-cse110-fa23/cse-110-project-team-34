@@ -130,6 +130,7 @@ public class ViewRecipePageFrame extends BorderPane {
     Button newBackButton;
     Button newEditButton;
     Button newDeleteButton;
+    Button shareButton;
 
 	public Button getBackButton() {
         return newBackButton;
@@ -143,6 +144,10 @@ public class ViewRecipePageFrame extends BorderPane {
         return newDeleteButton;
     }
 
+    public Button getShareButton(){
+        return shareButton;
+    }
+
     public Stage getStage() {
         return stage;
     }
@@ -150,7 +155,7 @@ public class ViewRecipePageFrame extends BorderPane {
     public Recipe getRecipe() {
         return recipe;
     }
-    Button shareButton;
+
     
     ViewRecipePageFrame(Recipe recipe, Stage stage) {
     	
@@ -194,6 +199,10 @@ public class ViewRecipePageFrame extends BorderPane {
 
     public void setDeleteButtonAction(EventHandler<ActionEvent> eventHandler) {
         newDeleteButton.setOnAction(eventHandler);
+    }
+
+    public void setShareButtonAction(EventHandler<ActionEvent> eventHandler){
+        shareButton.setOnAction(eventHandler);
     }
     
     public void refresh(){

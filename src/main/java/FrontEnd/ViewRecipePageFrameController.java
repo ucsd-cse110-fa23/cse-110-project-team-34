@@ -16,6 +16,14 @@ public class ViewRecipePageFrameController {
         this.view.setBackButtonAction(this::handleBackButton);
         this.view.setEditButtonAction(this::handleEditButton);
         this.view.setDeleteButtonAction(this::handleDeleteButton);
+        this.view.setShareButtonAction(this::handleShareButton);
+    }
+
+    private void handleShareButton(ActionEvent event) {
+        Stage popupStage = new Stage();
+        popupStage.setTitle("Share");
+        popupStage.setScene(new Scene(new SharePopup(view.getRecipe().getRecipeName()), Constants.SHAREWINDOWWIDTH, Constants.SHAREWINDOWHEIGHT));
+        popupStage.show();
     }
 
     private void handleBackButton(ActionEvent event) {

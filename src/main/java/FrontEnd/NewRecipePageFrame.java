@@ -195,6 +195,11 @@ public class NewRecipePageFrame extends BorderPane{
     public void setRecipe(Recipe rec) {
         recipe = rec;
     }
+
+    public void setScrollPane(ScrollPane s){
+        scrollPane = s;
+    }
+
     public void setRecording(boolean TF) {
         recording = TF;
     }

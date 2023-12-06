@@ -34,6 +34,7 @@ public class EditRecipePageFrameController implements Controller{
         	
         	//update RecipeList/file:  with new recipe list
             JSONSaver.updateJSON(view.getOriginalRecipeName(), view.getRecipe());
+            String success = model.performRecipeListPOSTRequest();
 
         	
         	view.getNewStage().close();//close edit page
