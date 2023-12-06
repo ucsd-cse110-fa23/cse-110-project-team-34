@@ -1,13 +1,15 @@
 package FrontEnd;
 
+import java.time.LocalDateTime;
+
 import org.json.simple.JSONObject;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 
 public class NewRecipePageFrameController implements Controller {
 
@@ -41,16 +43,21 @@ public class NewRecipePageFrameController implements Controller {
 
     public void handleNewSaveButton(ActionEvent event) {
 
-        // add recipe to recipeList
-        view.getList().getChildren().add(new RecipeSimple(view.getRecipe()));
-        view.getReverse().getChildren().add(0, new RecipeSimple((view.getRecipe())));
-        // save to .json
-        JSONSaver.saveRecipeList(view.getList());
+            //add recipe to recipeList
+            view.getRecipe().setDateCreated(LocalDateTime.now().toString());
+            view.getList().getChildren().add(new RecipeSimple(view.getRecipe()));
+            view.getReverse().getChildren().add(0, new RecipeSimple(view.getRecipe()));
+            view.getList().sortNewest();
+            //save to .json
+            JSONSaver.saveRecipeList(view.getList(),"storage.json");
+            
+            HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
+            String response = httpRequestModel.performRecipeListPOSTRequest();
 
-        String response = this.model.performRecipeListPOSTRequest();
-
-        // sort tasks, tasks are added at end, just show by reverse order (for loop
-        // starting at the end)
+            if(response.equals("SUCCESS_POST_REQUEST")){
+                Alert alert = new Alert(AlertType.INFORMATION, "Recipe Successfully Saved!", ButtonType.OK);
+                alert.showAndWait();
+            }
     }
 
     public void handleNewGenerateButton(ActionEvent event) {
@@ -58,6 +65,8 @@ public class NewRecipePageFrameController implements Controller {
         String ingredients;
         String directions;
         String mealTypeString = "Breakfast";
+        String date = LocalDateTime.now().toString();
+
         try {
             mealTypeString = view.getMealTypeString();
         } catch (Exception badMealType) {
@@ -85,7 +94,7 @@ public class NewRecipePageFrameController implements Controller {
         directions = (String) recipeJSON.get("directions");
 
         Recipe recipe = view.getRecipe();
-        recipe = new Recipe(name, ingredients, directions);
+        recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
         RecipeContent content = view.getContent();
         content = new RecipeContent(recipe);
         ScrollPane scrollPane = view.getScrollPane();

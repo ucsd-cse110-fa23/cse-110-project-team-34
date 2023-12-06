@@ -100,6 +100,14 @@ public class RecipeListPageFrame extends BorderPane{
         return logoutButton;
     }
 
+    public String getSortMenuName() {
+        return sortMenuName;
+    }
+
+    public String getFilterMenuName() {
+        return filterMenuName;
+    }
+
     // Declare Sort Dropdown
     MenuButton sortButton;
     MenuItem alphaOpt;
@@ -107,12 +115,43 @@ public class RecipeListPageFrame extends BorderPane{
     MenuItem newOpt;
     MenuItem oldOpt;
 
+    public MenuItem getAlphaOpt() {
+        return alphaOpt;
+    }
+
+    public MenuItem getReverseOpt() {
+        return reverseOpt;
+    }
+
+    public MenuItem getNewOpt() {
+        return newOpt;
+    }
+
+    public MenuItem getOldOpt() {
+        return oldOpt;
+    }
     // Declare Filter Dropdown
     MenuButton filterButton;
     MenuItem all;
     MenuItem breakfast;
     MenuItem lunch;
     MenuItem dinner;
+
+    public MenuItem getAll() {
+        return all;
+    }
+
+    public MenuItem getBreakfast() {
+        return breakfast;
+    }
+
+    public MenuItem getLunch() {
+        return lunch;
+    }
+
+    public MenuItem getDinner() {
+        return dinner;
+    }
 
     RecipeListPageFrame(){
         this("Sort", "Filter", "storage.json");
@@ -422,4 +461,37 @@ public class RecipeListPageFrame extends BorderPane{
     public void setNewRecipeButtonAction(EventHandler<ActionEvent> eventHandler) {
         newRecipeButton.setOnAction(eventHandler);
     }
+    
+    public void setAlphaOptAction(EventHandler<ActionEvent> eventHandler) {
+        alphaOpt.setOnAction(eventHandler);
+    }
+
+    public void setReverseOptAction(EventHandler<ActionEvent> eventHandler) {
+        reverseOpt.setOnAction(eventHandler);
+    }
+
+    public void setNewOptAction(EventHandler<ActionEvent> eventHandler) {
+        newOpt.setOnAction(eventHandler);
+    }
+
+    public void setOldOptAction(EventHandler<ActionEvent> eventHandler) {
+        oldOpt.setOnAction(eventHandler);
+    }
+
+    public void setAllAction(EventHandler<ActionEvent> eventHandler) {
+        all.setOnAction(eventHandler);
+    }
+
+    public void setBreakfastAction(EventHandler<ActionEvent> eventHandler) {
+        breakfast.setOnAction(eventHandler);
+    }
+
+    public void setLunchAction(EventHandler<ActionEvent> eventHandler) {
+        lunch.setOnAction(eventHandler);
+    }
+
+    public void setDinnerAction(EventHandler<ActionEvent> eventHandler) {
+        dinner.setOnAction(eventHandler);
+    }
+
 }
