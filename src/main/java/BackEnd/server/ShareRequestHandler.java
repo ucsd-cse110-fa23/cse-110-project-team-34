@@ -75,7 +75,7 @@ public class ShareRequestHandler implements HttpHandler{
 
                 //Body
                 .append("<body style=\"background-color: #C6F5E4;\">")
-                .append("<header style=\"background-color: #3EB489; margin: 0; padding: 0;\"><h1 style=\"font-family:arial;margin:0;text-align:center;\">PantyPal</h1></header>")
+                .append("<header style=\"background-color: #3EB489; margin: 0; padding: 0;\"><h1 style=\"font-family:arial;margin:0;text-align:center;\">PantryPal</h1></header>")
 
                 .append("<h2 style=\"font-family:arial;text-align:left;\">")
                 .append("Recipe Name: " + recipeName)
