@@ -4,10 +4,11 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 
 public class JSONSaver{
-    public static void saveRecipeList(RecipeList list){
+    public static void saveRecipeList(RecipeList list, String fileName){
         JSONObject recipeList = new JSONObject();
         JSONArray recipeListArr = new JSONArray();
         for(int i = 0; i < list.getChildren().size(); i++){
@@ -18,6 +19,8 @@ public class JSONSaver{
                 recipeJSON.put("recipeName", recipe.getRecipeName());
                 recipeJSON.put("ingredients", recipe.getIngredients());
                 recipeJSON.put("directions", recipe.getDirections());
+                recipeJSON.put("date", recipe.getDateCreated());
+                recipeJSON.put("mealType", recipe.getMealType());
                 recipeListArr.add(recipeJSON);
             }
         }
@@ -26,7 +29,7 @@ public class JSONSaver{
 
         try {
 
-			FileWriter file = new FileWriter("storage.json");
+			FileWriter file = new FileWriter(fileName, StandardCharsets.UTF_8);
 			file.write(recipeList.toJSONString());
 			file.flush();
 			file.close();
@@ -55,10 +58,12 @@ public class JSONSaver{
                     recipe.put("recipeName", newRecipe.getRecipeName());
                     recipe.put("ingredients", newRecipe.getIngredients());
                     recipe.put("directions", newRecipe.getDirections());
+                    recipe.put("date", newRecipe.getDateCreated());
+                    recipe.put("mealType", newRecipe.getMealType());
                 }
             }
 
-            FileWriter file = new FileWriter("storage.json");
+            FileWriter file = new FileWriter("storage.json", StandardCharsets.UTF_8);
 			file.write(recipeListObj.toJSONString());
 			file.flush();
 			file.close();
@@ -75,7 +80,7 @@ public class JSONSaver{
         try{
 
             JSONParser parser = new JSONParser();
-            FileReader fileReader = new FileReader("storage.json");
+            FileReader fileReader = new FileReader("storage.json", StandardCharsets.UTF_8);
 
             JSONObject recipeListObj = (JSONObject)parser.parse(fileReader);
 
@@ -92,7 +97,7 @@ public class JSONSaver{
 
             recipeListArr.remove(i);
 
-            FileWriter file = new FileWriter("storage.json");
+            FileWriter file = new FileWriter("storage.json", StandardCharsets.UTF_8);
 			file.write(recipeListObj.toJSONString());
 			file.flush();
 			file.close();
@@ -118,7 +123,7 @@ public class JSONSaver{
 
     public static void saveRecipeListByJSON(JSONObject recipeListJSONObject){
         try{
-            FileWriter file = new FileWriter("storage.json");
+            FileWriter file = new FileWriter("storage.json", StandardCharsets.UTF_8);
 			file.write(recipeListJSONObject.toJSONString());
 			file.flush();
 			file.close();

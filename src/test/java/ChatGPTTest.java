@@ -6,6 +6,12 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -15,12 +21,6 @@ public class ChatGPTTest {
     
     @BeforeEach
     void setUp() {
-        
-    }
-    
-    @Test
-    void testVerifyIngredients() {
-
         
     }
 

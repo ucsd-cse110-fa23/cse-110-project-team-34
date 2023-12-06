@@ -4,6 +4,7 @@ import org.json.simple.parser.*;
 import org.json.simple.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -12,6 +13,7 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.net.URI;
@@ -190,7 +192,7 @@ public class HTTPRequestModel {
             conn.setDoOutput(true);
 
             OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
-            out.write(Files.readString(Paths.get("storage.json")));
+            out.write(Files.readString(Paths.get("storage.json"), StandardCharsets.UTF_8));
             out.flush();
             out.close();
             
@@ -198,12 +200,13 @@ public class HTTPRequestModel {
             String response = in.readLine();
             in.close();
 
-            return response;
+            return "SUCCESS_POST_REQUEST";
         } catch (ConnectException  ex) {
             ErrorSys.quickErrorPopup("Error: Server Unavailable");
             return null;
         }catch(Exception e){
             ErrorSys.quickErrorPopup("Unknown Error! POST");
+            e.printStackTrace();
             return null;
         }
 

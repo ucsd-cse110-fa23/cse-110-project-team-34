@@ -327,7 +327,7 @@ public class LoginPageFrame extends BorderPane{
 
                     //Go to recipe list page
                     stage = (Stage) LoginButton.getScene().getWindow();
-                    RecipeListPageFrame frontPage = new RecipeListPageFrame();
+                    RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
                     stage.setTitle("PantryPal");
                     stage.getIcons().add(new Image(Constants.defaultIconPath));
                     stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));

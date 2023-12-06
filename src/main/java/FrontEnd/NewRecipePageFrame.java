@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javax.sound.sampled.*;
@@ -17,6 +18,7 @@ import BackEnd.api.Whisper;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 
 class NewRecipePageHeader extends HBox {
     private Button Breakfast;
@@ -264,7 +266,7 @@ public class NewRecipePageFrame extends BorderPane{
          */
 
         this.stage = stage;
-        recipe = new Recipe("Sample Recipe", "Sample Ingredients", "Sample Directions");
+        recipe = new Recipe("Sample Recipe", "Sample Ingredients", "Sample Directions", "Sample Date & Time", "Sample Meal Type");
         header = new NewRecipePageHeader();
         footer = new NewRecipePageFooter();
         generator = new RecipeGenerator();
@@ -334,7 +336,7 @@ public class NewRecipePageFrame extends BorderPane{
 
         // Add button functionality
         newBackButton.setOnAction(e -> {
-            RecipeListPageFrame frontPage = new RecipeListPageFrame();
+            RecipeListPageFrame frontPage = new RecipeListPageFrame("Sort", "Filter", "storage.json");
             stage.setTitle("PantryPal");
             stage.getIcons().add(new Image(Constants.defaultIconPath));
             stage.setScene(new Scene(frontPage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
@@ -345,13 +347,20 @@ public class NewRecipePageFrame extends BorderPane{
 
         newSaveButton.setOnAction(e -> {
             //add recipe to recipeList
+            recipe.setDateCreated(LocalDateTime.now().toString());
             list.getChildren().add(new RecipeSimple(recipe));
             reverse.getChildren().add(0, new RecipeSimple(recipe));
+            list.sortNewest();
             //save to .json
-            JSONSaver.saveRecipeList(list);
+            JSONSaver.saveRecipeList(list,"storage.json");
             
             HTTPRequestModel httpRequestModel = new HTTPRequestModel(); //TODO: Remove when controller is implemented
             String response = httpRequestModel.performRecipeListPOSTRequest();
+
+            if(response.equals("SUCCESS_POST_REQUEST")){
+                Alert alert = new Alert(AlertType.INFORMATION, "Recipe Successfully Saved!", ButtonType.OK);
+                alert.showAndWait();
+            }
 
             //sort tasks, tasks are added at end, just show by reverse order (for loop starting at the end)
         });
@@ -361,6 +370,7 @@ public class NewRecipePageFrame extends BorderPane{
             String ingredients;
             String directions;
             String mealTypeString = "Breakfast";
+            String date = LocalDateTime.now().toString();
             try{
                 mealTypeString = getMealTypeString();
             }catch(Exception badMealType){
@@ -376,7 +386,7 @@ public class NewRecipePageFrame extends BorderPane{
                 ErrorSys.quickErrorPopup("Empty Recording");
                 return;
             }else if(recipeJSONString.equals("CHAT_GPT_FAILED_ERROR")){
-                ErrorSys.quickErrorPopup("ChatGPT Failed, please verify ingredients");
+                ErrorSys.quickErrorPopup("ChatGPT Failed\nLimit 3 Generates Per Minute!");
                 return;
             }else if(recipeJSONString.equals("INVALID_INGREDIENTS_ERROR")){
                 ErrorSys.quickErrorPopup("Ingredients deemed inedible by ChatGPT");
@@ -388,7 +398,7 @@ public class NewRecipePageFrame extends BorderPane{
             ingredients = (String)recipeJSON.get("ingredients");
             directions = (String)recipeJSON.get("directions");
 
-            recipe = new Recipe(name, ingredients, directions);
+            recipe = new Recipe(name, ingredients, directions, date, mealTypeString);
             content = new RecipeContent(recipe);
             scrollPane = new ScrollPane(content);
             scrollPane.setFitToWidth(true);
