@@ -47,7 +47,7 @@ public class NewRecipePageFrameController implements Controller {
         // save to .json
         JSONSaver.saveRecipeList(view.getList());
 
-        String response = model.performRecipeListPOSTRequest();
+        String response = this.model.performRecipeListPOSTRequest();
 
         // sort tasks, tasks are added at end, just show by reverse order (for loop
         // starting at the end)
@@ -93,7 +93,8 @@ public class NewRecipePageFrameController implements Controller {
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
         // this is not working
-        view.helpSetCenter(content);
+        // view.helpSetCenter(content);
+        view.setCenter(content);
         Button newGenerateButton = view.getNewGenerateButton();
         newGenerateButton.setText("Re-generate");
         // this.newGenerateButton.setText("Re-generate");

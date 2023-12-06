@@ -7,6 +7,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -58,11 +60,18 @@ class RecipeSimple extends HBox{
     public Recipe getRecipe(){
         return recipe;
     }
+
+    public void setViewButtonAction(EventHandler<ActionEvent> eventHandler) {
+        viewButton.setOnAction(eventHandler);
+    }
     
     public void addListeners() {
     	viewButton.setOnAction(e -> {
     	Stage stage = (Stage) viewButton.getScene().getWindow();
     	ViewRecipePageFrame ViewRecipePage = new ViewRecipePageFrame(this.recipe, stage);
+        // add a controller here... 
+        HTTPRequestModel httpRequestModel = new HTTPRequestModel();
+        ViewRecipePageFrameController controller = new ViewRecipePageFrameController(ViewRecipePage, httpRequestModel);
     	stage.setScene(new Scene(ViewRecipePage, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
     	stage.setResizable(false);
     	stage.show();

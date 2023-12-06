@@ -129,6 +129,14 @@ public class ViewRecipePageFrame extends BorderPane {
 	public Button getDeleteButton() {
         return newDeleteButton;
     }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
     
     ViewRecipePageFrame(Recipe recipe, Stage stage) {
     	
@@ -161,7 +169,7 @@ public class ViewRecipePageFrame extends BorderPane {
 
 
         //Add button listeners
-        addListeners();
+        //addListeners();
     }
 
     public void setBackButtonAction(EventHandler<ActionEvent> eventHandler) {

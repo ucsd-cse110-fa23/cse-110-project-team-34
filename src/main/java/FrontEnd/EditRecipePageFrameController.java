@@ -40,6 +40,10 @@ public class EditRecipePageFrameController implements Controller{
     }
 
     private void handleNewBackButton(ActionEvent event) {
+        // might need to add controller to go back here...
+        // so when we click view, is a new controller set?
+        // it should set to this controller...so we should have a new controlelr set to something
+        // else
         view.getNewStage().close();
     }
 }

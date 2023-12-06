@@ -6,10 +6,17 @@ import java.io.IOException;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class LoginPageFrameController implements Controller{
+public class LoginPageFrameController implements Controller {
     private LoginPageFrame view;
     private HTTPRequestModel model;
 
@@ -22,7 +29,52 @@ public class LoginPageFrameController implements Controller{
     }
 
     private void handleAccountCreationButton(ActionEvent event) {
-        // this method creates a button inside... how to refactor that?
+        Stage newStage = new Stage();
+        newStage.setTitle("Create Account");
+
+        TextField Username = new TextField("");// "Enter Username");
+        TextField Password = new TextField("");// "Enter Password");
+        TextField ComfirmPassword = new TextField("");// "Re-enter Password");
+
+        Button CreateAccount = new Button("Create Account");
+        CreateAccount.setOnAction(e -> { // add CreateButton functionality
+            String NameText = Username.getText();
+            String PasswordText = Password.getText();
+            String Re_Entered_PasswordText = ComfirmPassword.getText();
+
+            //HTTPRequestModel httpRequestModel = new HTTPRequestModel(); // TODO: Remove this when controllers
+                                                                        // implemented
+
+            if (!PasswordText.equals(Re_Entered_PasswordText)) {
+                ErrorSys.quickErrorPopup("Password and Retyped Password Do Not Match");
+            } else {
+                String response = model.performSignupRequest(NameText, PasswordText);
+                if (response.equals("Username Already Exists")) {
+                    ErrorSys.quickErrorPopup("Username Already Exists");
+                } else if (response.equals("Account Successfully Created!")) {
+                    newStage.close();
+                    Alert alert = new Alert(AlertType.INFORMATION, "Account Successfully Created!", ButtonType.OK);
+                    alert.showAndWait();
+                }
+            }
+
+        });
+
+        // Create layout for new page
+        VBox AccountDetail = new VBox(10);
+        AccountDetail.getChildren().addAll(
+                new Label("Username:"),
+                Username,
+                new Label("Password:"),
+                Password,
+                new Label("Re-enter Password:"),
+                ComfirmPassword,
+                CreateAccount);
+        AccountDetail.setStyle("-fx-font-size: 18;");
+        // Set scene
+        Scene CreateAccountScene = new Scene(AccountDetail, 500, 600);
+        newStage.setScene(CreateAccountScene);
+        newStage.show();
     }
 
     private void handleLoginButton(ActionEvent event) {
@@ -33,7 +85,7 @@ public class LoginPageFrameController implements Controller{
         username = view.getInfo().getName();
         password = view.getInfo().getPassword();
 
-        //HTTPRequestModel testModel = new HTTPRequestModel(); 
+        // HTTPRequestModel testModel = new HTTPRequestModel();
 
         String userID = model.performLoginRequest(username, password);
 

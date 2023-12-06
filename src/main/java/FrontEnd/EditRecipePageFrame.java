@@ -149,7 +149,7 @@ public class EditRecipePageFrame extends BorderPane {
         this.setCenter(details);
         this.setBottom(footer);
         
-        addListeners();
+        //addListeners();
     }
     
     public void addListeners() {
